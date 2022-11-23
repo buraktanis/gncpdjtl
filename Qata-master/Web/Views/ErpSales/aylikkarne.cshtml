@@ -1,0 +1,403 @@
+﻿@model List<aylikkarneModel>
+@{ ViewData["Title"] = "bayiPerformans";
+               
+
+                dynamic markalar = string.Format(@"SELECT [Marka Kodu] MARKA FROM ARY_017_01_AYRINTILI_FATURA_RAPORU WHERE [Marka Kodu] IS NOT NULL GROUP BY [Marka Kodu] ORDER BY [Marka Kodu]").GetDynamicQuery("SCSlogo");
+
+                dynamic tips = string.Format(@"SELECT [Malzeme Grup Kodu] tip FROM ARY_017_01_AYRINTILI_FATURA_RAPORU WHERE [Malzeme Grup Kodu] IN ('AKSESUAR','TABLET','DİĞER ÜRÜN','CEP TELEFONU') GROUP BY [Malzeme Grup Kodu] ORDER BY [Malzeme Grup Kodu]").GetDynamicQuery("SCSlogo");
+
+                int j = 0; }
+@section Scripts{
+
+    <script type="text/javascript">
+        var recordtable;
+        var _defaulttablename = "bayiPerformansQuery";
+
+
+        var tip;
+
+
+        $(function () {
+            $("#ayselect").val("@ViewBag.ay");
+            $("#markaselect").val("@ViewBag.markaselect");
+            $(".badge").hide();
+            $(".ortalamtr").hide();
+
+               $('#isbadge').change(function () {
+                if ($(this).is(':checked')) {
+                      $(".badge").show();
+                }
+                else {
+                       $(".badge").hide();
+                }
+
+               });
+            $('#isortalamtr').change(function () {
+                if ($(this).is(':checked')) {
+                    $(".ortalamtr").show();
+                }
+                else {
+                    $(".ortalamtr").hide();
+                }
+
+               });
+
+           $("#btnara").click(function () {
+
+                var ay = $("#ayselect").val();
+                var markaselect = $("#markaselect").val();
+                var cboxval = [];
+                var tips;
+                $.each($("#tips .tip"), function () {
+
+                    var tip = $(this).attr("data-tip");
+
+                        if ($('input[name="che-'+tip+'"]').is(':checked')){
+                                 cboxval.push(tip);
+                        }
+                })
+
+                window.location.href = "/ErpSales/aylikkarne?ay="+ay+"&markaselect=" + markaselect+"&tips="+cboxval.join(",");
+            });
+
+
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+                //startDate: '-3d'
+            });
+            $('.recordtable').dataTable({
+
+                  "pageLength":-1,
+                "searching": false,
+                "lengthChange": false,
+                "stateSave": false,
+                "paging": false,
+                "info": false
+            });
+
+        });
+
+        /**/</script>
+
+
+    <script type="text/template" id="formtemplete">
+
+        <div class="form-group">
+            <label class="col-4 float-left">Şube Adı</label>
+            <input class="form-control col-8 notnull" data-table="dealers" data-column="title" data-type="string" data-maxlength="250" />
+        </div>
+
+        <div class="form-group">
+            <label class="col-4 float-left">Aktif</label>
+            <input type="checkbox" class="form-control col-8" data-table="dealers" data-column="status" data-type="int" />
+        </div>
+
+    </script>
+
+
+}
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Aylık Karne
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row" id="tips">
+                    <div class="form-group col-md-4  p-3">
+                        <label>Aylar </label>
+                        <select class="form-control" id="ayselect">
+                            <option value="1">Son 1 ay</option>
+                            <option value="2">Son 2 ay</option>
+                            <option value="3">Son 3 ay</option>
+                            <option value="4">Son 4 ay</option>
+                            <option value="5">Son 5 ay</option>
+                            <option value="6">Son 6 ay</option>
+                            <option value="7">Son 7 ay</option>
+                            <option value="8">Son 8 ay</option>
+                            <option value="9">Son 9 ay</option>
+                            <option value="10">Son 10 ay</option>
+                            <option value="11">Son 11 ay</option>
+                            <option value="12">Son 12 ay</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-4  p-3">
+                        <label>Firma </label>
+                        <select class="form-control" id="markaselect">
+                            <option>Tum Markalar</option>
+                            @foreach (var item in markalar)
+                            {
+                <option>@item.MARKA</option>}
+
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2 p-4" style="margin-top:30px;">
+                        <button style="background-color:#f0bc74; " class="btn " id="btnara">Ara </button>
+                    </div>
+                    <div class="form-group col-md-2 p-4">
+                        <label for="isbadge">
+
+                            <input id="isbadge" type="radio">
+                            Yüzdelik Görünüm
+                        </label>
+                        <label for="isortalamtr">
+
+                            <input id="isortalamtr" type="radio">
+                            Ortalama
+                        </label>
+                    </div>
+
+
+                    <div id="moons" class="row">
+                        @foreach (var item in tips)
+                        {
+            <div class="tip col-md-6 form-group" data-tip="@item.tip">
+                <input id="che-@item.tip" type="radio" name="che-@item.tip">
+                <label for="che-@item.tip"> @item.tip</label>
+
+            </div>}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @foreach (var item in Model)
+        {
+
+
+<div class="col-md-12">
+    <div class="card  mb-3">
+
+        <div class="card-body">
+            <p>@item.yil  / @item.ay</p>
+
+            <div class="table-responsive">
+
+                <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                    <thead style="background-color:#1f2937; height:42px;">
+
+                        <tr style="color:#F1F1F1; ">
+
+                            <th>Kullanıcı</th>
+                            <th>Bayı </th>
+                            <th>Adet  </th>
+                            <th>Ciro </th>
+                            <th>Firma  </th>
+                            <th>Çeşit  </th>
+                            <th>Marka </th>
+                            <th>Kar </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var i in item.aylikkarnes)
+                        {
+
+                            <tr>
+                                <td>
+                                    <p>
+                                        @i.kullanici
+                                    </p>
+                                </td>
+
+                                <td>
+                                    <p>
+                                        @i.bayi
+
+                                        <span class="badge badge-pill badge-danger">
+
+                                            @Convert.ToInt32(Helpertype.Yuzdelik(i.bayi, item.aylikkarnes.Average(x => x.bayi)))
+                                        </span>
+                                    </p>
+
+                                </td>
+                                <td>
+                                    <p>
+                                        @i.adet
+                                        <span class="badge badge-pill badge-info">
+
+                                            @Convert.ToInt32(Helpertype.Yuzdelik(i.adet, item.aylikkarnes.Average(x => x.adet)))
+                                        </span>
+
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        @string.Format("{0:C0}", i.ciro)
+                                        <span class="badge badge-pill badge-secondary">
+
+                                            @Convert.ToInt32(Helpertype.Yuzdelik(i.ciro, item.aylikkarnes.Average(x => x.ciro)))
+                                        </span>
+                                    </p>
+                                </td>
+                                <td>
+
+                                    <p>
+                                        @i.firma
+
+
+                                        <span class="badge badge-pill badge-success">
+
+                                            @Convert.ToInt32(Helpertype.Yuzdelik(i.firma, item.aylikkarnes.Average(x => x.firma)))
+                                        </span>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        @i.cesit
+
+                                        <span class="badge badge-pill badge-light">
+
+                                            @Convert.ToInt32(Helpertype.Yuzdelik(i.cesit, item.aylikkarnes.Average(x => x.cesit)))
+                                        </span>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        @i.marka
+
+                                        <span class="badge badge-pill badge-primary">
+
+                                            @Convert.ToInt32(Helpertype.Yuzdelik(i.marka, item.aylikkarnes.Average(x => x.marka)))
+                                        </span>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+
+                                        @string.Format("{0:C0}", i.kar)
+                                        <span class="badge badge-pill badge-primary">
+
+                                            @Convert.ToInt32(Helpertype.Yuzdelik(i.kar, item.aylikkarnes.Average(x => x.kar)))
+                                        </span>
+                                    </p>
+                                </td>
+                            </tr>
+}
+                        <tr style="font-weight:900;color:green;background-color:#f3f3f3" class="ortalamtr">
+                            <td>
+                                <h2>
+                                    Ortalama
+                                </h2>
+                            </td>
+
+                            <td>
+                                <h6>
+                                    @Convert.ToInt32(item.aylikkarnes.Average(x => x.bayi))
+
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+
+                                    @Convert.ToInt32(item.aylikkarnes.Average(x => x.adet))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+                                    @string.Format("{0:C0}", item.aylikkarnes.Average(x => x.ciro))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+
+                                    @Convert.ToInt32(item.aylikkarnes.Average(x => x.firma))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+
+                                    @Convert.ToInt32(item.aylikkarnes.Average(x => x.cesit))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+
+                                    @Convert.ToInt32(item.aylikkarnes.Average(x => x.marka))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+                                    @string.Format("{0:C0}", item.aylikkarnes.Average(x => x.kar))
+
+                                </h6>
+                            </td>
+                        </tr>
+
+                        <tr style="font-weight:500;color:red;font-size:30px;background-color:#f3f3f3">
+                            <td>
+                                <h2>
+                                    Dip Toplam
+                                </h2>
+                            </td>
+
+
+                            <td>
+                                <h6>
+                                    @Convert.ToInt32(item.aylikkarnes.Sum(x => x.bayi))
+
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+
+                                    @Convert.ToInt32(item.aylikkarnes.Sum(x => x.adet))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+                                    @string.Format("{0:C0}", item.aylikkarnes.Sum(x => x.ciro))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+
+                                    @Convert.ToInt32(item.aylikkarnes.Sum(x => x.firma))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+
+                                    @Convert.ToInt32(item.aylikkarnes.Sum(x => x.cesit))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+
+                                    @Convert.ToInt32(item.aylikkarnes.Sum(x => x.marka))
+                                </h6>
+                            </td>
+                            <td>
+                                <h6>
+                                    @string.Format("{0:C0}", item.aylikkarnes.Sum(x => x.kar))
+
+                                </h6>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>}
+    </div>

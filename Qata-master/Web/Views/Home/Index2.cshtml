@@ -1,0 +1,415 @@
+﻿@model CiroGunHaftaAyModel
+@{
+}
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Genel Bakış</h4>
+            <div class="ms-auto text-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"></a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Genel Bakış
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 ">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mt-0">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="peity_line_neutral left text-center mt-2">
+                            <i class="fa fa-chart-pie btn-lg"></i>
+                            <h6>Bugün</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-6 border-left text-center pt-2">
+                        <h3 class="mb-0 fw-bold">
+                            @string.Format("{0:#,0}", Model.gunlukciro)
+                        </h3>
+                        <span class="text-muted">
+                            @string.Format("{0:#,0}", Model.gunlukadet) adet
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mt-0">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="peity_bar_bad left text-center mt-2">
+                            <i class="fa fa-chart-pie btn-lg"></i>
+                            <h6>Bu Hafta</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-6 border-left text-center pt-2">
+                        <h3 class="mb-0 fw-bold">     
+                        @string.Format("{0:#,0}", Model.haftalikciro)
+                        </h3>
+                        <span class="text-muted">
+                            @string.Format("{0:#,0}", Model.haftalikadet) adet
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mt-0">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="peity_line_good left text-center mt-2">
+                            <i class="fa fa-chart-pie btn-lg"></i>
+
+                            <h6>Bu Ay</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-6 border-left text-center pt-2">
+                        <h3 class="mb-0">     @string.Format("{0:#,0}", Model.aylikciro)</h3>
+                        <span class="text-muted">  @string.Format("{0:#,0}", Model.aylikadet)  adet </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-row" id="tips">
+
+
+                <div class="form-group  p-3">
+                    <label>İşlem Tarihi</label>
+                    <div class="input-daterange input-group" id="datepicker">
+                        <input type="text" class="input-sm form-control" name="start"
+                               value="@DateTime.Now.AddDays(-3).ToString("dd.MM.yyyy")"
+                               id="bastarih"
+                               placeholder="Start" />
+                        <span class="input-group-addon"></span>
+                        <input type="text" class="input-sm form-control" name="end"
+                               value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                               id="bistarih"
+                               placeholder="End" />
+                    </div>
+
+
+                </div>
+                <div class="form-group col-md-3  p-3">
+                    <label>Firma </label>
+                    <select class="form-control" id="markaselect">
+                        <option>Tüm Markalar</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2  p-3">
+                    <label>Türler </label>
+                    <select class="form-control" id="turselect">
+                        <option>Tüm Türler</option>
+
+
+                    </select>
+                </div>
+
+
+
+
+                <div class="form-group col-md-2 p-4" style="margin-top:15px">
+                    <button class="btn btn-warning mr-1 btn-raised" id="btnara"><i class="fa fa-search"></i> Uygula</button>
+                </div>
+                @*<div id="moons" class="form-row">*@
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-12 col-sm-12 ">
+    <div class="card mb-3">
+        <div class=" chart card-body pt-0 ">
+            <div id="chartdiv" style="width: 100%; height: 500px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="card mb-3">
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="recordtable" class="table table-sm  table-bordered dataTable">
+                    <thead class="thead-light">
+                        <tr>
+
+                            <th> İsim </th>
+                            <th> Adet </th>
+                            <th> Firma </th>
+                            <th> Çesit </th>
+                            <th> Ciro </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts{
+    <script src="/amcharts/amcharts/amcharts.js"></script>
+    <script src="/amcharts/amcharts/serial.js"></script>
+    <script src="/amcharts/amcharts/plugins/export/export.min.js"></script>
+    <script src="/amcharts/amcharts/plugins/dataloader/dataloader.min.js"></script>
+    <link rel="stylesheet" href="/amcharts/amcharts/plugins/export/export.css" type="text/css" media="all" />
+    @*<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>*@
+
+    <script type="text/javascript">
+        $(function () {
+
+
+            Getbrands();
+            GetTips();
+            $('.input-daterange').datepicker({
+                isRTL: false,
+                format: 'dd.mm.yyyy',
+                autoclose: true,
+                language: 'tr'
+            });
+
+            var bastarih = moment($("#bastarih").datepicker("getDate")).format("YYYY-MM-DD");
+            var bistarih = moment($("#bistarih").datepicker("getDate")).format("YYYY-MM-DD");
+            var markaselect = $("#markaselect").val();
+            var turselect = $("#turselect").val();
+
+            chart();
+            getdashboardrapor();
+            $("#btnara").click(function () {
+
+                bastarih = moment($("#bastarih").datepicker("getDate")).format("YYYY-MM-DD");
+                bistarih = moment($("#bistarih").datepicker("getDate")).format("YYYY-MM-DD");
+                markaselect = $("#markaselect").val();
+                turselect = $("#turselect").val();
+
+                chart();
+                getdashboardrapor();
+            });
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+                //startDate: '-3d'
+            });
+
+            function chart() {
+                var chart = AmCharts.makeChart("chartdiv", {
+                    "language": "en",
+                    "type": "serial",
+                    "dataLoader": {
+                        "url": "/Home/getdashboardrapor?bastarih=" + bastarih + "&bistarih=" + bistarih + "&markaselect=" + markaselect + "&turselect=" + turselect + "",
+                        "format": "json"
+                    },
+                    "dataDateFormat": "YYYY-MM-DD",
+                    "precision": 0,
+                    "valueAxes": [{
+                        "id": "v1",
+                        "title": "Ciro",
+                        "position": "left",
+                        "autoGridCount": false,
+                        "labelFunction": function (value) {
+                            return "" + Math.round(value * 1000) + " ₺";
+                        }
+                    }, {
+                        "id": "v2",
+                        "title": "Adet",
+                        "gridAlpha": 0,
+                        "position": "right",
+                        "autoGridCount": false
+                    }],
+                    "graphs": [{
+                        "id": "g3",
+                        "valueAxis": "v2",
+                        "lineColor": "#e7505a",
+                        "fillColors": "#e7505a",
+                        "fillAlphas": 1,
+                        "type": "column",
+                        "title": "Firma",
+                        "valueField": "firma",
+                        "clustered": false,
+                        "columnWidth": 0.5,
+                        "legendValueText": "[[value]]",
+                        "balloonText": "[[title]]<br /><b style='font-size: 130%'>[[value]]</b>"
+                    }, {
+                        "id": "g4",
+                        "valueAxis": "v1",
+                        "lineColor": "#62cf73",
+                        "fillColors": "#62cf73",
+                        "fillAlphas": 1,
+                        "type": "column",
+                        "title": "Ciro",
+                        "valueField": "ciro",
+                        "clustered": false,
+                        "columnWidth": 0.3,
+                        "legendValueText": "[[value]] ₺",
+                        "balloonText": "[[title]]<br /><b style='font-size: 130%'>[[value]],000</b> ₺"
+                    }, {
+                        "id": "g1",
+                        "valueAxis": "v1",
+                        "bullet": "round",
+                        "bulletBorderAlpha": 1,
+                        "bulletColor": "#FFFFFF",
+                        "bulletSize": 5,
+                        "hideBulletsCount": 50,
+                        "lineThickness": 5,
+                        "lineColor": "#20acd4",
+                        "type": "line",
+                        //"type": "smoothedLine",
+                        "title": "Adet",
+                        "useLineColorForBulletBorder": true,
+                        "valueField": "adet",
+                        "balloonText": "[[title]]<br /><b style='font-size: 130%'>[[value]]</b>"
+                    }, {
+                        "id": "g2",
+                        "valueAxis": "v2",
+                        "bullet": "round",
+                        "bulletBorderAlpha": 1,
+                        "bulletColor": "#FFFFFF",
+                        "bulletSize": 5,
+                        "hideBulletsCount": 50,
+                        "lineThickness": 5,
+                        "lineColor": "#8E44AD",
+                        "type": "line",
+                        //"type": "smoothedLine",
+                        "dashLength": 5,
+                        "title": "Çeşit",
+                        "useLineColorForBulletBorder": true,
+                        "valueField": "cesit",
+                        "balloonText": "[[title]]<br /><b style='font-size: 130%'>[[value]]</b>"
+                    }],
+                    "chartScrollbar": {
+                        "graph": "g1",
+                        "oppositeAxis": false,
+                        "offset": 30,
+                        "scrollbarHeight": 50,
+                        "backgroundAlpha": 0,
+                        "selectedBackgroundAlpha": 0.1,
+                        "selectedBackgroundColor": "#888888",
+                        "graphFillAlpha": 0,
+                        "graphLineAlpha": 0.5,
+                        "selectedGraphFillAlpha": 0,
+                        "selectedGraphLineAlpha": 1,
+                        "autoGridCount": true,
+                        "color": "#AAAAAA"
+                    },
+                    "chartCursor": {
+                        "pan": true,
+                        "valueLineEnabled": true,
+                        "valueLineBalloonEnabled": true,
+                        "cursorAlpha": 0,
+                        "valueLineAlpha": 0.2
+                    },
+                    "categoryField": "tarih",
+                    "categoryAxis": {
+                        "parseDates": true,
+                        "dashLength": 1,
+                        "minorGridEnabled": true
+                    },
+                    "legend": {
+                        "useGraphSettings": false,
+                        "position": "bottom"
+                    },
+                    "balloon": {
+                        "borderThickness": 1,
+                        "shadowAlpha": 0
+                    },
+                    "export": {
+                        "enabled": true
+                    }
+                });
+            }
+
+            var cirotoplam = 0;
+            function getdashboardrapor() {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/Getdashboardrapor2",
+                    data: JSON.stringify({
+                        "bastarih": bastarih,
+                        "bistarih": bistarih,
+                        "markaselect": markaselect,
+                        "turselect": turselect
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        $("#recordtable tbody").html("");
+                        var cirotoplam = 0;
+                        var adettoplam = 0;
+                        var firmatoplam = 0;
+                        for (var i = 0; i < msg.length; i++) {
+                            tableadd(msg[i].kullanici, msg[i].adet, msg[i].firma, msg[i].cesit, numeral(msg[i].ciro).format('0,0'));
+                            cirotoplam = cirotoplam + msg[i].ciro;
+                            adettoplam = adettoplam + msg[i].adet;
+                            firmatoplam = firmatoplam + msg[i].firma;
+                        }
+                        tableadd("Toplam", adettoplam, firmatoplam, "", numeral(cirotoplam).format('0,0'));
+
+
+
+                    }
+                })
+            }
+
+
+
+
+            function tableadd(kullanici, adet, firma, cesit, ciro) {
+
+                var table = "<tr>"
+                    + " <td> " + kullanici + " </td>"
+                    + " <td> " + adet + " </td>"
+                    + " <td> " + firma + " </td>"
+                    + " <td> " + cesit + "</td>"
+                    + " <td> " + ciro + " </td>"
+                    + " </tr>";
+                $("#recordtable tbody").append(table);
+
+
+            }
+
+
+        })
+    </script>
+
+
+    <script type="text/template" id="formbutce">
+
+        <div class="form-group">
+            <label class="float-left">Butce</label>
+            <input class="form-control " type="text" id="lastcost" />
+        </div>
+
+    </script>
+}

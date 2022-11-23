@@ -1,0 +1,198 @@
+﻿@model dynamic
+@{ ViewData["Title"] = "bayiPerformans";
+
+
+                dynamic temsilcis = string.Format(@"SELECT [Satış Temsilcisi] temsilci FROM ARY_017_CARI_MUSTER_TEMSILCI GROUP BY [Satış Temsilcisi] ORDER BY [Satış Temsilcisi]").GetDynamicQuery("SCSlogo"); }
+
+@section Scripts{
+
+    <script type="text/javascript" language="”JavaScript”">window.history.forward(1);</script>
+
+    <script type="text/javascript">var recordtable;
+        var _defaulttablename = "bayiPerformansQuery";
+
+
+        var tip;
+
+
+        $(function () {
+
+
+            $("#btnara").click(function () {
+                bastarih = $("#bastarih").val();
+                bistarih = $("#bistarih").val();
+                temsilci = $("#temsilci").val().trim();
+
+
+            });
+            var indexLastColumn = $("#recordtable").find('tr')[0].cells.length - 1;
+
+            $('#recordtable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here 
+                }],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "pageLength": 50,
+                "paging": true,
+                "searching": true,
+                "order": [[indexLastColumn, 'asc']]
+            });
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+                //startDate: '-3d'
+            });
+
+        });
+
+        /**/</script>
+
+
+    <script type="text/template" id="formtemplete">
+
+        <div class="form-group">
+            <label class="col-4 float-left">Şube Adı</label>
+            <input class="form-control col-8 notnull" data-table="dealers" data-column="title" data-type="string" data-maxlength="250" />
+        </div>
+        <div class="form-group">
+            <label class="col-4 float-left">Aktif</label>
+            <input type="checkbox" class="form-control col-8" data-table="dealers" data-column="status" data-type="int" />
+        </div>
+    </script>
+}
+
+<div class="col-md-12">
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Bayi Performans
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+
+<div class="row">
+    <div class="form-group col-md-2  p-3">
+        <label>Temsilci </label>
+        <input id="temsilci" class="form-control " placeholder="Temsilci" value="@CurrentSession.Username" disabled>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="card  mb-3">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+                                <th>Sorumlu </th>
+                                <th>Kodu </th>
+                                <th>Unvan </th>
+                                <th>Adet </th>
+                                <th>Sipariş </th>
+                                <th>Ciro </th>
+                                <th>Çeşit </th>
+                                <th>İlk Sipariş </th>
+                                <th>Son Sipariş </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (CurrentSession.Roles.Contains("Yonetim"))
+                            {
+                @foreach (var item in Model)
+                {
+<tr>
+    <td>
+        <p>@item.SORUMLU </p>
+    </td>
+    <td>
+        <p>@item.KODU </p>
+    </td>
+    <td>
+        <p>@item.UNVAN </p>
+    </td>
+    <td>
+        <p>@item.ADET </p>
+    </td>
+    <td>
+        <p>@item.SIPARIS </p>
+    </td>
+    <td>
+        <p> @string.Format("{0:#,0}", item.CIRO) </p>
+    </td>
+    <td>
+        <p>@item.CESIT </p>
+    </td>
+    <td>
+        <p>@item.ILK_SIPARIS </p>
+    </td>
+    <td>
+        <p>@item.SON_SIPARIS </p>
+    </td>
+</tr>} }
+                            else
+                            {
+                @foreach (var item in Model)
+                {
+@if (@item.SORUMLU == @CurrentSession.Username)
+{
+<tr>
+    <td>
+        <p>@item.SORUMLU </p>
+    </td>
+    <td>
+        <p>@item.KODU </p>
+    </td>
+    <td>
+        <p>@item.UNVAN </p>
+    </td>
+    <td>
+        <p>@item.ADET </p>
+    </td>
+    <td>
+        <p>@item.SIPARIS </p>
+    </td>
+    <td>
+        <p> @string.Format("{0:#,0}", item.CIRO) </p>
+    </td>
+    <td>
+        <p>@item.CESIT </p>
+    </td>
+    <td>
+        <p>@item.ILK_SIPARIS </p>
+    </td>
+    <td>
+        <p>@item.SON_SIPARIS </p>
+    </td>
+</tr>}}}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

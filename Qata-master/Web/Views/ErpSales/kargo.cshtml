@@ -1,0 +1,137 @@
+﻿@model dynamic
+
+
+
+@{ ViewData["Title"] = "Stok Maliyet";
+                 }
+
+
+@section Scripts{
+
+    <script type="text/javascript">var recordtable;
+        var _defaulttablename = "ErpKargoTakipQuery";
+
+
+
+        var Id;
+        var GonderiNo = 0;
+        var BelgeNo = 0;
+        var FirmaAdi;
+        var Tarih;
+
+        $(function () {
+            $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                pageLength: 50,
+                paging: true,
+                searching: true,
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here 
+                }],
+
+            });
+            
+            $(".dataTable tbody").on("click", "a.btnsearch", function () {
+                var text = $(this).attr("data-text");
+                $('input[type=search]').val(text);
+                $('input[type=search]').keyup();
+                if (marka == '' || marka == null) {
+                    $('.filtre_silici').addClass('hidden');
+                }
+            });
+
+
+        });
+
+        /**/</script>
+
+
+}
+
+
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Kargo Kontrol
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card">
+
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-body">
+
+
+                    <div class="table-responsive">
+
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+                                    <th>Gönderi No </th>
+                                    <th>Belge No  </th>
+                                    <th>Firma Adı  </th>
+                                    <th>Tarih </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+
+                                        <td>
+                                            <a style="padding-top:0px;padding-bottom:0px; text-decoration:underline;color:#558cbe" href="https://www.yurticikargo.com/tr/online-servisler/gonderi-sorgula?code=@item.GonderiNo" target="_blank" class="btnsearch" style="color:#1f2937;" data-text="@item.GonderiNo">@item.GonderiNo</a>
+                                        </td>
+                                        <td>
+
+                                            @item.BelgeNo
+                                        </td>
+                                        <td>
+
+                                            @item.FirmaAdi
+                                        </td>
+
+
+                                        <td>
+                                            @item.Tarih
+                                        </td>
+                                    </tr>
+}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

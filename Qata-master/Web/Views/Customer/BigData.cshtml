@@ -1,0 +1,210 @@
+﻿<div class="">
+    <div class="">
+        <div class="col-md-12">
+
+            <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+                <ol class="breadcrumb ">
+
+                    <li class="breadcrumb-item active" aria-current="page ">
+                        <h3>
+                            Potansiyel Bayi Listem
+                        </h3>
+                    </li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="bg-white  mt-4" style="margin-left:2%;margin-right:2%;">
+            <div class="row bg-white rounded">
+
+                <div class="col-sm-12">
+                    <div class="col-md-6 pt-4 p-2">
+                        @if (CurrentSession.Roles.Contains("Yonetim"))
+                        {
+                            <input id="file-upload" type="file" accept=".csv"/>
+                            <a href="#postadd" class="fas fa-upload border    border-warning btn-outline-warning btn btn-md" id="start_upload"> Yükle</a>
+                        }
+
+                    </div>
+                    <div class="col-md-6 float-right pt-4 p-2 ">
+                        <a href="#!" onclick="gizleGoster('sonuc') "><i class="fas fa-filter border  p-2 mr-1 rounded-circle border-warning btn-outline-warning float-right"></i></a>
+                    </div>
+
+
+                </div>
+
+                <hr class="container-fluid bg-light pl-5" @*style="width:95%;"*@ />
+                <div class="col-sm-12">
+                    <div class="row" id="sonuc" style="display:none;">
+
+                        <div class="col-lg-3">
+                            <div class="form-group row p-2 ">
+                                <label class="font-weight-light">Temsilciler</label>
+                                <select class="form-control" id="selecttemsici">
+                                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                                    {
+                                        <option value=" ">Temsilçi Seçiniz</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@CurrentSession.Name">@CurrentSession.Name</option>
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group row p-2 ">
+                                <button class="btn btn-secondary mr-1 btn-raised   "><i class="fa fa-times"></i> Temizle</button>
+                                <button class="btn btn-warning mr-1 btn-raised" id="searchDiv"><i class="fa fa-search"></i> Uygula</button>
+                                <!--Buton Hover Effect-->
+                                <style>
+                                    .btn-raised {
+                                        transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+                                        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+                                    }
+
+                                        .btn-raised:not([disabled]):active,
+                                        .btn-raised:not([disabled]):focus,
+                                        .btn-raised:not([disabled]):hover {
+                                            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                                            transform: translate3d(0, -1px, 0)
+                                        }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-4">
+                    <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:16px;">
+                        <thead class="thead-light" style="background-color:#1f2937; height:42px;">
+                            <tr style="color:#F1F1F1;">
+                                <th class="pt-1 pb-1">Id</th>
+                                <th class="pt-1 pb-1">Adi</th>
+                                @*<th class="pt-1 pb-1">Telefon</th>*@
+                                <th class="pt-1 pb-1">Il</th>
+                                <th class="pt-1 pb-1">Musteritipi</th>
+                                <th class="pt-1 pb-1">Atanan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        var recordtable;
+        var stock = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplammaliyetdizi = [];
+        $(function () {
+
+            ///  $('#recordtable1_paginate').hide();
+
+            $('#searchDiv').click(function () {
+                recordtable.draw();
+            });
+            recordtable = $('#recordtable').DataTable({
+                "serverSide": true,
+                "searching": true,
+                "lengthChange": false,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/Customer/GetBigData",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        //d.dataqueryname = _defaulttablename;
+                        d.additionalvalues = [$('#selecttemsici').val()];
+                        return JSON.stringify(d);
+                        return d;
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "Id"
+                    },
+                    {
+                        "data": "Adi"
+                    },
+                    //{
+                    //    "data": "Telefon"
+                    //},
+                    {
+                        "data": "Il"
+                    },
+                    {
+                        "data": "Musteritipi"
+                    },
+                    {
+                        "data": "Atanan"
+                    }
+                ]
+                ,
+                "rowCallback": function (row, data) {
+
+
+                }, "drawCallback": function (settings) {
+
+
+
+
+                }
+
+            });
+
+
+
+            $("#start_upload").click(function () {
+                var files = $("#file-upload").get(0).files;
+                console.log(files)
+                var data = new FormData();
+                data.append('name', "excel");
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file", files[i]);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Customer/UploadFile",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (msg) {
+                 
+                        if (msg.success) {
+                            recordtable.draw();
+
+                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+                        } else {
+                            $.alert(msg.message);
+                        }
+
+                    },
+                    error: function (msg) {
+                        $.alert("Server Hatası");
+                    }
+                });
+            });
+
+        });
+
+    </script>
+
+}

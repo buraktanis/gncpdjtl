@@ -1,0 +1,182 @@
+﻿@model AlislarModel
+
+@{ ViewData["Title"] = "alislar"; }
+
+@section Scripts{
+    <script type="text/javascript">
+        var recordtable;
+        var _defaulttablename = "bayiPerformansQuery";
+
+
+        var tip;
+
+
+        $(function () {
+
+             $("#gunselect").val("@Model.gunselect");
+
+            $("#btnara").click(function () {
+
+                var gunselect = $("#gunselect").val();
+                window.location.href = "/ErpSales/alis?gunselect=" + gunselect;
+            });
+
+              $('#recordtable').DataTable({
+                  pageLength: 10,
+                  paging: true,
+                  searching: true,
+                  order: [[0, "asc"]],
+                  columnDefs: [{ orderable: false, targets: [7] }] // 6 was the highest index, not 7
+              });
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+                //startDate: '-3d'
+            });
+
+        });
+
+        /**/</script>
+
+
+    <script type="text/template" id="formtemplete">
+
+        <div class="form-group">
+            <label class="col-4 float-left">Şube Adı</label>
+            <input class="form-control col-8 notnull" data-table="dealers" data-column="title" data-type="string" data-maxlength="250" />
+        </div>
+        <div class="form-group">
+            <label class="col-4 float-left">Aktif</label>
+            <input type="checkbox" class="form-control col-8" data-table="dealers" data-column="status" data-type="int" />
+        </div>
+    </script>
+}
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Alışlar
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+
+
+<div class="col-md-12 ">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row" id="tips">
+                <div class="col-md-4  p-3">
+                    <label>Firma </label>
+                    <select class="form-control" id="gunselect">
+                        <option value="7">Son 7 günlük alımlar</option>
+                        <option value="10" selected="">Son 10 günlük alımlar</option>
+                        <option value="15">Son 15 günlük alımlar</option>
+                        <option value="30">Son 30 günlük alımlar</option>
+                        <option value="45">Son 45 günlük alımlar</option>
+                        <option value="60">Son 60 günlük alımlar</option>
+                        <option value="90">Son 90 günlük alımlar</option>
+                    </select>
+                </div>
+                <div class="col-md-4 p-4">
+                    <button style="background-color:#f0bc74;margin-top: 23px;" class="btn " id="btnara">Ara </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 col-lg-12">
+    @foreach (var item in Model.markalar)
+    {
+<div class="sortable-survey">
+    <div draggable="false" class="" style="">
+        <div class="card question d-flex mb-4 edit-quesiton">
+            <div class="d-flex flex-grow-1 min-width-zero">
+
+                <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    <div class="list-item-heading mb-0 truncate w-80 mb-1 mt-1">
+                        <span class="heading-number d-inline-block">
+                            <i class="iconsminds-align-center"></i>
+                        </span>
+                        @item
+                    </div>
+                </div>
+                <div class="custom-control custom-checkbox pl-1 align-self-center pr-4">
+                            <button id="sidebar-toggle" class="sidebar-toggle me-3 btn btn-icon-only d-none d-lg-inline-block align-items-center justify-content-center" type="button" data-toggle="collapse" data-target="#@item" aria-expanded="false" aria-controls="@item"><svg class="toggle-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg></button>
+                  
+                </div>
+            </div>
+            <div class="question-collapse collapse" id="@item" style="">
+                <div class="card-body pt-0">
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table-bordered display" style="width:100%; font-size:14px;">
+                                <thead style="background-color:#1f2937; height:42px;">
+                                    <tr style="color:#F1F1F1;">
+                                        <th>Model  </th>
+                                        <th>Ünvan  </th>
+                                        <th>Tarih </th>
+                                        <th>Kişi  </th>
+                                        <th>Tür </th>
+                                        <th>Adet  </th>
+                                        <th>Fiyat  </th>
+
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var i in Model.alislar.Where(x => x.marka == item))
+                                    {
+                    <tr>
+                        <td>
+                            <p>@i.model </p>
+                        </td>
+                        <td>
+                            <p>@i.unvan </p>
+                        </td>
+                        <td>
+                            <p>@i.tarih </p>
+                        </td>
+                        <td>
+                            <p>@i.kisi</p>
+                        </td>
+                        <td>
+                            <p>@i.tur </p>
+                        </td>
+                        <td>
+                            <p>@i.adet </p>
+                        </td>
+                        <td>
+                            <p>@i.fiyat </p>
+                        </td>
+
+                    </tr>}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>}
+
+</div>

@@ -1,0 +1,269 @@
+﻿@model List<STOK_DURUM>
+
+@{
+    ViewData["Title"] = "OrderConfirmation";
+}
+
+<div class="">
+    <div class="">
+        <!--Sipariş Listem Sayfası ve Sipariş Onay Sayfası-->
+        <div class="col-md-12">
+
+            <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+                <ol class="breadcrumb ">
+
+                    <li class="breadcrumb-item active" aria-current="page ">
+                        <h3>
+                            Stok Durumu
+                        </h3>
+                    </li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="bg-white  mt-4">
+            <div class="row bg-white rounded">
+                <div class="searching col-md-9 mt-3 mb-3" style="text-align:left;">
+                    <a class="btn btnsearch btn-outline-primary" data-text="">Tüm Ürünler</a>
+                    <a class="btn btnsearch btn-outline-primary" data-text="Cep Telefonu">Cep Telefonu</a>
+                    <a class="btn btnsearch btn-outline-primary" data-text="Aksesuar">Aksesuar</a>
+                    <a class="btn btnsearch btn-outline-primary" data-text="YENİLENMİŞ CİHAZ">Yenilenmiş Cihaz</a>
+                    <a class="btn btnsearch btn-outline-primary" data-text="Tablet">Tablet</a>
+
+
+                </div>
+                <div class="form-group form-check form-switch col-md-3 mt-3" style="text-align:right; padding-right:50px;">
+
+                    <label for="lessthanzero">
+
+                        <input class="form-check-input" id="lessthanzero" type="checkbox">
+                        Stoklu Ürünleri Getir
+                    </label>
+                </div>
+
+                <hr class="container-fluid bg-light pl-5" />
+                <div class="col-sm-12" id="sonuc" style="display:none;">
+                </div>
+                <div class="col-sm-12 lessthanzerotable">
+                    <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                        <thead style="background-color:#1f2937; height:42px;">
+
+                            <tr style="color:#F1F1F1; ">
+                                <th class="pt-1 pb-1">Mal Kodu</th>
+                                <th class="pt-1 pb-1"> Mal Adı </th>
+                                <th class="pt-1 pb-1">MarkaKodu</th>
+                                @if (CurrentSession.Roles.Contains("Yonetim"))
+                                {
+
+                                    <th class="pt-1 pb-1"> En Düşük Maliyet</th>
+                                    <th class="pt-1 pb-1">En Yüksek Maliyet</th>
+                                    <th class="pt-1 pb-1"> Son Maliyet</th>
+                                    <th class="pt-1 pb-1"> Ortalama Maliyet</th>
+                                }
+                                <th class="pt-1 pb-1"> Fiili Stok </th>
+
+
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Kod</td>
+                                    <td class="searching">
+                                        <a class="btnsearch" style="color:Highlight" data-text="@item.AD">@item.AD</a>
+                                    </td>
+                                    <td class="searching">
+                                        <a class="btnsearch" style="color:Highlight" data-text="@item.MarkaKodu">@item.MarkaKodu</a>
+                                    </td>
+                                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                                    {
+
+                                        <td style="text-align:right">
+                                            @string.Format("{0:0,0.00} ₺", item.mal_min)
+
+                                        </td>
+                                        <td style="text-align:right">
+                                            @string.Format("{0:0,0.00} ₺", item.mal_max)
+
+                                        </td>
+                                        <td style="text-align:right">
+                                            @string.Format("{0:0,0.00} ₺", item.mal_son)
+
+                                        </td>
+                                        <td style="text-align:right">
+                                            @string.Format("{0:0,0.00} ₺", item.mal_ort)
+
+                                        </td>
+                                    }
+                                    <td class="text-danger "><h4>@(item.STOK - item.Bekleyen_STOK - item.ONAYLI_SIP)</h4></td>
+
+
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+
+
+
+
+                </div>
+                <div class="col-sm-12 lessthanzerotable2">
+                    <table id="recordtable2" class="table-bordered display dataTable " style="width:100%; font-size:12px;">
+                        <thead style="background-color:#1f2937; height:42px;">
+
+                            <tr style="color:#F1F1F1; ">
+                                <th class="pt-1 pb-1">Mal Kodu</th>
+                                <th class="pt-1 pb-1"> Mal Adı </th>
+                                <th class="pt-1 pb-1">MarkaKodu</th>
+                                <th class="pt-1 pb-1"> MalzemeGrupKodu</th>
+                                @if (CurrentSession.Roles.Contains("Yonetim"))
+                                {
+
+                                    <th class="pt-1 pb-1"> En Düşük Maliyet</th>
+                                    <th class="pt-1 pb-1">En Yüksek Maliyet</th>
+                                    <th class="pt-1 pb-1"> Son Maliyet</th>
+                                    <th class="pt-1 pb-1"> Ortalama Maliyet</th>
+                                }
+                                <th class="pt-1 pb-1"> Fiili Stok </th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                @if ((item.STOK - item.Bekleyen_STOK - item.ONAYLI_SIP) > 0)
+                                {
+                                    <tr>
+                                        <td>@item.Kod</td>
+                                        <td class="searching">
+                                            <a class="btnsearch" style="color:Highlight" data-text="@item.AD">@item.AD</a>
+                                        </td>
+                                        <td class="searching">
+                                            <a class="btnsearch" style="color:Highlight" data-text="@item.MarkaKodu">@item.MarkaKodu</a>
+                                        </td>
+                                        <td>@item.MalzemeGrupKodu</td>
+                                        @if (CurrentSession.Roles.Contains("Yonetim"))
+                                        {
+
+                                            <td style="text-align:right">
+                                                @string.Format("{0:0,0.00} ₺", item.mal_min)
+
+                                            </td>
+                                            <td style="text-align:right">
+                                                @string.Format("{0:0,0.00} ₺", item.mal_max)
+
+                                            </td>
+                                            <td style="text-align:right">
+                                                @string.Format("{0:0,0.00} ₺", item.mal_son)
+
+                                            </td>
+                                            <td style="text-align:right">
+                                                @string.Format("{0:0,0.00} ₺", item.mal_ort)
+
+                                            </td>
+                                        }
+                                        <td class="text-danger "><h4>@(item.STOK - item.Bekleyen_STOK - item.ONAYLI_SIP)</h4></td>
+                                    </tr>
+                                }           }
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        var recordtable;
+        var _defaulttablename = "bayiPerformansQuery";
+
+
+        var tip;
+
+        $(".lessthanzerotable2").hide();
+
+
+        $(function () {
+            $(".lessthanzero").hide();
+            $('#lessthanzero').change(function () {
+                if ($(this).is(':checked')) {
+                    $(".lessthanzerotable2").show();
+                    $(".lessthanzerotable").hide();
+
+                }
+                else {
+                    $(".lessthanzerotable").show();
+                    $(".lessthanzerotable2").hide();
+
+                }
+
+            });
+
+            $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+
+                responsive: true,
+                pageLength: 10,
+                paging: true,
+                searching: true,
+                stateSave: true,
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here
+                }],
+            });
+
+            $('#recordtable2').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+
+                responsive: true,
+                pageLength: 10,
+                paging: true,
+                searching: true,
+                stateSave: true,
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here
+                }],
+            });
+
+            $(".searching").on("click", "a.btnsearch", function () {
+                var text = $(this).attr("data-text");
+                $('input[type=search]').val(text);
+                $('input[type=search]').keyup();
+                if (marka == '' || marka == null) {
+                    $('.filtre_silici').addClass('hidden');
+                }
+            });
+        });
+
+        /**/</script>
+
+
+}

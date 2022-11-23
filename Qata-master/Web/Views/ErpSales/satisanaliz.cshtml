@@ -1,0 +1,346 @@
+﻿@model satisanalizModel
+
+
+
+@{ ViewData["Title"] = "Stok Maliyet"; }
+
+
+@section Scripts{
+    <script type="text/javascript" language="”JavaScript”">window.history.forward(1);</script>
+
+    <script type="text/javascript">var recordtable;
+        var _defaulttablename = "stokmaliyetQuery";
+
+
+
+
+
+
+        $(function () {
+
+
+            buttons: [{
+                extend: 'excel',
+                exportOptions: {
+                    modifier: {
+                        page: 'all',
+                        search: 'none'
+                    }
+                },
+                //the remaining buttons here 
+            }],
+            $('#recordtable').DataTable({
+
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here 
+                }],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                pageLength: 50,
+                paging: true,
+                searching: true,
+
+
+
+            });
+
+
+
+
+        });</script>
+
+
+}
+
+
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Satış Analiz
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="form-group col-md-2  p-3">
+            <label>Temsilci </label>
+            <input id="temsilci" class="form-control " placeholder="Temsilci" value="@CurrentSession.Username" disabled>
+        </div>
+        <div class="col-12">
+            <div class="card">
+
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="form-row">
+
+
+                        <div class="form-group col-md-12 p-3">
+
+                            <form action="/ErpSales/satisanaliz" method="get">
+
+                                <div class="row">
+                                    <div class="text-center col-sm-12 mb-5">Lütfen yıl seçin ve sorgula butonuna tıklayın!</div>
+                                    <div class="form-group col-md-8">
+                                        <select class="form-control yıl" id="yıl" name="yıl">
+
+                                            @for (int n = DateTime.Now.Year.toint32(); n >= 2018; n--)
+                                            {
+                                <option>@n</option>
+}
+                                        </select>
+
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <button style="background-color:#f0bc74;" class="btn" type="submit">Sorgula</button>
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                            </form>
+
+
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+                                    <th>Firma Adı</th>
+                                    <th>Satış Temsilcisi</th>
+                                    <th>Yıl</th>
+                                    <th>2.EL</th>
+                                    <th>2.EL HAM CİHAZ</th>
+                                    <th>İKİNCİ EL CİHAZ</th>
+                                    <th>AKSESUAR</th>
+                                    <th>CEP TELEFONU</th>
+                                    <th>BİLGİSAYAR</th>
+                                    <th>DİĞER ÜRÜN</th>
+                                    <th>EV AKSESUARI</th>
+                                    <th>HOPARLÖR</th>
+                                    <th>TABLET</th>
+                                    <th>YENİLENMİŞ  CİHAZ</th>
+                                    <th>TOPLAM</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CurrentSession.Roles.Contains("Yonetim") || CurrentSession.Roles.Contains("Yonetim"))
+                                {
+                                    @foreach (var item in Model.model1)
+                                    {
+
+
+
+
+                                        <tr>
+
+                                            <td>
+
+                                                @item.cariunvan
+                                            </td>
+                                            <td>
+                                                @item.Slsman
+
+                                            </td>
+
+                                            <td style="text-align:right;">
+
+                                                @item.Yıl
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.ikinciel)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.ikincielhamcihaz)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.ikincielcihaz)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format(" ₺ {0:0}   ", item.aksesuar)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0} ", item.cep_telefonu)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.bilgisayar)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.digerurun)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.evaksesuari)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.hoparlor)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.tablet)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.yenilenmiscihaz)
+
+                                            </td>
+                                            <td style="text-align:right;">
+
+                                                @string.Format("₺ {0:0}", item.toplam)
+
+                                            </td>
+                                        </tr>
+                                    }}
+                                else
+                                {
+                                    @foreach (var item in Model.model1)
+                                    {
+                                        @if (@item.Slsman == @CurrentSession.Username)
+                                        {
+
+
+
+                                            <tr>
+
+                                                <td>
+
+                                                    @item.cariunvan
+                                                </td>
+                                                <td>
+                                                    @item.Slsman
+
+                                                </td>
+
+                                                <td style="text-align:right;">
+
+                                                    @item.Yıl
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.ikinciel)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.ikincielhamcihaz)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.ikincielcihaz)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format(" ₺ {0:0}   ", item.aksesuar)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0} ", item.cep_telefonu)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.bilgisayar)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.digerurun)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.evaksesuari)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.hoparlor)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.tablet)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.yenilenmiscihaz)
+
+                                                </td>
+                                                <td style="text-align:right;">
+
+                                                    @string.Format("₺ {0:0}", item.toplam)
+
+                                                </td>
+                                            </tr>
+                                        }}}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

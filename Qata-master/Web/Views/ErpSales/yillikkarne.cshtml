@@ -1,0 +1,853 @@
+﻿@using Web.Models
+
+
+@model yillikkarneModel
+@{ ViewData["Title"] = "bayiPerformans";
+
+
+
+    List<string> moonlist = new List<string>();
+
+    foreach (var item in ViewBag.ay.Split(","))
+    {
+        moonlist.Add(item);
+    }
+
+
+    string comparison(double sing, double total)
+    {
+        if (sing > total)
+            return "simple-icon-like";
+
+        if (sing < total)
+            return "simple-icon-dislike";
+
+        if (sing == total)
+            return "simple-icon-eye";
+
+
+        return "";
+    } }
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var recordtable;
+        var _defaulttablename = "bayiPerformansQuery";
+
+
+         var tip;
+
+          var aylist="@ViewBag.ay";
+        $(function () {
+            $(".isicon").hide();
+            $(".isgenel").hide();
+
+            $('#isicon').change(function () {
+                if ($(this).is(':checked')) {
+                    $(".isicon").show();
+                }
+                else {
+                    $(".isicon").hide();
+                }
+
+            });
+            $('#isgenel').change(function () {
+                if ($(this).is(':checked')) {
+                    $(".isgenel").show();
+                }
+                else {
+                    $(".isgenel").hide();
+                }
+
+            });
+
+
+
+            for (const val of aylist.split(",")) {
+
+                $("#che-"+val+"").prop( "checked", true );
+
+            }
+
+             $("#@ViewBag.yil").attr('checked', true);
+
+             $("#getir").click(function () {
+
+
+                 var yil = $("input[name='yil']:checked").val();
+
+                var cboxval = new Array();
+
+                $.each($("#moons .moon"), function () {
+
+                    var pollid = $(this).attr("data-id");
+
+                  if ($('input[name="che-'+pollid+'"]').is(':checked')){
+                           cboxval.push(pollid);
+                  }
+
+                    window.location.href = "/ErpSales/yillikkarne?yil=" + yil + "&ay="+cboxval.join(",");
+
+                  })
+
+
+
+                });
+
+            var indexLastColumn = $(".recordtable").find('tr')[0].cells.length - 1;
+
+            $('.recordtable').dataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                  "pageLength":50,
+                "searching": false,
+                "lengthChange": false,
+                "stateSave": false,
+                "paging": false,
+                "info": false,
+                "order": [[indexLastColumn, 'asc']]
+            });
+
+        });
+
+        /**/</script>
+
+
+    <script type="text/template" id="formtemplete">
+
+        <div class="form-group">
+            <label class="col-4 float-left">Şube Adı</label>
+            <input class="form-control col-8 notnull" data-table="dealers" data-column="title" data-type="string" data-maxlength="250" />
+        </div>
+
+        <div class="form-group">
+            <label class="col-4 float-left">Aktif</label>
+            <input type="checkbox" class="form-control col-8" data-table="dealers" data-column="status" data-type="int" />
+        </div>
+
+    </script>
+
+
+}
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Yıllık Karne
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-12">
+
+
+        <div class="card mb-2">
+            <div class="card-body table-responsive">
+                <div class="row">
+                    <div class=" col-md-1 ">
+                        <label for="2022">2022</label>
+                        <input type="radio" name="yil" value="2022" id="2022" />
+                    </div>
+                    <div class=" col-md-1 form-group">
+                        <label for="2021">2021</label>
+                        <input type="radio" name="yil" value="2021" id="2021" />
+                    </div>
+                    <div class=" col-md-1 form-group">
+                        <label for="2020">2020</label>
+                        <input type="radio" name="yil" value="2020" id="2020" />
+                    </div>
+                    <div class=" col-md-1 form-group">
+                        <label for="2019">2019</label>
+                        <input type="radio" name="yil" value="2019" id="2019" />
+                    </div>
+                    <div class=" col-md-1 form-group">
+                        <label for="2018">2018</label>
+                        <input type="radio" name="yil" value="2018" id="2018" />
+                    </div>
+
+                    <div class=" col-md-2 form-group">
+                        <a class="btn btn-warning " id="getir">Getir</a>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="isicon">
+                            <input id="isicon" type="checkbox">
+                            İcon
+                        </label>
+                        <label for="isgenel">
+
+                            <input id="isgenel" type="checkbox">
+                            Genel Ortalama ,Toplam
+                        </label>
+                    </div>
+
+                </div>
+                <div id="moons" class="row">
+                    @foreach (var item in Helpertype.Aylar)
+                    {
+        <div class="moon col-md-1 form-group" data-id="@item.Key">
+            <input id="che-@item.Key" type="checkbox" name="che-@item.Key">
+            <label for="che-@item.Key"> @item.Value</label>
+
+        </div>}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-md-12">
+        <div class="card  mb-1">
+
+            <div class="card-body">
+                <h3> <span class="badge badge-success ">#Ciro</span></h3>
+
+                <div class="table-responsive">
+
+                    <table class="table-bordered display" style="width:100%; font-size:14px;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="baslik">Kullanıcı</th>
+                                @foreach (var item in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <th scope="col" class="baslik">@item.Value</th>}
+                                <th class="baslik isgenel">Ortalama</th>
+                                <th class="baslik isgenel">Toplam</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var kullanici in Model.yillikkarne.GroupBy(x => x.kullanici))
+                            {
+
+                <tr>
+                    <td style="width:220px!important">
+
+                        @kullanici.Key
+
+                    </td>
+                    @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                    {
+    <td>
+        @if (Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key) != null)
+        {
+<p>
+    @string.Format("{0:C0}", Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).ciro)
+
+</p>
+                        <p>
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).ciro,Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(x=>x.ciro)) isicon" style="color:gold"></i>
+
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).ciro,Model.yillikkarne.Where(x =>x.ay == ay.Key).Average(x=>x.ciro)) isicon" style="color:red"></i>
+                        </p>}
+
+
+    </td>}
+                    <td style="font-weight:900;color:forestgreen" class="isgenel">
+                        <p>
+                            @string.Format("{0:C0}", Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(a => a.ciro))
+
+                        </p>
+                    </td>
+
+                    <td style="font-weight:900;color:red" class="isgenel">
+                        <p>
+                            @string.Format("{0:C0}", Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Sum(a => a.ciro))
+
+                        </p>
+                    </td>
+                </tr>}
+
+
+
+                            <tr style="font-weight:900;color:red;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Toplam
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:C0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Sum(a => a.ciro))
+
+                        </h6>
+                    </td>}
+                                <td>
+                                    <h6>
+                                        *
+
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:C0}", Model.yillikkarne.Sum(a => a.ciro))
+
+                                    </h6>
+                                </td>
+                            </tr>
+
+                            <tr style="font-weight:900;color:forestgreen;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Ortalama
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:C0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Average(a => a.ciro))
+
+                        </h6>
+                    </td>}
+
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:C0}", Model.yillikkarne.Average(a => a.ciro))
+
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        *
+
+                                    </h6>
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="card  mb-3">
+
+            <div class="card-body">
+                <h3> <span class="badge badge-info ">#Kar</span></h3>
+                <div class="table-responsive">
+
+                    <table class="table-bordered display" style="width:100%; font-size:14px;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="baslik">Kullanıcı</th>
+                                @foreach (var item in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <th scope="col" class="baslik">@item.Value</th>}
+
+                                <th class="baslik isgenel">Ortalama</th>
+                                <th class="baslik isgenel">Toplam</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var kullanici in Model.yillikkarne.GroupBy(x => x.kullanici))
+                            {
+
+                <tr>
+                    <td style="width:220px!important">
+
+                        @kullanici.Key
+
+                    </td>
+                    @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                    {
+    <td>
+        @if (Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key) != null)
+        {
+<p>
+    @string.Format("{0:C0}", Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).kar)
+
+</p>
+                        <p>
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).kar,Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(x=>x.kar)) isicon" style="color:gold"></i>
+
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).kar,Model.yillikkarne.Where(x =>x.ay == ay.Key).Average(x=>x.kar)) isicon" style="color:red"></i>
+                        </p>}
+
+
+    </td>}
+                    <td style="font-weight:900;color:forestgreen" class="isgenel">
+                        <p>
+                            @string.Format("{0:C0}", Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(a => a.kar))
+
+                        </p>
+                    </td>
+                    <td style="font-weight:900;color:red" class="isgenel">
+                        <p>
+                            @string.Format("{0:C0}", Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Sum(a => a.kar))
+
+                        </p>
+                    </td>
+
+                </tr>}
+
+
+
+
+                        </tbody>
+                        <tfoot>
+                            <tr style="font-weight:900;color:forestgreen;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Ortalama
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:C0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Average(a => a.kar))
+
+                        </h6>
+                    </td>}
+
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:C0}", Model.yillikkarne.Average(a => a.kar))
+
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        *
+
+                                    </h6>
+                                </td>
+                            </tr>
+                            <tr style="font-weight:900;color:red;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Toplam
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:C0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Sum(a => a.kar))
+
+                        </h6>
+                    </td>}
+                                <td>
+                                    <h6>
+                                        *
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:C0}", Model.yillikkarne.Sum(a => a.kar))
+
+                                    </h6>
+                                </td>
+                            </tr>
+
+
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card  mb-1">
+
+            <div class="card-body">
+
+                <h3><span class="badge badge-dark ">#Firma</span> </h3>
+                <div class="table-responsive">
+
+                    <table class="table-bordered display" style="width:100%; font-size:14px;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="baslik">Kullanıcı</th>
+                                @foreach (var item in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <th scope="col" class="baslik">@item.Value</th>}
+
+                                <th class="baslik isgenel">Ortalama</th>
+                                <th class="baslik isgenel">Toplam</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var kullanici in Model.yillikkarne.GroupBy(x => x.kullanici))
+                            {
+
+                <tr>
+                    <td style="width:220px!important">
+
+                        @kullanici.Key
+
+                    </td>
+                    @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                    {
+    <td>
+        @if (Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key) != null)
+        {
+<p>
+    @Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).firma
+
+</p>
+                        <p>
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).firma,Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(x=>x.firma)) isicon" style="color:gold"></i>
+
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).firma,Model.yillikkarne.Where(x =>x.ay == ay.Key).Average(x=>x.firma)) isicon" style="color:red"></i>
+                        </p>}
+
+
+    </td>}
+                    <td style="font-weight:900;color:forestgreen" class="isgenel">
+                        <p>
+                            @Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(a => a.firma)
+
+                        </p>
+                    </td>
+                    <td style="font-weight:900;color:red" class="isgenel">
+                        <p>
+                            @Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Sum(a => a.firma)
+
+                        </p>
+                    </td>
+
+                </tr>}
+
+                        </tbody>
+                        <tfoot>
+                            <tr style="font-weight:900;color:forestgreen;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Ortalama
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Average(a => a.firma))
+
+                        </h6>
+                    </td>}
+
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:0}", Model.yillikkarne.Average(a => a.firma))
+
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        *
+
+                                    </h6>
+                                </td>
+                            </tr>
+                            <tr style="font-weight:900;color:red;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Toplam
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Sum(a => a.firma))
+
+                        </h6>
+                    </td>}
+                                <td>
+                                    <h6>
+                                        *
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:0}", Model.yillikkarne.Sum(a => a.firma))
+
+                                    </h6>
+                                </td>
+                            </tr>
+
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card  mb-1">
+
+            <div class="card-body">
+
+                <h3><span class="badge badge-success ">#Adet</span> </h3>
+                <div class="table-responsive">
+
+                    <table class="table-bordered display" style="width:100%; font-size:14px;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="baslik">Kullanıcı</th>
+                                @foreach (var item in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <th scope="col" class="baslik">@item.Value</th>}
+                                <th class="baslik isgenel">Ortalama</th>
+                                <th class="baslik isgenel">Toplam</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var kullanici in Model.yillikkarne.GroupBy(x => x.kullanici))
+                            {
+
+                <tr>
+                    <td style="width:100px!important">
+
+                        @kullanici.Key
+
+                    </td>
+                    @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                    {
+    <td>
+        @if (Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key) != null)
+        {
+<p>
+    @Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).adet
+
+</p>
+                        <p>
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).adet,Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(x=>x.adet)) isicon" style="color:gold"></i>
+
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).adet,Model.yillikkarne.Where(x =>x.ay == ay.Key).Average(x=>x.adet)) isicon" style="color:red"></i>
+                        </p>}
+
+
+    </td>}
+                    <td style="font-weight:900;color:forestgreen" class="isgenel">
+                        <p>
+                            @Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(a => a.adet)
+
+                        </p>
+                    </td>
+                    <td style="font-weight:900;color:red" class="isgenel">
+                        <p>
+                            @Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Sum(a => a.adet)
+
+                        </p>
+                    </td>
+                </tr>}
+
+
+
+                        </tbody>
+                        <tfoot>
+                            <tr style="font-weight:900;color:forestgreen;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Ortalama
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Average(a => a.adet))
+
+                        </h6>
+                    </td>}
+
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:0}", Model.yillikkarne.Average(a => a.adet))
+
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        *
+
+                                    </h6>
+                                </td>
+                            </tr>
+                            <tr style="font-weight:900;color:red;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Toplam
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Sum(a => a.adet))
+
+                        </h6>
+                    </td>}
+                                <td>
+                                    <h6>
+                                        *
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:0}", Model.yillikkarne.Sum(a => a.adet))
+
+                                    </h6>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card  mb-1">
+
+            <div class="card-body">
+                <h3> <span class="badge badge-warning ">#Çeşit</span></h3>
+
+                <div class="table-responsive">
+
+                    <table class="table-bordered display" style="width:100%; font-size:14px;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="baslik">Kullanıcı</th>
+                                @foreach (var item in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <th scope="col" class="baslik">@item.Value</th>}
+                                <th class="baslik isgenel">Ortalama</th>
+                                <th class="baslik isgenel">Toplam</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var kullanici in Model.yillikkarne.GroupBy(x => x.kullanici))
+                            {
+
+                <tr>
+                    <td style="width:100px!important">
+
+                        @kullanici.Key
+
+                    </td>
+                    @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                    {
+    <td>
+        @if (Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key) != null)
+        {
+<p>
+    @Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).cesit
+
+</p>
+                        <p>
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).adet,Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(x=>x.cesit)) isicon" style="color:gold"></i>
+
+                            <i class="@comparison(Model.yillikkarne.FirstOrDefault(x => x.ay == ay.Key && x.kullanici == kullanici.Key).adet,Model.yillikkarne.Where(x =>x.ay == ay.Key).Average(x=>x.cesit)) isicon" style="color:red"></i>
+                        </p>}
+
+
+    </td>}
+                    <td style="font-weight:900;color:forestgreen" class="isgenel">
+                        <p>
+                            @Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Average(a => a.cesit)
+
+                        </p>
+                    </td>
+                    <td style="font-weight:900;color:red" class="isgenel">
+                        <p>
+                            @Model.yillikkarne.Where(x => x.kullanici == kullanici.Key).Sum(a => a.cesit)
+
+                        </p>
+                    </td>
+                </tr>}
+
+                        </tbody>
+                        <tfoot>
+                            <tr style="font-weight:900;color:forestgreen;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Ortalama
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Average(a => a.cesit))
+
+                        </h6>
+                    </td>}
+
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:0}", Model.yillikkarne.Average(a => a.cesit))
+
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        *
+
+                                    </h6>
+                                </td>
+                            </tr>
+                            <tr style="font-weight:900;color:red;background-color:#f3f3f3" class="isgenel">
+                                <td>
+
+                                    Toplam
+
+                                </td>
+                                @foreach (var ay in Helpertype.Aylar.Where(x => moonlist.Contains(x.Key.ToString())))
+                                {
+                    <td>
+                        <h6>
+                            @string.Format("{0:0}", Model.yillikkarne.Where(x => x.ay == ay.Key).Sum(a => a.cesit))
+
+                        </h6>
+                    </td>}
+                                <td>
+                                    <h6>
+                                        *
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        @string.Format("{0:0}", Model.yillikkarne.Sum(a => a.cesit))
+
+                                    </h6>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

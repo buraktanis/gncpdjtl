@@ -1,0 +1,229 @@
+﻿<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Cari Ekstresi
+                </h3>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-12 ">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="form-row">
+
+
+                    <div class="form-group col-md-3 p-3">
+                        <label>İşlem Tarihi</label>
+                        <div class="input-daterange input-group" id="datepicker">
+                            <input type="text" class="input-sm form-control" name="start"
+                                   value="@DateTime.Now.AddDays(-10).ToString("MM-dd-yyyy")"
+                                   id="bastarih"
+                                   placeholder="Start" />
+                            <span class="input-group-addon"></span>
+                            <input type="text" class="input-sm form-control" name="end"
+                                   value="@DateTime.Now.ToString("MM-dd-yyyy")"
+                                   id="bistarih"
+                                   placeholder="End" />
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-group col-md-4 p-3">
+                        <label class="">Cariler</label>
+                        <select class="form-control select2" id="selectcari">
+                            <option value="Kategori-Yok">Cari Seçiniz</option>
+
+                            @if (CurrentSession.Roles.Contains("Yonetim") )
+                            {
+                @foreach (var item in Model)
+                {
+<option value="@item.kodu">@item.unvan</option>
+} }
+            else
+            {
+@foreach (var item in Model)
+{
+@if (@item.SatisTemsilcisi == @CurrentSession.Username)
+{
+<option value="@item.kodu">@item.unvan</option>
+}}}
+                        </select>
+                    </div>
+
+
+                    <div class="form-group col-md-1 p-3">
+
+                    </div><div class="form-group col-md-1 p-3">
+                        <button style="background-color:#f0bc74;margin-top: 26px;" class="btn  form-control" id="btnara">Ara </button>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card mb-3">
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table id="recordtable" class="table-bordered display dataTable" style="width:100%;">
+                        <thead style="background-color:#1f2937; height:42px; width:100%;">
+
+                            <tr style="color:#F1F1F1; ">
+                                <th>Cari Unvanı</th>
+                                <th>Cari Kodu  </th>
+                                <th>Tarih  </th>
+                                <th>İşlem No </th>
+                                <th>Borç  </th>
+                                <th>Alacak </th>
+                                <th>Bakiye </th>
+                                <th>Hareket Türü</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">var recordtable;
+        var siparisdetailtable;
+        var _defaulttablename = "carihesapekstresiQuery";
+        var _tablename = "Sale";
+
+        var bastarih = $("#bastarih").val();
+        var bistarih = $("#bistarih").val();
+        var carikodu = $('#selectcari').val();
+        var temsilci;
+
+
+
+        $(function () {
+
+            $("#btnara").click(function () {
+                bastarih = $("#bastarih").val();
+                bistarih = $("#bistarih").val();
+
+                carikodu = $('#selectcari').val();
+
+                $.LoadingOverlay("show");
+
+                recordtable.draw();
+
+            });
+
+
+            recordtable = $('#recordtable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel'
+                ],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "pageLength": 50,
+                "serverSide": true,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/Customer/GetCARIEKSTRE",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        d.dataqueryname = _defaulttablename;
+                        d.additionalvalues = [bastarih, bistarih, carikodu, temsilci];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+                    { "data": "unvan" },
+                    { "data": "carikodu" },
+                    {
+                        "data": "tarih", className: "text-center", "render": function (data, type, row) {
+                            if (data != null && data != "")
+                                return moment(data).format("DD.MM.YYYY");
+                            else
+                                return "";
+                        }
+                    },
+                    { "data": "islemno" },
+                    { "data": "borc" },
+                    { "data": "alacak" },
+
+                    {
+                        "data": "bakiye", className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(data).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    { "data": "hareketturu" }
+
+                ],
+                "rowCallback": function (row, data) {
+
+
+
+                },
+                "drawCallback": function (settings) {
+
+                    $.LoadingOverlay("hide");
+                }
+                ,
+                "initComplete": function (settings, json) {
+
+
+                }
+
+            });
+
+            //$('.datepicker').datepicker({
+            //    format: 'yyyy-mm-dd'
+            //    //startDate: '-3d'
+            //});
+
+            $(function () {
+                $("#datepicker").datepicker();
+                dateFormat: 'dd-mm-yyyy'
+            });
+
+            $(".select2").select2({
+                // need to override the changed default
+            });
+
+        });
+
+        /**/</script>
+
+
+
+
+}

@@ -1,0 +1,204 @@
+﻿<div class="">
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Cari Onay
+                    </h3>
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+    <div class="">
+
+        <div class="bg-white  mt-4" style="margin-left:2%;margin-right:2%;">
+            <div class="row bg-white rounded">
+
+                <div class="col-sm-12 mt-4">
+                    <table id="recordtable" class="table table-sm table-striped table-bordered dataTable" style="width:100%; font-size:14px;">
+                        <thead style="background-color:#1f2937; height:42px;">
+
+                            <tr style="color:#F1F1F1; ">
+                                <th class="pt-1 pb-1">Müşteri Adı</th>
+                                <th class="pt-1 pb-1">Temsilcisi</th>
+                                <th class="pt-1 pb-1">Telefon Numarası</th>
+                                <th class="pt-1 pb-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        var recordtable;
+        var stock = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplammaliyetdizi = [];
+        $(function () {
+
+            ///  $('#recordtable1_paginate').hide();
+
+            recordtable = $('#recordtable').DataTable({
+                "responsive": true,
+                "serverSide": true,
+                "searching": true,
+                "lengthChange": false,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "ajax": {
+                    "url": "/Customer/GetCustomerConfirmationDatatables",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        //d.dataqueryname = _defaulttablename;
+                        d.additionalvalues = [0];
+                        return JSON.stringify(d);
+                        return d;
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "Name"
+                    },
+                    {
+                        "data": "Slsman"
+                    },
+                    {
+                        "data": "Phone", className: "text-center", "render": function (data, type, row) {
+                            var html = ` <a target="_blank" href="https://api.whatsapp.com/send?phone=${data}&amp;text=Merhaba">
+                                             ${data}&nbsp;&nbsp;<i style="color: green;font-size: 16px;" class="fab fa-whatsapp"></i></a>`;
+
+                            return html;
+                        }
+
+                    },
+                    {
+                        "data": "Id", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+
+                                + "<a data-id='" + data + "' class='btn btn-warning   btn-sm text-black detail' href='/Customer/UpdateCustomer/" + data + "'>Güncelle</a>"
+                                + "<a data-id='" + data + "' class='btn btn-info  btn-sm text-white  onayla'>Onayla</a>"
+                                + "<a data-id='" + data + "' class='btn btn-danger  btn-sm text-white  delete'>Sil</a>"
+
+                            return html;
+                        }
+                    }
+                ]
+                ,
+                "rowCallback": function (row, data) {
+
+
+                }, "drawCallback": function (settings) {
+
+
+
+
+                }
+
+            });
+            $(".dataTable tbody").on("click", "a.delete", function () {
+                var id = $(this).attr("data-id");
+                $.confirm({
+                    title: 'Sil?',
+                    content: 'Bu kaydı silmek istediğinize emin misiniz?',
+                    autoClose: 'cancelAction|8000',
+                    buttons: {
+                        deleteUser: {
+                            text: 'Evet',
+                            action: function () {
+                                $.LoadingOverlay("show");
+                                $.ajax({
+                                    type: "Get",
+                                    url: "/Customer/DeleteCustomer/" + id,
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (msg) {
+
+                                        $.LoadingOverlay("hide");
+                                        console.log(msg)
+                                        if (msg.success) {
+                                            recordtable.draw();
+
+                                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                                        } else {
+                                            recordtable.draw();
+                                            $.alert(msg.message);
+                                        }
+
+
+
+                                    }
+                                });
+                            }
+                        }, cancelAction: {
+                            text: 'Hayır',
+                            action: function () {
+
+
+                            }
+                        }
+                    }
+                });
+
+
+            });
+
+            $(".dataTable tbody").on("click", "a.onayla", function () {
+                var id = $(this).attr("data-id");
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "Get",
+                    url: "/Customer/UpdateconfirmationType?id="+id+"&confirmationType=1",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+
+                        $.LoadingOverlay("hide");
+                        
+                        if (msg.success) {
+                            recordtable.draw();
+
+                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                        } else {
+                            
+                            $.alert(msg.message);
+                        }
+
+
+
+                    }
+                });
+
+            });
+
+
+        });
+
+    </script>
+
+}

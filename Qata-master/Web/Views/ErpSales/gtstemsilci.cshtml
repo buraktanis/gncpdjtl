@@ -1,0 +1,292 @@
+﻿
+
+@{ ViewData["Title"] = "Index";
+                 }
+
+@section Scripts{
+    <script type="text/javascript">
+        var recordtable;
+        var _defaulttablename = "gtstemsilciQuery";
+
+        $(function () {
+
+            recordtable = $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "serverSide": true,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/ErpSales/datatables",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        d.dataqueryname = _defaulttablename;
+                        d.additionalvalues = [$("#Username").val()];
+                        return JSON.stringify(d);
+                    }
+                },
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here 
+                }],
+                "columns": [
+                    { "data": "LOGICALREF", "visible": false},
+                    { "data": "Temsilcisi", className: "text-center" },
+                    { "data": "Adi" },
+                    { "data": "Telefon", "visible": false },
+                    {
+                        "data": "Isactive", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+                            if (data == false) {
+                                html = "Pasif";
+                            } else{
+                                html = "Aktif";
+                            }
+                            return html;
+                        }
+                    },
+                    {
+                        "data": "IsApprove", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+                            if (data == false) {
+                                html = "<b>Red</b> <br/> " + row.Approvetext + "";
+
+                            } else{
+                                html = "<b>Onaylı</b>";
+                            }
+                            return html;
+                        }
+                    },
+                    { "data": "Approvetext", className: "text-center", "visible": false},
+                    { "data": "tislem", className: "text-center" },
+                    { "data": "red", className: "text-center" },
+                    { "data": "beklemekte", className: "text-center" },
+                    { "data": "onayli", className: "text-center" }
+
+                ]
+            });
+
+
+            recordtable1 = $('#recordtable1').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "pageLength": -1,
+                "serverSide": true,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/ErpSales/datatables",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        d.dataqueryname = "gtsyonetimQuery";
+
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+                    { "data": "Temsilcisi", className: "text-center" },
+                    { "data": "toplambayi", className: "text-center" },
+                    { "data": "toplamonyli", className: "text-center" },
+                    { "data": "toplamret", className: "text-center" },
+                    { "data": "topalmislem" },
+                    { "data": "red", className: "text-center"},
+                    { "data": "beklemekte", className: "text-center" },
+                    { "data": "onayli", className: "text-center" }
+                ]
+            });
+
+        });
+
+
+        $("#exlyuk").click(function () {
+            jq_dialog("Excel Yükle", $("#formexlup").html(),
+                function () { // open
+
+                },
+                function () { //ok
+
+                    loader.start();
+                    var formData = new FormData();
+                    if ($('input[type=file]')[0].files[0] == null) {
+                        $progressBar.width("0%").attr('aria-valuenow', 0).text(0);
+                        jq_alert("Hata oluştu :Dosya seçmeniz gerekiyor ");
+                        return false;
+                    }
+
+                    formData.append('file', $('input[type=file]')[0].files[0]);
+
+                    $.ajax('/helper/exceladdquestion', {
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        xhr: function () {
+                            var xhr = new XMLHttpRequest();
+
+                            xhr.upload.onprogress = function (e) {
+                                var percent = '0';
+                                var percentage = '0%';
+
+                                if (e.lengthComputable) {
+                                    percent = Math.round((e.loaded / e.total) * 100);
+                                    percentage = percent + '%';
+                                    //$progressBar.width(percentage).attr('aria-valuenow', percent).text(percentage);
+                                }
+                            };
+
+                            return xhr;
+                        },
+
+                        success: function (response) {
+                            loader.stop();
+                            if (response.status) {
+                                utilities.onscreen(utilities.dil_ceviri("Kayıt başarıyla oluşturuldu", "kayit_basarili"));
+                                recordtable.draw();
+                                $('#confirmmodal').modal("toggle");
+                                return true;
+
+
+
+                            }
+                            else {
+                                jq_alert("Hata oluştu : " + response.message);
+                            }
+
+
+                        },
+
+                        error: function () {
+                            $alert.show().addClass('alert-warning').text('Hata oluştu');
+                        },
+
+                        complete: function () {
+                            //$progress.hide();
+                            return false;
+                        },
+                    });
+                    function geterrortype(pid, mid) {
+                        var reqest = "";
+                        if (pid != 0 && mid != 0) {
+                            reqest = "Atanmış program";
+                        }
+
+
+                        if (pid == 0 && mid == 0) {
+                            reqest = "Atanan kullanıcı ve program bulunamadı";
+                        }
+
+                        if (pid != 0 && mid == 0) {
+                            reqest = "Program bulunamadı";
+                        }
+
+                        if (pid == 0 && mid != 0) {
+                            reqest = "Kullanıcı bulunamadı";
+                        }
+
+                        return reqest;
+                    }
+
+
+                }
+            );
+
+        });
+
+        /**/</script>
+
+
+
+}
+
+<div class="page-breadcrumb">
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Bayi Sözleşmeleri
+                </h3>
+            </li>
+        </ol>
+    </nav>
+</div>
+<div class="container-fluid">
+    <div class="row">
+
+        @if (!CurrentSession.Roles.Contains("Satis"))
+        {
+<div class="col-12">
+
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                    <thead style="background-color:#1f2937; height:42px;">
+                        <tr style="color:#F1F1F1; ">
+                            <th>Temsilci</th>
+                            <th>Toplam Bayi Sayısı</th>
+                            <th>Toplam Onaylı Bayi Sayısı</th>
+                            <th>Toplam Onaylı Red Sayısı</th>
+                            <th>Toplam İşlem Sayısı </th>
+                            <th>Red İşlem Edilen  Sayısı</th>
+                            <th>Kuryede Olan İşlem  Sayısı</th>
+                            <th>Onaylı İşlem Sayısı</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>}
+        <div class="col-12" style="margin-top:20px">
+            @if (CurrentSession.Roles.Contains("Satis"))
+            {
+<input type="hidden" id="Username" value="@CurrentSession.Username" />            }
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table id="recordtable1" class="table-bordered display" style="width:100%; font-size:14px; border-style:solid; border-width:1px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+                                <tr style="color:#F1F1F1; ">
+                                    <th>Logo Id</th>
+                                    <th>Temsilci</th>
+                                    <th>Adi</th>
+                                    <th>Telefon</th>
+                                    <th>Durum</th>
+                                    <th>Onay</th>
+                                    <th>Red Mesaji</th>
+                                    <th>Toplam</th>
+                                    <th>Red</th>
+                                    <th>Bekleyen</th>
+                                    <th>Onaylı</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

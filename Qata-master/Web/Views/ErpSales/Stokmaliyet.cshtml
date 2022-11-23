@@ -1,0 +1,399 @@
+﻿
+
+
+
+@{
+    ViewData["Title"] = "Stok Maliyet";
+
+
+
+}
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var recordtable;
+        var _defaulttablename = "stokmaliyetQuery";
+
+
+
+        var tip;
+        var stock = 0;
+        var toplam = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplamdizi = [];
+        var toplammaliyetdizi = [];
+
+        $(function () {
+            $('input[type="radio"]').on('click', function (e) {
+                tip = $(this).val();
+                recordtable.draw();
+            });
+        
+            $("#btnara").click(function () {
+                bastarih = $("#bastarih").val();
+                bistarih = $("#bistarih").val();
+
+                firmaadi = $("#firmaadi").val().trim();
+
+                temsilci = $("#temsilci").val().trim();
+
+
+
+                adetmin = $("#adetmin").val();
+                adetmax = $("#adetmax").val();
+
+                tutarmin = $("#tutarmin").val();
+                tutarmax = $("#tutarmax").val();
+
+
+                karmin = $("#karmin").val();
+                karmax = $("#karmax").val();
+
+                vademin = $("#vademin").val();
+                vademax = $("#vademax").val();
+
+
+
+                recordtable.draw();
+            });
+
+
+            recordtable = $('#recordtable').DataTable({
+                "pageLength": -1,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "serverSide": true,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/ErpSales/GetStokmaliyet",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        d.dataqueryname = _defaulttablename;
+                        d.additionalvalues = [tip];
+                        return JSON.stringify(d);
+                    }
+                },
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here 
+                }],
+
+                "columns": [
+                    { "data": "tip" },
+                    { "data": "id", "visible": false },
+                    { "data": "kod" },
+                    { "data": "marka" },
+                    { "data": "model_kodu", "visible": false, },
+                    { "data": "model" },
+                    {
+                        "data": "mal_min", className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(data).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "mal_max", className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(data).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "mal_son", className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(data).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "mal_ort", className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(data).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "stok", className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(data).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": null, className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(row.mal_ort * row.stok).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": null, "visible": false, className: "text-center", "render": function (data, type, row) {
+
+
+                            return "<a title='Detay' data-kod='" + row.kod + "' class='btn btn-outline-success mb-1 btndetail' data-toggle='tooltip' ><i class='simple-icon-magic-wand'></i></a>";
+
+                        }
+                    }
+
+                ]
+                ,
+                "rowCallback": function (row, data) {
+
+                    stockdizi.push(data.stok)
+                    toplammaliyetdizi.push(data.mal_ort)
+                    toplamdizi.push(data.mal_ort * data.stok)
+
+
+                }, "drawCallback": function (settings) {
+                    stock = 0;
+                    toplammaliyet = 0;
+                    toplam = 0;
+                    toplamdizi.forEach((element) => {
+                        toplam = toplam + element;
+                    })
+
+                    stockdizi.forEach((element) => {
+                        stock = stock + element;
+                    })
+                    toplammaliyetdizi.forEach((element) => {
+                        toplammaliyet = toplammaliyet + element;
+                    })
+
+                    $('#toplam').html(numeral(toplam.toFixed(2)).format('0,0'))
+                    $('#stock').html(numeral(stock.toFixed(2)).format('0,0'))
+                    $('#toplammaliyet').html(numeral(toplammaliyet.toFixed(2)).format('0,0'))
+
+                    toplammaliyetdizi = [];
+                    stockdizi = [];
+                    toplamdizi = [];
+
+
+                }
+
+
+            });
+
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+                //startDate: '-3d'
+            });
+
+            $(".dataTable tbody").on("click", "a.btndetail", function () {
+
+                var kod = $(this).attr("data-kod");
+
+
+                $.confirm({
+                    title: 'Alışlar',
+                    content: $("#formsiparisdetay").html(),
+                    columnClass: 'col-md-8',
+                    containerFluid: true,
+                    buttons: {
+                        formSubmit: {
+                            text: 'Kapat',
+                            btnClass: 'btn-blue'
+
+                        }
+
+                    },
+                    onOpen: function () {
+                        var self = this;
+                        siparisdetailtable = $('#siparisdetailtable').DataTable({
+                            "pageLength": -1,
+                            "serverSide": true,
+                            //"jQueryUI": true,
+                            "stateSave": false,
+                            "pagingType": "full_numbers",
+                            "ajax": {
+                                "url": "/salerapor/datatables",
+                                "type": "POST",
+                                "contentType": "application/json; charset=utf-8",
+                                "data": function (d) {
+                                    d.additionalvalues = [kod];
+                                    d.dataqueryname = "stokmaliyetdetayQuery";
+
+                                    return JSON.stringify(d);
+                                }
+                            },
+                            "columns": [
+
+                                { "data": "urun" },
+                                { "data": "unvan" },
+                                { "data": "tur" },
+                                { "data": "kisi" },
+                                { "data": "adet" },
+                                { "data": "fiyat" },
+                                {
+                                    "data": "tarih", className: "text-center", "render": function (data, type, row) {
+                                        if (data != null && data != "")
+                                            return moment(data).format("DD.MM.YYYY");
+                                        else
+                                            return "";
+                                    }
+                                }
+
+                            ]
+                        });
+
+                    },
+                    onContentReady: function () {
+
+
+                        var jc = this;
+                        this.$content.find('form').on('submit', function (e) {
+                            // if the user submits the form by pressing enter in the field.
+                            e.preventDefault();
+                            jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+                    }
+                });
+
+            });
+
+        });
+
+        /**/</script>
+    <script type="text/template" id="formsiparisdetay">
+
+        <div class="col-md-12">
+            <div class="table-responsive">
+
+                <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Unvan</th>
+                            <th>Tür</th>
+                            <th>Kişi</th>
+                            <th>Adet</th>
+                            <th>Fiyat</th>
+                            <th>Tarih</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </script>
+
+}
+
+
+
+<div class="bg-white  ">
+    <h2 class="pt-3 pb-4 pl-4"><strong>StokMaliyet  </strong></h2>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card">
+
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-body">
+
+
+                    <div class="table-responsive">
+
+                        <table id="recordtable" class="table table-sm table-bordered dataTable">
+                            <thead class="thead-light">
+
+                                <tr>
+                                    <th>Tür  </th>
+                                    <th>id  </th>
+                                    <th>kod </th>
+                                    <th>Marka  </th>
+                                    <th>model_kodu </th>
+                                    <th>Model  </th>
+                                    <th>En Düşük Maliyet </th>
+                                    <th>En Yüksek Maliyet </th>
+                                    <th>Son Maliyet </th>
+                                    <th>Ortalama Maliyet </th>
+                                    <th>Stok </th>
+                                    <th>Toplam Fiyat </th>
+                                    <th> </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                                <tr role="row" class="heading">
+                                    <th rowspan="1" colspan="1"></th>
+                                    <th rowspan="1" colspan="1"></th>
+                                    <th rowspan="1" colspan="1"></th>
+                                    <th rowspan="1" colspan="1" class="text-right">
+
+                                    </th>
+                                    <th class="text-center" rowspan="1" colspan="1">
+                                        <h1 id="adetdizitext"></h1>
+                                    </th>
+                                    <th class="text-right" rowspan="1" colspan="1">
+
+
+                                    </th>
+                                    <th class="text-right" rowspan="1" colspan="1">
+
+                                    </th>
+                                    <th class="text-right" rowspan="1" colspan="1"></th>
+                                    <th class="text-right" rowspan="1" colspan="1">
+                                        <h3>Toplam:</h3>
+                                    </th>
+
+                                    <th class="text-right" rowspan="1" colspan="1">
+                                        <h3 id="toplammaliyet"></h3>
+                                    </th>
+                                    <th class="text-right" rowspan="1" colspan="1">
+                                        <h3 id="stock"></h3>
+                                    </th>
+                                    <th class="text-right" rowspan="1" colspan="1">
+                                        <h3 id="toplam"></h3>
+                                    </th>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

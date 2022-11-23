@@ -1,0 +1,179 @@
+﻿@model top5Model
+
+@{ ViewData["Title"] = "Stok Maliyet";
+    }
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    TOP 5 SATIŞ
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="text-center col-sm-12 mb-5">Satışlar hesaplanırken cirolardan iade çıkartılıp hesaplanmıştır.</div>
+        <div class="col-12 col-xxl-6 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                    <h3 style="margin-left:17px;" class="fs-5 fw-bold mb-0">Ayın En İyi Performansı(Toplam)</h3>
+                    <p style="margin-bottom:0px;" class="btn-sm btn-primary">@DateTime.Now.ToString("MMMM") </p>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush list my--3">
+
+                        @foreach (var item in Model.top5ciro)
+                        {
+
+
+            <li class="list-group-item px-0">
+                <div class="row align-items-center">
+
+                    <div class="col-auto">
+                        <span class="badge badge-sm bg-danger badge-pill notification-count">@item.sira</span>
+                    </div>
+
+                    <div class="col-auto ms--2">
+                        <h4 class="h6 mb-0">
+                            <a href="#">@item.Slsman</a>
+                        </h4>
+                    </div>
+                    <div class="col text-end">
+                        <a style="border-color:blue" href="#" class=" d-inline-flex align-items-center">
+                            @string.Format("{0:0,0.00} ₺", @item.Ciro)
+                        </a>
+                    </div>
+                </div>
+            </li>
+                            <li role="separator" class="dropdown-divider  border-700"></li>}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xxl-6 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                    <h3 style="margin-left:17px;" class="fs-5 fw-bold mb-0">Ayın En İyi Performansı(Yenilenmiş Cihaz)</h3>
+                    <p style="margin-bottom:0px;" class="btn-sm btn-primary">@DateTime.Now.ToString("MMMM") </p>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush list my--3">
+
+                        @foreach (var item in Model.top5yenilenmis)
+                        {
+
+
+            <li class="list-group-item px-0">
+                <div class="row align-items-center">
+
+                    <div class="col-auto">
+                        <span class="badge badge-sm bg-danger badge-pill notification-count">@item.sira</span>
+                    </div>
+
+                    <div class="col-auto ms--2">
+                        <h4 class="h6 mb-0">
+                            <a href="#">@item.Slsman</a>
+                        </h4>
+                    </div>
+                    <div class="col text-end">
+                        <a style="border-color:blue" href="#" class=" d-inline-flex align-items-center">
+                            @string.Format("{0:0,0.00} ₺", @item.Ciro)
+                        </a>
+                    </div>
+                </div>
+            </li>
+                            <li role="separator" class="dropdown-divider  border-700"></li>}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xxl-6 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                    <h3 style="margin-left:17px;" class="fs-5 fw-bold mb-0">Ayın En İyi Performansı(Cep Telefonu)</h3>
+                    <p style="margin-bottom:0px;" class="btn-sm btn-primary">@DateTime.Now.ToString("MMMM") </p>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush list my--3">
+
+                        @foreach (var item in Model.top5ceptelefonu)
+                        {
+
+
+            <li class="list-group-item px-0">
+                <div class="row align-items-center">
+
+                    <div class="col-auto">
+                        <span class="badge badge-sm bg-danger badge-pill notification-count">@item.sira</span>
+                    </div>
+
+                    <div class="col-auto ms--2">
+                        <h4 class="h6 mb-0">
+                            <a href="#">@item.Slsman</a>
+                        </h4>
+                    </div>
+                    <div class="col text-end">
+                        <a style="border-color:blue" href="#" class=" d-inline-flex align-items-center">
+                            @string.Format("{0:0,0.00} ₺", @item.Ciro)
+                        </a>
+                    </div>
+                </div>
+            </li>
+                            <li role="separator" class="dropdown-divider  border-700"></li>}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xxl-6 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                    <h3 style="margin-left:17px;" class="fs-5 fw-bold mb-0">Ayın En İyi Performansı(Aksesuar)</h3>
+                    <p style="margin-bottom:0px;" class="btn-sm btn-primary">@DateTime.Now.ToString("MMMM") </p>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush list my--3">
+
+                        @foreach (var item in Model.top5aksesuar)
+                        {
+
+
+            <li class="list-group-item px-0">
+                <div class="row align-items-center">
+
+                    <div class="col-auto">
+                        <span class="badge badge-sm bg-danger badge-pill notification-count">@item.sira</span>
+                    </div>
+
+                    <div class="col-auto ms--2">
+                        <h4 class="h6 mb-0">
+                            <a href="#">@item.Slsman</a>
+                        </h4>
+                    </div>
+                    <div class="col text-end">
+                        <a style="border-color:blue" href="#" class=" d-inline-flex align-items-center">
+                            @string.Format("{0:0,0.00} ₺", @item.Ciro)
+                        </a>
+                    </div>
+                </div>
+            </li>
+                            <li role="separator" class="dropdown-divider  border-700"></li>}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

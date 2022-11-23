@@ -1,0 +1,958 @@
+﻿
+@model Web.Models.CustomerViewModel
+
+@{
+    ViewData["Title"] = "GetAllCustomers";
+}
+<div class="">
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Müşteri Listem
+                    </h3>
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+    <div class="">
+
+        <div class="bg-white  mt-4 mb-5" >
+            <div class="row bg-white rounded">
+
+                <div class="col-sm-12" style="text-align:right">
+                    
+                    <div class="col-md-12 float-right pt-4 p-2 ">
+                        <a class="btn btn-outline-info" href="/Customer/AddCustomer"><i class=""></i>Ekle</a>
+
+                    </div>
+
+
+                </div>
+
+                <hr class="container-fluid bg-light pl-5" @*style="width:95%;"*@ />
+                <div class="col-sm-12">
+                    <div class="row" id="sonuc" >
+
+                        <div class="col-md-2">
+                            <div class="form-group row p-2 ">
+                                <label class="font-weight-light">Temsilciler</label>
+                                <select class="form-control" id="selecttemsici">
+                                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                                    {
+                        <option value=" ">Temsilci Seçiniz</option> }
+                                    else
+                                    {
+                        <option value="@CurrentSession.Name">@CurrentSession.Name</option>}
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label asp-for="Customer.CustomerClass" class="text-end control-label col-form-label">Müşteri Sınıfı</label>
+                                </div>
+                                <div class="col-sm-12">
+                                    <select asp-for="Customer.CustomerClass" class="form-control">
+                                        <option value="">Sınıf Seç</option>
+                                        @foreach (var item in Model.CustomerClasses)
+                                        {
+                            <option value="@item.Value">@item.Text</option>}
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label asp-for="Customer.Region" class="text-end control-label col-form-label">Bölgeler</label>
+                                </div>
+                                <div class="col-sm-12">
+                                    <select asp-for="Customer.Region" class="form-control">
+                                        <option value="">Bölge Seç</option>
+                                        @foreach (var item in Model.Regions)
+                                        {
+                            <option value="@item.Value">@item.Text</option>}
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label asp-for="Customer.City" class="text-end control-label col-form-label">İller</label>
+                                </div>
+                                <div class="col-sm-12">
+                                    <select asp-for="Customer.City" class="form-control citySelection1">
+                                        <option value="">İl Seç</option>
+                                        @foreach (var item in Model.Cities)
+                                        {
+                            <option value="@item.Value">@item.Text</option>}
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label asp-for="Customer.Town" class="text-end control-label col-form-label">İlçeler</label>
+                                </div>
+                                <div class="col-sm-12">
+                                    @Html.DropDownListFor(m => m.Customer.Town, (new List<SelectListItem> { }), new { @class = "form-control" })
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-12 row">
+                            
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="text-end control-label col-form-label">Arama</label>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <input class="form-control " id="inputarama" />
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                @*<button class="btn btn-secondary mr-1 btn-raised   "><i class="fa fa-times"></i> Temizle</button>*@
+                                <button class="btn btn-warning mr-1 btn-raised" id="searchDiv" style="margin-top:40px"><i class="fa fa-search"></i> Uygula</button>
+                                <!--Buton Hover Effect-->
+                                <style>
+                                    .btn-raised {
+                                        transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+                                        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+                                    }
+
+                                        .btn-raised:not([disabled]):active,
+                                        .btn-raised:not([disabled]):focus,
+                                        .btn-raised:not([disabled]):hover {
+                                            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                                            transform: translate3d(0, -1px, 0)
+                                        }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-5 mr-5">
+                    <div class="table-responsive">
+
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+                                    <th class="pt-1 pb-1">
+                                        S.Sipariş Tarihi
+                                    </th>
+                                    <th class="pt-1 pb-1">
+                                        S.Not
+                                    </th>
+                                    <th class="pt-1 pb-1">
+                                        S.Arama Tarihi
+                                    </th>
+                                    <th class="pt-1 pb-1">Bayi Tipi</th>
+                                    <th class="pt-1 pb-1">Müşteri Adı</th>
+
+                                    <th class="pt-1 pb-1">Temsilci</th>
+
+                                    <th class="pt-1 pb-1">İl</th>
+                                    <th class="pt-1 pb-1">CariKodu</th>
+                                    <th class="pt-1 pb-1">Telefon Numarası</th>
+                                    <th class="pt-1 pb-1">
+
+                                        Müşteri Notu
+                                    </th>
+                                    <th class="pt-1 pb-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+        </div>
+    </div>
+</div>
+
+<input value="@CurrentSession.Name" id="username" hidden />
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        var recordtable;
+        var stock = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplammaliyetdizi = [];
+        var isadmin = "@CurrentSession.Roles.Contains("Yonetim")";
+
+        var customerClass="";
+        var region="";
+        var city="";
+        var town="";
+        $(function () {
+          
+            ///  $('#recordtable1_paginate').hide();
+            $('#searchDiv').click(function () {
+                customerClass = $("#Customer_CustomerClass").val();
+                region = $("#Customer_Region").val();
+                city = $("#Customer_City").val();
+                town = $("#Customer_Town").val();
+
+                recordtable.draw();
+            });
+            recordtable = $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "responsive": false,
+                "serverSide": true,
+                "searching": false,
+                "lengthChange": true,
+                //"jQueryUI": true,
+                "stateSave": false,
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here 
+                }],
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/Customer/GetCustomerDatatables",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        //d.dataqueryname = _defaulttablename;
+                        d.additionalvalues = [$('#selecttemsici').val(), "", customerClass, region, city, town, $("#inputarama").val()];
+                        return JSON.stringify(d);
+                        return d;
+                    }
+                },
+                "columns": [
+                    {
+
+                        "data": "OrderDate", className: "text-center", "render": function (data, type, row) {
+                            if (data != null && data != "")
+                                return moment(data).format("DD.MM.YYYY");
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "Nottext"
+                    },
+                    {
+
+                        "data": "CallReportDate", className: "text-center", "render": function (data, type, row) {
+                            var dateObj = new Date();
+                            var month = dateObj.getUTCMonth() + 1; //months from 1-12
+                            var day = dateObj.getUTCDate();
+                            var year = dateObj.getUTCFullYear();
+
+                            
+                            aramatarihi = data;
+
+                            const date1 = new Date(month + "/" + day + "/" + year);
+                            const date2 = new Date(data);
+                            const diffTime = Math.abs(date1 - date2);
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            
+
+                            var html = "<p style='animation:blinker 1s linear infinite;'> &#128222; Aranmalı </p>"
+                            
+
+                            
+                            if (data != null && data != "")
+                                if (diffDays > 30)
+                                    return moment(data).format("DD.MM.YYYY") + html ;
+                                else
+                                    return moment(data).format("DD.MM.YYYY");
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "CustomerClass"
+                    },
+                    {
+                        "data": "Name"
+                        
+                    }, 
+                    {
+                        "data": "Slsman"
+                    }, 
+                    {
+                        "data": "City"
+                    },
+                    
+                    
+                    {
+                        "data": "CariKodu", "visible": false
+                    },
+                    {
+                        "data": "Phone", className: "text-center", "render": function (data, type, row) {
+                            var html = ` <a target="_blank" href="https://api.whatsapp.com/send?phone=${data}&amp;text=Merhaba">
+                                                 ${data}&nbsp;&nbsp;<i style="color: green;font-size: 16px;" class="fab fa-whatsapp"></i></a>`;
+
+                            return html;
+                        }
+
+                    },
+                    {
+                        "data": "LogoId", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+
+                                + "<a data-logoid='" + data + "' class='btn btn-info not' >&#128196;</a>"
+
+                            return html;
+                        }
+                    },
+                    
+                    {
+                        "data": "Id", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+                            var silhtml = "";
+
+                            if (isadmin == "True") {
+                                silhtml = "<a data-id='" + data + "' class='dropdown-item delete'>Sil</a>"
+                            }
+
+
+                            html = html + `<div class="btn-group">
+                                  
+                                  <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="sr-only">&#10549;</span>
+                                  </button>
+                                  <div class="dropdown-menu">
+<a class="dropdown-item"  href='/Customer/UpdateCustomer/${data}'>Güncelle</a>
+                                    <a class="dropdown-item orders" data-id='${data}' href="#">Siparişler</a>
+                                    <a class="dropdown-item cariekstresi" data-CariKodu='${row.CariKodu}' href="#">Cari Ekstresi</a>
+                                    
+                                
+                                  </div>
+                                    </div>`;
+                            return html;
+                        }
+                    }
+                ]
+                ,
+                "rowCallback": function (row, data) {
+
+
+                }, "drawCallback": function (settings) {
+
+
+                    if (isadmin != "True") {
+                        $(".buttons-excel").hide();
+                    }
+
+                }
+
+            });
+
+
+            $(".dataTable tbody").on("click", "a.delete", function () {
+                var id = $(this).attr("data-id");
+                $.confirm({
+                    title: 'Sil?',
+                    content: 'Bu kaydı silmek istediğinize emin misiniz?',
+                    autoClose: 'cancelAction|8000',
+                    buttons: {
+                        deleteUser: {
+                            text: 'Evet',
+                            action: function () {
+                                $.LoadingOverlay("show");
+                                $.ajax({
+                                    type: "Get",
+                                    url: "/Customer/DeleteCustomer/" + id,
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (msg) {
+
+                                        $.LoadingOverlay("hide");
+                                        console.log(msg)
+                                        if (msg.success) {
+                                            recordtable.draw();
+
+                                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                                        } else {
+                                            recordtable.draw();
+                                            $.alert(msg.message);
+                                        }
+
+
+
+                                    }
+                                });
+                            }
+                        }, cancelAction: {
+                            text: 'Hayır',
+                            action: function () {
+
+
+                            }
+                        }
+                    }
+                });
+
+
+            });
+
+            var recordtablenot;
+
+            $(".dataTable tbody").on("click", "a.not", function () {
+                var logoid = $(this).attr("data-logoid");
+                var temsilci = "";
+                if (isadmin != "True") {
+                    temsilci = $("#username").val();
+                }
+
+             
+                $.confirm({
+                    title: 'Notlar',
+                    content: $("#formnots").html(),
+                    columnClass: 'col-md-8',
+                    containerFluid: true,
+                    buttons: {
+                        formSubmit: {
+                            text: 'Kapat',
+                            btnClass: 'btn-blue'
+
+                        }
+
+                    },
+                    onOpen: function () {
+                        var self = this;
+                        recordtablenot = $('#recordtablenot').DataTable({
+                            "serverSide": true,
+                            "searching": true,
+                            "lengthChange": false,
+                            //"jQueryUI": true,
+                            "stateSave": false,
+                            "pagingType": "full_numbers",
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                            },
+                            "ajax": {
+                                "url": "/Not/GetDatatables",
+                                "type": "POST",
+                                "contentType": "application/json; charset=utf-8",
+                                "data": function (d) {
+                                    //d.dataqueryname = _defaulttablename;
+                                    d.additionalvalues = [logoid, temsilci];
+                                    d.order = [{ column: 2, dir:1}];
+                                    return JSON.stringify(d);
+                                    return d;
+                                }
+                            },
+                            "columns": [
+                                {
+                                    "data": "Username", className: "text-center"
+                                },
+                                {
+                                    "data": "Text", className: "text-center"
+                                },
+                                {
+
+                                    "data": "createDate", className: "text-center", "render": function (data, type, row) {
+                                        if (data != null && data != "")
+                                            return moment(data).format("DD.MM.YYYY");
+                                        else
+                                            return "";
+                                    }
+                                },
+                                    {
+                                    "data": "Id", className: "text-center", "render": function (data, type, row) {
+                                        var html = ""
+                                            + "<a   data-id='" + data + "' class='btn btn-danger  btn-sm text-white  sil'>Sil</a>"
+
+                                        return html;
+                                    }
+                                }
+                            ]
+                            ,
+                            "rowCallback": function (row, data) {
+
+
+                            }, "drawCallback": function (settings) {
+
+
+
+
+                            }
+
+                        });
+                    },
+                    onContentReady: function () {
+                        var jc = this;
+                        jc.$content.find('.text').hide();
+                        this.$content.find(".dataTable tbody").on("click", "a.sil", function () {
+                            var id = $(this).attr("data-id");
+                            DeleteNot(id)
+
+                            //  jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+
+                        this.$content.find("#kaydet").click(function () {
+                            var text = jc.$content.find('.text').val();
+                            AddNot(text, $("#username").val(), logoid)
+                            jc.$content.find('.text').val("")
+                         
+                        });
+                        this.$content.find("#notdurum").on('change', function () {
+                            if ($(this).val() == 'Diğer') {
+                                jc.$content.find('.text').show();
+                            } else {
+                                jc.$content.find('.text').hide();
+                            }
+
+                            jc.$content.find('.text').val($(this).val());
+                        });
+
+
+                        this.$content.find('form').on('submit', function (e) {
+                            // if the user submits the form by pressing enter in the field.
+                            e.preventDefault();
+                            jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+                    }
+                });
+
+            });
+
+
+            function AddNot(text, username, cariid) {
+
+                var data = {
+                    Text: text,
+                    Username: username,
+                    CariId: cariid
+                };
+
+                console.log(data)
+
+                loader.start();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Not/Add",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(data),
+                    success: function (msg) {
+                        loader.stop();
+
+                        toastr.success("İşlem Başarılı")
+                        if (msg.success) {
+                            recordtablenot.draw();
+                        } else {
+
+                            $.alert(msg.message)
+                        }
+                    }
+                });
+
+            }
+
+            function DeleteNot(id) {
+                loader.start();
+                $.ajax({
+                    type: "GET",
+                    url: "/Not/Delete/" + id,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        loader.stop();
+                        toastr.success("İşlem Başarılı")
+
+                        if (msg.success) {
+                            recordtablenot.draw();
+                        } else {
+
+                            $.alert(msg.message)
+                        }
+                    }
+                });
+
+            }
+
+            $('.citySelection1').change(function () {
+                var id = $(this).val();
+                $('.townSelection1').empty();
+                GetTowns(id);
+
+            });
+
+            function GetTowns(cityId) {
+                var id = cityId;
+                $.ajax({
+                    type: 'GET',
+                    url: '/Customer/GetTowns/' + id,
+                    success: function (msg) {
+                        console.log(msg);
+                        $('#Customer_Town').append('<option value="">İlçe Seç</option>');
+                        msg.data.forEach(function (item) {
+
+                            $('#Customer_Town').append('<option value=' + item.name + '>' + item.name + '</option>');
+                        });
+
+                    }
+
+
+                });
+            }
+
+            $(".dataTable tbody").on("click", "a.orders", function () {
+                var id = $(this).attr("data-id");
+
+                $.confirm({
+                    title: 'Siparişler',
+                    content: $("#formorders").html(),
+                    columnClass: 'col-md-8',
+                    containerFluid: true,
+                    buttons: {
+                        formSubmit: {
+                            text: 'Kapat',
+                            btnClass: 'btn-blue'
+                        }
+
+                    },
+                    onOpen: function () {
+                        var self = this;
+                        recordtable2 = $('#recordtable2').DataTable({
+                            "serverSide": true,
+                            "paging": true,
+                            "searching": false,
+                            "lengthChange": false,
+                            //"jQueryUI": true,
+                            "stateSave": false,
+                            "pagingType": "full_numbers",
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                            },
+                            "ajax": {
+                                "url": "/Order/GetCustomerOrders",
+                                "type": "POST",
+                                "contentType": "application/json; charset=utf-8",
+                                "data": function (d) {
+                                    d.additionalvalues = [id];
+                                    return JSON.stringify(d);
+                                    return d;
+                                }
+                            },
+                            "columns": [
+                                {
+                                    "data": "OrderNo", className: "text-center"
+                                },
+                                {
+                                    "data": "Name", className: "text-center"
+                                },
+                                {
+                                    "data": "TotalPrice", className: "text-center", "render": function (data, type, row) {
+                                        return numeral(data).format('0,0.00');
+                                    }
+                                },
+                                {
+                                    "data": "OrderDate", className: "text-center", "render": function (data, type, row) {
+                                        if (data != null && data != "")
+                                            return moment(data).format("DD.MM.YYYY");
+                                        else
+                                            return "";
+                                    }
+                                },
+                                {
+                                    "data": "Id", className: "text-center", "render": function (data, type, row) {
+                                        var html = ""
+
+                                            + "<a data-id='" + data + "' class='btn btn-warning   btn-sm text-white  detail' href='/Order/UpdateOrder/" + data + "'>Detay</a>"
+
+
+
+                                        return html;
+                                    }
+                                }
+                            ]
+
+
+                        });
+                    },
+                    onContentReady: function () {
+                        var jc = this;
+
+
+                        this.$content.find('form').on('submit', function (e) {
+                            // if the user submits the form by pressing enter in the field.
+                            e.preventDefault();
+                            jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+                    }
+                });
+
+            });
+
+            $(".dataTable tbody").on("click", "a.cariekstresi", function () {
+                var cariKodu = $(this).attr("data-cariKodu");
+             
+
+                $.confirm({
+                    title: 'Cari Ekstresi',
+                    content: $("#formcariekstresi").html(),
+                    columnClass: 'col-md-8',
+                    containerFluid: true,
+                    buttons: {
+                        formSubmit: {
+                            text: 'Kapat',
+                            btnClass: 'btn-blue'
+
+                        }
+
+                    },
+                    onOpen: function () {
+                        this.$content.find(".input-daterange").datepicker({
+                            isRTL: false,
+                            format: 'dd.mm.yyyy',
+                            autoclose: true,
+                            language: 'tr'
+                        });
+                        var self = this;
+                        
+                    },
+                    onContentReady: function () {
+                        var jc = this;
+
+                        this.$content.find("#searchcariekstresiDiv").click(function () {
+                            if (!$.fn.dataTable.isDataTable('#recordtable3')) {
+                                recordtable3 = $('#recordtable3').DataTable({
+                                    "serverSide": true,
+                                    "paging": true,
+                                    "searching": false,
+                                    "lengthChange": true,
+                                    //"jQueryUI": true,
+                                    "stateSave": false,
+                                    "language": {
+                                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                                    },
+                                    buttons: [
+
+                                        {
+                                            titleAttr: "Excel'e Aktar",
+                                            extend: 'excelHtml5',
+                                            text: '<i class="fa fa-file-excel"></i>',
+                                            className: "btn btn-success",
+                                            title: $("h4.page-title").html(),
+                                            filename: moment().format("YYYY.MM.DD_HH.mm")
+                                        }
+                                    ],
+                                    "pagingType": "full_numbers",
+                                    "ajax": {
+                                        "url": "/Customer/GetCARIEKSTRE",
+                                        "type": "POST",
+                                        "contentType": "application/json; charset=utf-8",
+                                        "data": function (d) {
+                                            d.additionalvalues = [cariKodu, moment($("#bastarih").datepicker("getDate")).format("YYYY-MM-DD"), moment($("#bistarih").datepicker("getDate")).format("YYYY-MM-DD")];
+                                            return JSON.stringify(d);
+                                            return d;
+                                        }
+                                    },
+                                    "columns": [
+                                        { "data": "unvan" },
+                                        { "data": "carikodu" },
+                                        {
+                                            "data": "tarih", className: "text-center", "render": function (data, type, row) {
+                                                if (data != null && data != "")
+                                                    return moment(data).format("DD.MM.YYYY");
+                                                else
+                                                    return "";
+                                            }
+                                        },
+                                        { "data": "islemno" },
+                                        { "data": "borc" },
+                                        { "data": "alacak" },
+
+                                        {
+                                            "data": "bakiye", className: "text-center", "render": function (data, type, row) {
+
+                                                if (data != null && data != "")
+                                                    return numeral(data).format('0,0');
+                                                else
+                                                    return "";
+                                            }
+                                        },
+                                        { "data": "hareketturu" }
+
+                                    ]
+
+
+                                });
+                            }
+                            else {
+                                recordtable3.draw();
+                            }
+                          
+                        });
+
+                
+
+
+
+                        this.$content.find('form').on('submit', function (e) {
+                            // if the user submits the form by pressing enter in the field.
+                            e.preventDefault();
+                            jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+                    }
+                });
+
+            });
+        });
+
+
+
+    </script>
+    <script type="text/template" id="formcariekstresi">
+
+        <div class="row">
+            <div class="col-sm-12 row">
+                <div class="form-group  p-3 col-sm-6">
+                    <label>İşlem Tarihi</label>
+                    <div class="input-daterange input-group" id="datepicker">
+                        <input type="text" class="input-sm form-control" name="start"
+                               value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                               id="bastarih"
+                               placeholder="Start" />
+                        <span class="input-group-addon"></span>
+                        <input type="text" class="input-sm form-control" name="end"
+                               value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                               id="bistarih"
+                               placeholder="End" />
+                    </div>
+                </div>
+                <div class="form-group  p-3 col-sm-6">
+                    <button class="btn btn-warning mr-1 btn-raised" id="searchcariekstresiDiv" style="margin-top:25px"><i class="fa fa-search"></i> Uygula</button>
+                </div>
+            </div>
+            <div class="col-sm-12">
+
+                <table id="recordtable3" class="table table-sm table-striped table-bordered dataTable">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th>Cari Unvanı</th>
+                            <th>Cari Kodu  </th>
+                            <th>Tarih  </th>
+                            <th>İşlem No </th>
+                            <th>Borç  </th>
+                            <th>Alacak </th>
+                            <th>Bakiye </th>
+                            <th>Hareket Türü</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+        </div>
+    </script>
+
+    <script type="text/template" id="formorders">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="recordtable2" class="table table-sm table-striped table-bordered dataTable">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th class="pt-1 pb-1">Sipariş No</th>
+                            <th class="pt-1 pb-1">İsim</th>
+                            <th class="pt-1 pb-1">Sipariş Tutarı</th>
+                            <th class="pt-1 pb-1">Sipariş Tarihi</th>
+                            <th class="pt-1 pb-1"></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="formnots">
+
+        <div class="col-md-12 row">
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class="col-md-6">
+
+                    <label>Durum</label>
+                    <select class="form-control " id="notdurum">
+                        <option value="">Seçiniz...</option>
+                      
+                        @foreach (var item in Model.Notlar)
+                        {
+                            <option value="@item.Name">@item.Name</option>
+
+                        }
+                     
+                    </select>
+                    </div>
+                <div class="col-md-3">
+                    <textarea class="form-control text"></textarea>
+                </div>
+                <div class="col-md-3 " style="margin-top:30px;">
+                    <button type="button" class="btn btn-secondary" id="kaydet">Kaydet</button>
+                </div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top:50px;">
+                <div class="table-responsive">
+
+                    <table id="recordtablenot" class="table table-sm table-striped table-bordered dataTable">
+                        <thead class="thead-light ">
+                            <tr>
+                                <th class="pt-1 pb-1">Kişi </th>
+                                <th class="pt-1 pb-1">Not</th>
+                                <th class="pt-1 pb-1">Tarih</th>
+                                <th class="pt-1 pb-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </script>
+
+
+}

@@ -1,0 +1,41 @@
+﻿.sidebar-nav ul .sidebar-item .first-level .sidebar-item .sidebar-link {
+padding:5px 5px 5px 25px;
+}
+.p-t-30  {
+    padding-top:30px !important;
+}
+
+.dataTables_length, .dataTables_info {
+    display:inline-block;
+}
+
+.dataTables_filter, .dataTables_paginate {
+    display:inline-block;
+    float:right;
+}
+
+.dataTables_wrapper .dataTables_processing {
+    border: 1px solid #ffd800 !important;
+    background: #fff68c !important;
+    height: auto !important;
+    z-index:1000;
+}
+
+table.dataTable {
+    width:100% !important;
+}
+
+.cursor-pointer {
+    cursor:pointer;
+}
+table.dataTable.table-sm > thead > tr > th {
+    padding-right: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+.select2-results__options li {overflow:hidden;}
+
+.dt-buttons {
+    margin-right: 10px !important;
+    display: inline-block;
+}

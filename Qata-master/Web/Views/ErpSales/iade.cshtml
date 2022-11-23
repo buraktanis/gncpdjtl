@@ -1,0 +1,290 @@
+﻿@model iadeModel
+
+
+
+@{ ViewData["Title"] = "Stok Maliyet"; }
+
+
+@section Scripts{
+    <script type="text/javascript" language="”JavaScript”">window.history.forward(1);</script>
+
+    <script type="text/javascript">var recordtable;
+        var _defaulttablename = "stokmaliyetQuery";
+
+
+
+        var tip;
+        var stock = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplammaliyetdizi = [];
+
+
+        $(function () {
+
+
+
+            $('#recordtable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here 
+                }],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                pageLength: 50,
+                paging: true,
+                searching: true
+
+            });
+
+            $(".dataTable tbody").on("click", "a.btnsearch", function () {
+                var text = $(this).attr("data-text");
+                $('input[type=search]').val(text);
+                $('input[type=search]').keyup();
+                if (marka == '' || marka == null) {
+                    $('.filtre_silici').addClass('hidden');
+                }
+            });
+
+
+        });</script>
+
+
+}
+
+
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    İade Raporları
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="form-group col-md-2  p-3">
+            <label>Temsilci </label>
+            <input id="temsilci" class="form-control " placeholder="Temsilci" value="@CurrentSession.Username" disabled>
+        </div>
+        <div class="col-12">
+            <div class="card">
+
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="form-row">
+
+
+                        <div class="form-group col-md-12 p-3">
+
+                            <form action="/ErpSales/iade" method="get">
+
+                                <div class="row">
+                                    <div class="text-center col-sm-12 mb-5">Lütfen yıl-ay seçin ve sorgula butonuna tıklayın!</div>
+                                    <div class="form-group col-md-5">
+                                        <select class="form-control iade" id="iade" name="iade">
+
+                                            @for (int n = DateTime.Now.Year.toint32(); n >= 2018; n--)
+                                            {
+                                <option>@n</option>}
+                                        </select>
+
+
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <select class="form-control iade2" id="iade2" name="iade2">
+
+                                            <option>01-Ocak</option>
+                                            <option>02-Şubat</option>
+                                            <option>03-Mart</option>
+                                            <option>04-Nisan</option>
+                                            <option>05-Mayıs</option>
+                                            <option>06-Haziran</option>
+                                            <option>07-Temmuz</option>
+                                            <option>08-Ağustos</option>
+                                            <option>09-Eylül</option>
+                                            <option>10-Ekim</option>
+                                            <option>11-Kasım</option>
+                                            <option>12-Aralık</option>
+
+                                        </select>
+
+
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button style="background-color:#f0bc74;" class="btn" type="submit">Sorgula</button>
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                            </form>
+
+
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+                                    <th>Fatura</th>
+                                    <th>Cari Ünvanı</th>
+                                    <th>Tutar</th>
+                                    <th>Satış Temsilcisi </th>
+                                    <th>Yıl</th>
+                                    <th>Ay</th>
+                                    <th>Fatura Türü</th>
+
+                                </tr>
+                            </thead>
+                            <tbody >
+                                @if (CurrentSession.Roles.Contains("Yonetim") || CurrentSession.Roles.Contains("Yonetim"))
+                                {
+                    @foreach (var item in Model.model1)
+                    {
+
+
+    @if (@item.fatura_turu == "Perakende Satış İade Faturası" || @item.fatura_turu == "Satınalma İade Faturası")
+    {
+        {
+            Model.Satir_tutariToplam = Model.Satir_tutariToplam + item.Satir_tutari;
+
+        }
+
+<tr>
+
+    <td>
+
+        @item.FATURA
+    </td>
+    <td>
+        @item.cari_unvani
+
+    </td>
+
+    <td style="text-align:right;">
+
+        @string.Format("{0:0,0.00} ₺", @item.Satir_tutari)
+
+    </td>
+
+
+
+    <td>
+        @item.Satis_Temsilcisi
+    </td>
+    <td>
+        @item.Yıl
+    </td>
+    <td>
+        @item.AY
+    </td>
+    <td>
+        @item.fatura_turu
+    </td>
+
+
+
+
+
+
+</tr>
+}} }
+                else
+                {
+    @foreach (var item in Model.model1)
+    {
+@if (@item.Satis_Temsilcisi == @CurrentSession.Username)
+{
+
+
+@if (@item.fatura_turu == "Perakende Satış İade Faturası" || @item.fatura_turu == "Satınalma İade Faturası")
+{
+    {
+        Model.Satir_tutariToplam = Model.Satir_tutariToplam + item.Satir_tutari;
+
+    }
+<tr>
+
+    <td>
+
+        @item.FATURA
+    </td>
+    <td>
+        @item.cari_unvani
+
+    </td>
+    <td style="text-align:right;">
+        @string.Format("{0:0,0.00} ₺", @item.Satir_tutari)
+    </td>
+
+    <td>
+        @item.Satis_Temsilcisi
+    </td>
+    <td>
+        @item.Yıl
+    </td>
+    <td>
+        @item.AY
+    </td>
+    <td>
+        @item.fatura_turu
+    </td>
+
+
+
+
+
+
+</tr>
+}}}}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th rowspan="1" colspan="1"> </th>
+                                    <th rowspan="1" colspan="1"><h5> Toplam: </h5> </th>
+                                    <th rowspan="1" colspan="1" style="text-align:right;"><h5>  @string.Format("{0:0,0.00} ₺", Model.Satir_tutariToplam) </h5> </th>
+                                    <th rowspan="1" colspan="1"> </th>
+                                    <th rowspan="1" colspan="1"> </th>
+                                    <th rowspan="1" colspan="1"> </th>
+                                    <th rowspan="1" colspan="1"> </th>
+                                </tr>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

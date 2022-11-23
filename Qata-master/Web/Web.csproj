@@ -1,0 +1,49 @@
+
+
+  <Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
+    <PackageReference Include="ExcelParser" Version="4.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.17" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="TinyCsvParser" Version="2.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\Entities\Entities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\excel\" />
+    <Folder Include="wwwroot\volt\html&amp;css\vendor\chartist\dist\scss\settings\" />
+    <Folder Include="wwwroot\volt\html&amp;css\vendor\sass\types\legacy\" />
+    <Folder Include="wwwroot\volt\html&amp;css\vendor\sass\types\logger\" />
+    <Folder Include="wwwroot\volt\html&amp;css\vendor\sass\types\util\" />
+    <Folder Include="wwwroot\volt\html&amp;css\vendor\sass\types\value\" />
+    <Folder Include="wwwroot\volt\html&amp;css\vendor\waypoints\src\" />
+    <Folder Include="wwwroot\volt\html&amp;css\vendor\waypoints\test\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Announcements\duyurular.html" />
+    <None Include="wwwroot\volt\html&amp;css\vendor\sass\node_modules\immutable\dist\immutable.es.js" />
+    <None Include="wwwroot\volt\html&amp;css\vendor\sass\node_modules\immutable\dist\immutable.js.flow" />
+    <None Include="wwwroot\volt\html&amp;css\vendor\sass\node_modules\immutable\dist\immutable.min.js" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties wwwroot_4lib_4bootstrap_4dist_4css_4bootstrap_1css_1map__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

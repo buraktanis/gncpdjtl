@@ -1,0 +1,497 @@
+﻿@model List<Configuration>
+
+<div class="">
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Potansiyel Bayi Listem
+                    </h3>
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+    <div class="">
+
+        <div class="bg-white  mt-4 mb-5">
+            <div class="row bg-white rounded">
+                <div class="row">
+
+                
+                
+                    <div class="col-md-6 pt-4 p-2">
+                        @if (CurrentSession.Roles.Contains("Yonetim"))
+                        {
+            <input class="form-control" id="file-upload" type="file" />
+                            <a href="#postadd" class="btn btn-outline-warning" id="start_upload"> Yükle</a>}
+
+
+                    </div>
+                    <div class="col-md-6  pt-4 p-2 " style="text-align:right">
+                        <a class="btn btn-outline-info" href="#!" onclick="gizleGoster('sonuc') "><i class=""></i>Arama</a>
+                        <a class="btn btn-outline-success" href="/BigData/Add"><i class=""></i>Ekle</a>
+                    </div>
+
+
+               
+                    </div>
+
+                <hr class="container-fluid bg-light pl-5" @*style="width:95%;"*@ />
+                <div class="col-sm-12">
+                    <div class="row" id="sonuc" style="display:none;">
+
+                        <div class="col-lg-3">
+                            <div class="form-group row p-2 ">
+                                <label class="font-weight-light">Temsilciler</label>
+                                <select class="form-control" id="selecttemsici">
+                                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                                    {
+                        <option value=" ">Temsilçi Seçiniz</option> }
+                                    else
+                                    {
+                        <option value="@CurrentSession.Name">@CurrentSession.Name</option>}
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group row p-2 ">
+                                <button class="btn btn-secondary mr-1 btn-raised   "><i class="fa fa-times"></i> Temizle</button>
+                                <button class="btn btn-warning mr-1 btn-raised mt-1" id="searchDiv"><i class="fa fa-search"></i> Uygula</button>
+                                <!--Buton Hover Effect-->
+                                <style>
+                                    .btn-raised {
+                                        transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+                                        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+                                    }
+
+                                        .btn-raised:not([disabled]):active,
+                                        .btn-raised:not([disabled]):focus,
+                                        .btn-raised:not([disabled]):hover {
+                                            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                                            transform: translate3d(0, -1px, 0)
+                                        }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-4 mb-5">
+                     <table id="recordtable" class="table table-sm table-striped table-bordered dataTable" style="width:100%; font-size:14px;">
+                        <thead style="background-color:#1f2937; height:42px;">
+
+                            <tr style="color:#F1F1F1; ">
+                                <th class="pt-1 pb-1">Adı</th>
+                                <th class="pt-1 pb-1">
+                                    S.Arama Tarihi
+                                </th>
+                                <th class="pt-1 pb-1">Temsilci</th>
+                                <th class="pt-1 pb-1">Telefon</th>
+                                <th class="pt-1 pb-1">
+                                    S.Not
+                                </th>
+                                <th class="pt-1 pb-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<input value="@CurrentSession.Name" id="username" hidden />
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+      var isadmin = "@CurrentSession.Roles.Contains("Yonetim")";
+        var recordtable;
+        var stock = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplammaliyetdizi = [];
+        $(function () {
+
+            ///  $('#recordtable1_paginate').hide();
+
+            $('#searchDiv').click(function () {
+                recordtable.draw();
+            });
+            recordtable = $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "responsive": true,
+                "serverSide": true,
+                "searching": true,
+                "lengthChange": false,
+                //"jQueryUI": true,
+                "stateSave": true,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/BigData/GetBigData",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        //d.dataqueryname = _defaulttablename;
+                        d.additionalvalues = [$('#selecttemsici').val()];
+                        return JSON.stringify(d);
+                        return d;
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "Name"
+                    }, {
+
+                        "data": "CallReportDate", className: "text-center", "render": function (data, type, row) {
+                            if (data != null && data != "")
+                                return moment(data).format("DD.MM.YYYY");
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "Slsman"
+                    },
+                    {
+                        "data": "Phone", className: "text-center", "render": function (data, type, row) {
+                            var html = ` <a target="_blank" href="https://api.whatsapp.com/send?phone=${data}&amp;text=Merhaba">
+                                                 ${data}&nbsp;&nbsp;<i style="color: green;font-size: 16px;" class="fab fa-whatsapp"></i></a>`;
+
+                            return html;
+                        }
+                    },
+                    {
+                        "data": "Nottext", className: "text-center", "render": function (data, type, row) {
+                            return data;
+                        }
+                    },
+                    {
+                        "data": "Id", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+                                + "<a data-logoid='" + row.Id + "' class='btn btn-info   btn-sm text-white  not' >Notlar</a>"
+                                + "<a data-id='" + data + "' class='btn btn-warning   btn-sm text-black  detail' href='/BigData/Update/" + data + "'>Güncelle</a>"
+                                + "<a data-id='" + data + "' class='btn btn-danger  btn-sm text-white  delete'>Sil</a>"
+
+                            return html;
+                        }
+                    }
+                ]
+                ,
+                "rowCallback": function (row, data) {
+
+
+                }, "drawCallback": function (settings) {
+
+
+
+
+                }
+
+            });
+
+            $(".dataTable tbody").on("click", "a.delete", function () {
+                var id = $(this).attr("data-id");
+
+                $.confirm({
+                    title: 'Sil?',
+                    content: 'Bu kaydı silmek istediğinize emin misiniz?" ',
+                    autoClose: 'cancelAction|8000',
+                    buttons: {
+                        deleteUser: {
+                            text: 'EVET',
+                            action: function () {
+
+                                $.LoadingOverlay("show");
+                                $.ajax({
+                                    type: "Get",
+                                    url: "/BigData/Delete/" + id,
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (msg) {
+
+                                        $.LoadingOverlay("hide");
+                                        console.log(msg)
+                                        if (msg.success) {
+                                            recordtable.draw();
+
+                                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                                        } else {
+                                            recordtable.draw();
+                                            $.alert(msg.errors.map(e => e.message).join());
+                                        }
+
+
+
+                                    }
+                                });
+                            }
+                        }, cancelAction: {
+                            text: 'Hayır',
+                            action: function () {
+
+                            }
+                        }
+                    }
+                });
+            });
+
+
+            $("#start_upload").click(function () {
+                var files = $("#file-upload").get(0).files;
+                console.log(files)
+                var data = new FormData();
+                data.append('name', "excel");
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file", files[i]);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/BigData/ImportExcel",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (msg) {
+
+                        if (msg.success) {
+                            recordtable.draw();
+
+                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+                        } else {
+                            $.alert(msg.message);
+                        }
+
+                    },
+                    error: function (msg) {
+                        $.alert("Server Hatası");
+                    }
+                });
+            });
+            function AddNot(text, username, cariid) {
+
+                var data = {
+                    Text: text,
+                    Username: username,
+                    BigdataId: cariid
+                };
+
+                      loader.start();
+                $.ajax({
+                    type: "POST",
+                    url: "/Not/Add",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(data),
+                    success: function (msg) {
+                        loader.stop();
+
+                        toastr.success("İşlem Başarılı")
+
+                        if (msg.success) {
+                            recordtablenot.draw();
+                        } else {
+
+                            $.alert(msg.message)
+                        }
+                    }
+                });
+
+            }
+
+            function DeleteNot(id) {
+                loader.start();
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Not/Delete/" + id,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        loader.stop();
+                        toastr.success("İşlem Başarılı")
+
+
+                        if (msg.success) {
+                            recordtablenot.draw();
+                        } else {
+
+                            $.alert(msg.message)
+                        }
+                    }
+                });
+
+            }
+            $(".dataTable tbody").on("click", "a.not", function () {
+                var logoid = $(this).attr("data-logoid");
+                var temsilci = "";
+                if (isadmin != "True") {
+                    temsilci = $("#username").val();
+                }
+                console.log(temsilci)
+                $.confirm({
+                    title: 'Notlar',
+                    content: $("#formnots").html(),
+                    columnClass: 'col-md-8',
+                    containerFluid: true,
+                    buttons: {
+                        formSubmit: {
+                            text: 'Kapat',
+                            btnClass: 'btn-blue'
+
+                        }
+
+                    },
+                    onOpen: function () {
+                        var self = this;
+                        recordtablenot = $('#recordtablenot').DataTable({
+                            "serverSide": true,
+                            "searching": true,
+                            "lengthChange": false,
+                            //"jQueryUI": true,
+                            "stateSave": false,
+                            "pagingType": "full_numbers",
+                            "ajax": {
+                                "url": "/Not/GetBigdataDatatables",
+                                "type": "POST",
+                                "contentType": "application/json; charset=utf-8",
+                                "data": function (d) {
+                                    //d.dataqueryname = _defaulttablename;
+                                    d.additionalvalues = [logoid, temsilci];
+                                    d.order = [{ column: 2, dir: 1 }];
+                                    return JSON.stringify(d);
+                                    return d;
+                                }
+                            },
+                            "columns": [
+                                {
+                                    "data": "Username", className: "text-center"
+                                },{
+                                    "data": "Text", className: "text-center"
+                                },
+                                {
+
+                                    "data": "createDate", className: "text-center", "render": function (data, type, row) {
+                                        if (data != null && data != "")
+                                            return moment(data).format("DD.MM.YYYY");
+                                        else
+                                            return "";
+                                    }
+                                },
+                                {
+                                    "data": "Id", className: "text-center", "render": function (data, type, row) {
+                                        var html = ""
+                                            + "<a   data-id='" + data + "' class='btn btn-danger  btn-sm text-white  sil'>Sil</a>"
+
+                                        return html;
+                                    }
+                                }
+                            ]
+                            ,
+                            "rowCallback": function (row, data) {
+
+
+                            }, "drawCallback": function (settings) {
+
+
+
+
+                            }
+
+                        });
+                    },
+                    onContentReady: function () {
+                        var jc = this;
+                        jc.$content.find('.text').hide();
+                        this.$content.find(".dataTable tbody").on("click", "a.sil", function () {
+                            var id = $(this).attr("data-id");
+                            DeleteNot(id)
+
+                            //  jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+
+                        this.$content.find("#kaydet").click(function () {
+                            var text = jc.$content.find('.text').val();
+                            AddNot(text, $("#username").val(), logoid)
+                            jc.$content.find('.text').val("")
+                        });
+                        this.$content.find("#notdurum").on('change', function () {
+                            if ($(this).val() == 'Diğer') {
+                                jc.$content.find('.text').show();
+                            } else {
+                                jc.$content.find('.text').hide();
+                            }
+
+                            jc.$content.find('.text').val($(this).val());
+                        });
+
+
+
+                        this.$content.find('form').on('submit', function (e) {
+                            // if the user submits the form by pressing enter in the field.
+                            e.preventDefault();
+                            jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+                    }
+                });
+
+            });
+        });
+
+    </script>
+    <script type="text/template" id="formnots">
+
+        <div class="col-md-12 row">
+            <div class="col-md-12">
+                <div class="form-group row p-2 ">
+                    <label>Durum</label>
+                    <select class="form-control " id="notdurum">
+                        <option value="">Seçiniz...</option>
+                        @foreach (var item in Model)
+                        {
+                            <option value="@item.Name">@item.Name</option>
+
+                        }
+                    </select>
+                </div>
+                <div class="form-group row p-2 ">
+                    <textarea class="form-control text"></textarea>
+                </div>
+                <div class="form-group row p-2 ">
+                    <button type="button" class="btn btn-secondary" id="kaydet">Kaydet</button>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="table-responsive">
+
+                    <table id="recordtablenot" class="table table-sm table-striped table-bordered dataTable">
+                        <thead class="thead-light ">
+                            <tr>
+                                <th class="pt-1 pb-1">Kişi </th>
+                                <th class="pt-1 pb-1">Not</th>
+                                <th class="pt-1 pb-1">Tarih</th>
+                                <th class="pt-1 pb-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </script>
+}

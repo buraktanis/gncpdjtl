@@ -1,0 +1,565 @@
+﻿
+
+<div class="col-md-12 mt-5">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page " style="padding-top:10px;">
+                <h3>
+                    Sipariş Listesi
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+<style>
+    .simple-icon-arrow-down:before {
+        content: "\e604";
+        color: grey;
+    }
+</style>
+<div class="bg-white  mt-4" ;">
+    <div>
+
+        <div>
+
+            <div class="col-sm-12">
+                <div class="col-md-6"></div>
+                <div>
+                    <div class="form-row">
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row" id="sonuc" style="display:none;">
+
+        <div class="col-md-3">
+            <div class="form-group  p-3">
+                <label>İşlem Tarihi</label>
+                <div class="input-daterange input-group" id="datepicker">
+                    <input type="text" class="input-sm form-control" name="start"
+                           value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                           id="bastarih"
+                           placeholder="Start" />
+                    <span class="input-group-addon"></span>
+                    <input type="text" class="input-sm form-control" name="end"
+                           value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                           id="bistarih"
+                           placeholder="End" />
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="form-group col-md-2  p-3">
+            <label>Türler </label>
+
+            <select class="form-control" id="turselect">
+            </select>
+        </div>
+        <div class="form-group col-md-2  p-3">
+            <label>Temsilci </label>
+            <select class="form-control" id="selecttemsici">
+                @if (CurrentSession.Roles.Contains("Yonetim"))
+                {
+    <option value=" ">Temsilci Seçiniz</option> }
+                else
+                {
+    <option value="@CurrentSession.Name">@CurrentSession.Name</option>}
+
+            </select>
+        </div>
+        <div class="form-group col-md-1">
+            <label>Adet </label>
+            <input id="adetmin" class="form-control  text-center" placeholder="Min">
+            <input id="adetmax" class="form-control  text-center" placeholder="Max">
+        </div>
+
+        <div class="form-group col-md-1">
+            <label>Tutar </label>
+            <input id="tutarmin" class="form-control  text-center" placeholder="Min">
+            <input id="tutarmax" class="form-control  text-center" placeholder="Max">
+        </div>
+        @if (CurrentSession.Roles.Contains("Yonetim"))
+        {
+<div class="form-group col-md-1">
+    <label>Kar </label>
+    <input id="karmin" class="form-control  text-center" placeholder="Min">
+    <input id="karmax" class="form-control  text-center" placeholder="Max">
+</div>
+                <div class="form-group col-md-1">
+                    <label>Vade </label>
+                    <input id="vademin" class="form-control  text-center" placeholder="Min">
+                    <input id="vademax" class="form-control  text-center" placeholder="Max">
+                </div>}
+
+
+        <div class="form-group col-md-1 p-3">
+            <label> Ara</label>
+            <button class="btn btn-warning mr-1 btn-raised" id="btnara"><i class="fa fa-search"></i> Uygula</button>
+            <!--Buton Hover Effect-->
+            <style>
+                .btn-raised {
+                    transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+                    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+                }
+
+                    .btn-raised:not([disabled]):active,
+                    .btn-raised:not([disabled]):focus,
+                    .btn-raised:not([disabled]):hover {
+                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                        transform: translate3d(0, -1px, 0)
+                    }
+            </style>
+        </div>
+
+
+    </div>
+    <hr class="container-fluid bg-light pl-5" @*style="width:95%;" *@ />
+    <div>
+
+        <div class="table-responsive">
+
+            <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                <thead style="background-color:#1f2937; height:42px;">
+
+                    <tr style="color:#F1F1F1; ">
+                        <th>Fatura No </th>
+                        <th>Tarih </th>
+                        <th>Unvan  </th>
+                        <th>Temsilci </th>
+                        <th>Adet  </th>
+                        <th>Tutar </th>
+                        <th>Kar  </th>
+                        <th>Vadesi </th>
+                        <th> </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr role="row" class="heading">
+                        <th rowspan="1" colspan="1"></th>
+                        <th rowspan="1" colspan="1"></th>
+                        <th rowspan="1" colspan="1"></th>
+                        <th rowspan="1" colspan="1" class="text-right"><h3>Toplam:</h3></th>
+                        <th class="text-center" rowspan="1" colspan="1">
+                            <h6 id="adetdizitext"></h6>
+                        </th>
+                        <th class="text-right" rowspan="1" colspan="1">
+
+                            <h6 id="cirodizitext"></h6>
+                        </th>
+                        <th class="text-right" rowspan="1" colspan="1">
+                            <h6 id="kardizitext"></h6>
+                        </th>
+                        <th class="text-right" rowspan="1" colspan="1"></th>
+                        <th class="text-right" rowspan="1" colspan="1"></th>
+
+                    </tr>
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var recordtable;
+        var siparisdetailtable;
+        var admincontol = "@CurrentSession.Roles.Contains("Yonetim")";
+
+        var isadmin = false;
+
+        if (admincontol == "True") {
+            isadmin = true;
+        }
+
+        var bastarih;
+        var bistarih;
+        var firmaadi;
+        var tip;
+        var temsilci = $("#selecttemsici").val().trim();
+        var adetmin;
+        var adetmax;
+        var tutarmin;
+        var tutarmax;
+        var karmax;
+        var karmin;
+        var vademax;
+        var vademin;
+        var cirodizi = [];
+        var ciro = 0;
+        var adetdizi = [];
+        var adet = 0;
+        var kardizi = [];
+        var kar = 0;
+
+        $(function () {
+
+
+            GetTips();
+            $('.input-daterange').datepicker({
+                isRTL: false,
+                format: 'dd.mm.yyyy',
+                autoclose: true,
+                language: 'tr'
+            });
+            buttons: [{
+                extend: 'excel',
+                exportOptions: {
+                    modifier: {
+                        page: 'all',
+                        search: 'none'
+                    }
+                },
+                //the remaining buttons here
+            }],
+             bastarih = moment($("#bastarih").datepicker("getDate")).format("YYYY-MM-DD");
+             bistarih = moment($("#bistarih").datepicker("getDate")).format("YYYY-MM-DD");
+
+            $("#btnara").click(function () {
+
+                bastarih = moment($("#bastarih").datepicker("getDate")).format("YYYY-MM-DD");
+                bistarih = moment($("#bistarih").datepicker("getDate")).format("YYYY-MM-DD");
+                tip = $("#turselect").val();
+
+                temsilci = $("#selecttemsici").val().trim();
+
+
+
+                adetmin = $("#adetmin").val();
+                adetmax = $("#adetmax").val();
+
+                tutarmin = $("#tutarmin").val();
+                tutarmax = $("#tutarmax").val();
+
+
+                karmin = $("#karmin").val();
+                karmax = $("#karmax").val();
+
+                vademin = $("#vademin").val();
+                vademax = $("#vademax").val();
+
+                cirodizi = [];
+                ciro = 0;
+                adetdizi = [];
+                adet = 0;
+                kardizi = [];
+                kar = 0;
+                $.LoadingOverlay("show");
+
+                recordtable.draw();
+
+            });
+
+            recordtable = $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "pageLength": -1,
+                "serverSide": true,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/ErpSales/GetSalesList",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        d.additionalvalues = [bastarih, bistarih, tip, temsilci, adetmin, adetmax, tutarmin, tutarmax, karmin, karmax, vademin, vademax];
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+                    { "data": "faturano" },
+                    {
+                        "data": "tarih", className: "text-center", "render": function (data, type, row) {
+                            if (data != null && data != "")
+                                return moment(data).format("DD.MM.YYYY");
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "unvan", className: "text-center", "render": function (data, type, row) {
+
+                            return data;
+
+                        }
+                    },
+                    { "data": "temsilci" },
+                    { "data": "adet" },
+                    {
+                        "data": "tutar", className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(data).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "kar", "visible": isadmin, className: "text-center", "render": function (data, type, row) {
+
+                            if (data != null && data != "")
+                                return numeral(data).format('0,0');
+                            else
+                                return "";
+                        }
+                    },
+                    { "data": "vadesi","visible": isadmin },
+                    {
+                        "data": null, className: "text-center", "render": function (data, type, row) {
+
+
+                            return "<a title='Detay' data-faturano='" + row.faturano + "' style='padding: 4px 12px' class='btn btn-outline-success mb-1 btndetail' data-toggle='tooltip' >Detay<i class='simple-icon-magic-wand'></i></a>";
+
+                        }
+                    }
+
+                ],
+                "rowCallback": function (row, data) {
+
+                    cirodizi.push(data.tutar);
+                    adetdizi.push(data.adet);
+                    kardizi.push(data.kar);
+
+                },
+                "drawCallback": function (settings) {
+                    ciro = 0;
+                    kar = 0;
+                    adet = 0;
+                    cirodizi.forEach((element) => {
+                        ciro = ciro + element;
+
+                    })
+                    kardizi.forEach((element) => {
+                        kar = kar + element;
+
+                    })
+                    adetdizi.forEach((element) => {
+                        adet = adet + element;
+
+                    })
+
+                    $("#cirodizitext").html(numeral(ciro.toFixed(2)).format('0,0'))
+                    $("#adetdizitext").html(adet)
+                    $("#kardizitext").html(numeral(kar.toFixed(2)).format('0,0'))
+                    $.LoadingOverlay("hide");
+                    cirodizi = [];
+                    adetdizi = [];
+                    kardizi = [];
+
+                }
+                ,
+                "initComplete": function (settings, json) {
+
+
+                }
+
+            });
+
+
+            $(".dataTable tbody").on("click", "a.btndetail", function () {
+
+                var faturano = $(this).attr("data-faturano");
+                var kardetay = 0;
+                var adetdetay = 0;
+                var toplam = 0;
+                var kardetaydizi = [];
+                var adetdetaydizi = [];
+                var toplamdetaydizi = [];
+
+                $.confirm({
+                    title: 'Sipariş Detay!',
+                    content: $("#formsiparisdetay").html(),
+                    columnClass: 'col-md-8',
+                    containerFluid: true,
+                    buttons: {
+                        formSubmit: {
+                            text: 'Kapat',
+                            btnClass: 'btn-blue'
+
+                        }
+
+                    },
+                    onOpen: function () {
+                        var self = this;
+                        siparisdetailtable = $('#siparisdetailtable').DataTable({
+                            "pageLength": -1,
+                            "serverSide": true,
+                            //"jQueryUI": true,
+                            "stateSave": false,
+                            "pagingType": "full_numbers",
+                            "ajax": {
+                                "url": "/ErpSales/GetSalesDetail",
+                                "type": "POST",
+                                "contentType": "application/json; charset=utf-8",
+                                "data": function (d) {
+                                    d.additionalvalues = [faturano];
+
+                                    return JSON.stringify(d);
+                                }
+                            },
+                            "columns": [
+
+                                { "data": "malzemeadi" },
+                                {
+                                    "data": "maliyet", "visible": isadmin, className: "text-center", "render": function (data, type, row) {
+                                        if (data != null && data != "")
+                                            return numeral(data.toFixed(2)).format('0,0');
+                                        else
+                                            return "";
+                                    }
+                                },
+                                {
+                                    "data": null, className: "text-center", "render": function (data, type, row) {
+                                        if (data != null && data != "")
+                                            return numeral((row.satirtoplami / row.satirmiktari).toFixed(2)).format('0,0');
+                                        else
+                                            return "";
+
+                                    }
+                                },
+                                {
+                                    "data": "kar", "visible": isadmin, className: "text-center", "render": function (data, type, row) {
+                                        if (data != null && data != "")
+                                            return numeral(data.toFixed(2)).format('0,0');
+                                        else
+                                            return "";
+
+                                    }
+                                },
+                                { "data": "satirmiktari" },
+                                {
+                                    "data": "satirtoplami", className: "text-center", "render": function (data, type, row) {
+                                        if (data != null && data != "")
+                                            return numeral(data.toFixed(2)).format('0,0');
+                                        else
+                                            return "";
+
+                                    }
+                                },
+                                { "data": "vadesi" },
+
+                            ],
+                            "rowCallback": function (row, data) {
+
+                                kardetaydizi.push(data.kar)
+                                adetdetaydizi.push(data.satirmiktari)
+                                toplamdetaydizi.push(data.satirtoplami)
+                            }, "drawCallback": function (settings) {
+                                kardetay = 0;
+                                adetdetay = 0;
+                                toplam = 0;
+                                kardetaydizi.forEach((element) => {
+
+                                    kardetay = kardetay + element;
+                                })
+                                adetdetaydizi.forEach((element) => {
+                                    adetdetay = adetdetay + element;
+                                })
+                                toplamdetaydizi.forEach((element) => {
+                                    toplam = toplam + element;
+                                })
+                                self.$content.find('#kardetay').html(numeral(kardetay.toFixed(2)).format('0,0'))
+                                self.$content.find('#adetdetay').html(adetdetay)
+                                self.$content.find('#toplam').html(numeral(toplam.toFixed(2)).format('0,0'))
+                                kardetaydizi = [];
+                                adetdetaydizi = [];
+                                toplamdetaydizi = [];
+
+                            }
+
+                        });
+
+                    },
+                    onContentReady: function () {
+
+
+                        var jc = this;
+                        this.$content.find('form').on('submit', function (e) {
+                            // if the user submits the form by pressing enter in the field.
+                            e.preventDefault();
+                            jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+                    }
+                });
+
+            });
+
+
+
+        });
+
+        /**/</script>
+
+
+
+
+    <script type="text/template" id="formsiparisdetay">
+
+        <div class="col-md-12">
+            <div class="table-responsive">
+
+                <table id="siparisdetailtable" class="table table-sm table-striped table-bordered dataTable" style="width:100%; font-size:14px;">
+                    <thead style="background-color:#1f2937; height:42px;">
+
+                        <tr style="color:#F1F1F1; ">
+                            <th>Ürün</th>
+                            <th>Maliyet</th>
+                            <th>Fiyat</th>
+                            <th>Kar</th>
+                            <th>Adet</th>
+                            <th>Toplam</th>
+                            <th>vadesi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr role="row" class="heading">
+                            <th rowspan="1" colspan="1"></th>
+                            <th class="text-right" rowspan="1" colspan="1"></th>
+                            <th rowspan="1" colspan="1" class="text-center">
+                                <h6>Toplam:</h6>
+                            </th>
+                            <th class="text-center" rowspan="1" colspan="1">
+                                <h6 id="kardetay"></h6>
+                            </th>
+                            <th class="text-center" rowspan="1" colspan="1">
+
+                                <h6 id="adetdetay"></h6>
+                            </th>
+                            <th class="text-center" rowspan="1" colspan="1">
+                                <h6 id="toplam"></h6>
+                            </th>
+                            <th class="text-right" rowspan="1" colspan="1">
+
+                            </th>
+
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </script>
+}

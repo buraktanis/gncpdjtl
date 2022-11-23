@@ -1,0 +1,962 @@
+﻿@model OrderViewModel
+
+@{
+    ViewData["Title"] = "NewOrder";
+
+}
+
+
+
+
+        <div class="col-md-12">
+
+            <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+                <ol class="breadcrumb ">
+
+                    <li class="breadcrumb-item active" aria-current="page ">
+                        <h3>
+                            Sipariş Ekranı
+                        </h3>
+                    </li>
+                </ol>
+            </nav>
+
+        </div>
+
+<div class="bg-white  mt-4">
+    <form class="form-horizontal" asp-action="UpdateOrder">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="Order.Id" hidden>
+        <!--Müşteri Bilgileri-->
+        <div class="row bg-white rounded ">
+
+            <h4 class="card-title pl-5 pt-3 col-sm-12"><strong>Sipariş Bilgileri</strong> </h4>
+
+            <hr class="container-fluid bg-light" />
+            <div class="col-md-6 ">
+                <!---->
+                <div class="card pl-3 pr-3 ">
+                    <div class="form-horizontal">
+                        <div class="card-body ">
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label asp-for="Order.CustomerId" class="text-end control-label col-form-label">Müşteri*</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <select class="form-control valid" data-val="true" data-val-required="The CustomerId field is required." id="Order_CustomerId" name="Order.CustomerId" aria-describedby="Order_CustomerId-error" aria-invalid="false">
+                                        <option data-logoid="@Model.customer.LogoId" value="@Model.customer.Id">@Model.customer.Name</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="#!" class="btn btn-info2" id="cDiv">Müşteri Seç</a>
+                                </div>
+                                <div class="col-md-1">
+                                    <a href="#!" class="btn btn-secondary" id="bakiye">Bakiye</a>
+                                </div>
+                                <span asp-for="Order.CustomerId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row" id="CustomerConsignment">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Şubeler</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(m => m.Order.CustomerConsignmentId, (List<SelectListItem>)Model.AddressDTOs, new { @class = "form-control" })
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Teslimat*</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(m => m.Order.DeliveryType, (List<SelectListItem>)Model.DeliveryType, new { @class = "form-control" })
+
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label asp-for="Order.Not" class="text-end control-label col-form-label">Sipariş Notu</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea asp-for="Order.Not" type="text" class="form-control"></textarea>
+                                    <input asp-for="Order.Not" hidden class="form-control">
+
+                                    <span asp-validation-for="Order.Not" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Sipariş No*</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input asp-for="Order.OrderNo" type="text" class="form-control" disabled>
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <input asp-for="Order.Status" type="text" class="form-control" hidden>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 ">
+                <!---->
+                <div class="card pl-3 pr-3 ">
+                    <div class="form-horizontal">
+                        <div class="card-body ">
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Temsilci</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                                    {
+                                        @Html.DropDownListFor(m => m.Order.Slsman, (List<SelectListItem>)Model.Slsmans, new { @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => m.Order.Slsman, new List<SelectListItem> { new SelectListItem { Text = CurrentSession.Name, Value = CurrentSession.Name } }, new { @class = "form-control" })
+                                    }
+
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Depo*</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(m => m.Order.WareHouse, (List<SelectListItem>)Model.WareHouses, new { @class = "form-control" })
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Ödeme Tipi*</label>
+                                </div>
+                                <div class="col-sm-9  ">
+                                    @Html.DropDownListFor(m => m.Order.TypeOfPayment, (List<SelectListItem>)Model.PaymentTypes, new { @class = "form-control" })
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                   
+                                    <label class="text-end control-label col-form-label">Sipariş Tarihi* <input hidden asp-for="Order.OrderDate" type="text" class="form-control"></label>
+                                    @Model.Order.OrderDate
+                                </div>
+                              
+                                <span class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class=" col-lg-12  pb-3">
+                <div class="float-sm-right">
+
+                    @if (Model.Order.Status == -1 || Model.Order.Status == 3)
+                    {
+                        <input type="submit" value="Kaydet" class="btn btn-warning rounded " />
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="bg-white  mt-4">
+    <div class="row bg-white rounded">
+
+        <div class="col-sm-12 row">
+            <div class="col-md-6 pt-4 p-2">
+                <h3> Ürün/Malzeme Listesi  </h3>
+
+            </div>
+            <div class="form-group form-check form-switch col-md-3 mt-4" style="text-align:right; ">
+
+                <label for="lessthanzero">
+
+                    <input class="form-check-input" id="lessthanzero" type="checkbox">
+                    Stoklu Ürünleri Getir
+                </label>
+            </div>
+            <div class="col-md-3 float-right pt-4 p-2 " style="text-align:right">
+                @if (Model.Order.Status == -1 || Model.Order.Status == 3 || (Model.Order.Status == 0 && CurrentSession.Roles.Contains("Yonetim")))
+                {
+                    <a href="#!" onclick="gizleGoster('sonuc') " class="border  p-2 mr-1  border-success btn-outline-success float-right">Malzeme Ekle<i class="fas fa-plus "></i></a>
+                }
+
+            </div>
+
+
+        </div>
+
+        <hr class="container-fluid bg-light pl-5">
+        <div class="col-sm-12 lessthanzerotable">
+            <div class="row" id="sonuc" style="display:none;">
+                <div class="card">
+                    <div class="col-sm-12">
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:12px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+                                <tr style="color:#F1F1F1; ">
+
+                                    <th class="pt-1 pb-1">AD</th>
+                                    <th class="pt-1 pb-1">KOD</th>
+                                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                                    {
+                                        <th class="pt-1 pb-1"> Stok </th>
+                                        <th class="pt-1 pb-1"> Bekleyen Sipariş(Logo) </th>
+                                        <th class="pt-1 pb-1"> Bekleyen Sipariş(Crm) </th>
+                                    }
+                                    <th class="pt-1 pb-1"> Filli Stok </th>
+                                    <th class="pt-1 pb-1">Fiyat</th>
+                                    <th class="pt-1 pb-1">Miktar</th>
+                                    <th class="pt-1 pb-1">Ekle</th>
+
+                                    </>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.STOK_DURUM)
+                                {
+                                    <tr>
+                                        <td>@item.AD</td>
+                                        <td class="text-center">@item.Kod</td>
+                                        @if (CurrentSession.Roles.Contains("Yonetim"))
+                                        {
+                                            <td class="text-center">@item.STOK</td>
+                                            <td class="text-center">@item.ONAYLI_SIP</td>
+                                            <td class="text-center"> @item.Bekleyen_STOK</td>
+                                        }
+                                        <td class="text-danger text-center "><h4>@(item.STOK - item.Bekleyen_STOK- item.ONAYLI_SIP)</h4></td>
+                                        <td class="text-center"><input class="text-center" value="0" id="p-@item.LOGICALREF" /></td>
+                                        <td class="text-center">
+                                            <input type="number" class="text-center stokinput" min="1" stok-count="@item.STOK" value="0" id="m-@item.LOGICALREF" max="@(item.STOK - item.Bekleyen_STOK- item.ONAYLI_SIP)" />
+                                        </td>
+                                        @if ((item.STOK - item.Bekleyen_STOK - item.ONAYLI_SIP) <= 0)
+                                        {
+                                            <td class="text-center"><p class="text-danger">Stokta ürün yok</p></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center">
+                                                <a data-id='@item.LOGICALREF' class='btn addOrderItem'>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+
+                                        }
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+        <div class="col-sm-12 lessthanzerotable2">
+            <div class="row" id="sonuc">
+                <div class="card">
+                    <div class="col-sm-12">
+                        <table id="recordtablestok" class="table-bordered display dataTable" style="width:100%; font-size:12px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+                                <tr style="color:#F1F1F1; ">
+
+                                    <th class="pt-1 pb-1">AD</th>
+                                    <th class="pt-1 pb-1">KOD</th>
+                                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                                    {
+                                        <th class="pt-1 pb-1"> Stok </th>
+                                        <th class="pt-1 pb-1"> Bekleyen Sipariş(Logo) </th>
+                                        <th class="pt-1 pb-1"> Bekleyen Sipariş(Crm) </th>
+                                    }
+                                    <th class="pt-1 pb-1"> Fiili Stok </th>
+                                    <th class="pt-1 pb-1">Fiyat</th>
+                                    <th class="pt-1 pb-1">Miktar</th>
+                                    <th class="pt-1 pb-1">Ekle</th>
+
+                                    </>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.STOK_DURUM)
+                                {
+                                    @if ((item.STOK - item.Bekleyen_STOK - item.ONAYLI_SIP) > 0)
+                                    {
+                                    <tr>
+                                        <td>@item.AD</td>
+                                        <td class="text-center">@item.Kod</td>
+                                        @if (CurrentSession.Roles.Contains("Yonetim"))
+                                        {
+                                            <td class="text-center">@item.STOK</td>
+                                            <td class="text-center">@item.ONAYLI_SIP</td>
+                                            <td class="text-center"> @item.Bekleyen_STOK</td>
+                                        }
+                                        <td class="text-danger text-center "><h4>@(item.STOK - item.Bekleyen_STOK - item.ONAYLI_SIP)</h4></td>
+                                        <td class="text-center"><input class="text-center" value="0" id="p-@item.LOGICALREF" /></td>
+                                        <td class="text-center">
+                                            <input type="number" class="text-center stokinput" min="1" stok-count="@item.STOK" value="0" id="m-@item.LOGICALREF" max="@(item.STOK - item.Bekleyen_STOK - item.ONAYLI_SIP)" />
+                                        </td>
+                                        @if ((item.STOK - item.Bekleyen_STOK - item.ONAYLI_SIP) <= 0)
+                                        {
+                                            <td class="text-center"><p class="text-danger">Stokta ürün yok</p></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center">
+                                                <a data-id='@item.LOGICALREF' class='btn addOrderItem'>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+
+                                        }
+                                    </tr> }
+                                }
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <table id="recordtable1" class="table table-sm table-striped table-bordered dataTable">
+                <thead class="thead-light ">
+                    <tr>
+                        <th class="pt-1 pb-1">AD</th>
+                        <th class="pt-1 pb-1">KDV</th>
+                        <th class="pt-1 pb-1">Fiyat</th>
+                        <th class="pt-1 pb-1">Miktar</th>
+                        <th class="pt-1 pb-1">Toplam</th>
+                        <th class="pt-1 pb-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+
+
+        </div>
+        <div class="col-md-9">
+
+
+
+        </div>
+        <div class="col-md-3">
+            <table class="table table-sm table-striped table-bordered dataTable">
+                @*<tr>
+                    <th></th>
+                    <th></th>
+
+                </tr>*@
+
+                <tr>
+                    <td class="text-center"><h4>Ara Toplam</h4></td>
+                    <td><h4 class="float-right " id="toplamtutarKdv"></h4> </td>
+                </tr>
+                <tr>
+                    <td class="text-center"> <h4>Kdv </h4></td>
+                    <td><h4 class="float-right " id="toplamtutarKdvsiz"></h4> </td>
+                </tr>
+                <tr>
+                    <td class="text-center"><h4>Toplam</h4></td>
+                    <td><h4 class="float-right " id="toplamtutar"></h4> </td>
+                </tr>
+            </table>
+
+
+
+        </div>
+        <div class="row ">
+
+
+            <div class="col-md-3 float-right pt-4 p-2 ">
+
+                @if (Model.Order.Status == 0 && CurrentSession.Roles.Contains("Yonetim"))
+                {
+                    <a id="btnonay" href="#!" class="border p-2 mr-1 border-success btn-info float-right">Onayla</a>
+                }
+
+                @if (Model.Order.Status == -1 || Model.Order.Status == 3)
+                {
+                    <a href="#!" id="onaygonder" class="border p-2 mr-1 border-success btn-info float-right">Onaya Gönder</a>
+                }
+
+            </div>
+            <div class="col-md-8 pt-4 p-2" style="text-align:right">
+
+                @if (Model.Order.Status == -1)
+                {
+                    <h5 class="text-info">Taslak Durumunda</h5>
+                }
+
+                @if (Model.Order.Status == 0)
+                {
+                    <h5 class="text-danger">Onaya Gönderildi</h5>
+                }
+
+                @if (Model.Order.Status == 1)
+                {
+                    <h5 class="text-warning">Logoya Gönderildi</h5>
+                }
+                @if (Model.Order.Status == 2)
+                {
+                    <h5 class="text-success">Faturalandı</h5>
+                }
+                @if (Model.Order.Status == 3)
+                {
+                    <h5 class="text-dark">Red Edildi</h5>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var recordtablecari;
+
+
+        function GetAddressCustomerId(id) {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Order/GetAddressCLIENTREF/' + id,
+                success: function (msg) {
+
+                    $('#Order_CustomerConsignmentId').html('');
+                    $('#Order_CustomerConsignmentId').append('<option value="0">Merkez</option>');
+                    msg.data.forEach(function (item) {
+
+                        $('#Order_CustomerConsignmentId').append('<option value=' + item.id + '>' + item.cityId + ' ' + item.townId + ' ' + item.address + '</option>');
+                    });
+
+                }
+
+            });
+        }
+
+        $('#cDiv').click(function () {
+            $.confirm({
+                title: 'Müşteriler',
+                content: $("#formsiparisdetay").html(),
+                columnClass: 'col-md-8',
+                containerFluid: true,
+                buttons: {
+                    formSubmit: {
+                        text: 'Kapat',
+                        btnClass: 'btn-blue'
+
+                    }
+
+                },
+                onOpen: function () {
+                    var self = this;
+                    recordtablecari = $('#recordtablecari').DataTable({
+                        "serverSide": true,
+                        "searching": true,
+                        "lengthChange": false,
+                        //"jQueryUI": true,
+                        "stateSave": false,
+                        "pagingType": "full_numbers",
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                        },
+                        "ajax": {
+                            "url": "/Customer/GetCustomerDatatables",
+                            "type": "POST",
+                            "contentType": "application/json; charset=utf-8",
+                            "data": function (d) {
+                                //d.dataqueryname = _defaulttablename;
+                                d.additionalvalues = [$("#Order_Slsman").val(), 1,"","","","",""];
+                                return JSON.stringify(d);
+                                return d;
+                            }
+                        },
+                        "columns": [
+                            {
+                                "data": "LogoId"
+                            },
+                            {
+                                "data": "Name"
+                            },
+                            {
+                                "data": "CariKodu"
+                            },
+                            {
+                                "data": "Id", className: "text-center", "render": function (data, type, row) {
+                                    var html = ""
+                                        + "<a data-logoid='" + row.LogoId + "'  data-name='" + row.Name + "'  data-id='" + data + "' class='btn btn-danger  btn-sm text-white  sec'>Seç</a>"
+
+                                    return html;
+                                }
+                            }
+                        ]
+                        ,
+                        "rowCallback": function (row, data) {
+
+
+                        }, "drawCallback": function (settings) {
+
+
+
+
+                        }
+
+                    });
+                },
+                onContentReady: function () {
+                    var jc = this;
+                    this.$content.find(".dataTable tbody").on("click", "a.sec", function () {
+                        var id = $(this).attr("data-id");
+                        var logoid = $(this).attr("data-logoid");
+                        var name = $(this).attr("data-name");
+                        $('#Order_CustomerId').html("");
+                        $('#Order_CustomerId').append('<option data-logoid="' + logoid + '"  value="' + id + '">' + name + '</option>');
+                        GetAddressCustomerId(logoid)
+                        jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    });
+
+
+                    this.$content.find('form').on('submit', function (e) {
+                        // if the user submits the form by pressing enter in the field.
+                        e.preventDefault();
+                        jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    });
+                }
+            });
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
+
+        var recordtable;
+        var recordtable1;
+        var orderId = "@Model.Order.Id";
+        var Status = "@Model.Order.Status";
+        var toplamtutar = 0;
+        var toplamtutarDizi = []
+        var toplamtutarKdv = 0;
+        var toplamtutarKdvDizi = []
+        var isadmin = "@CurrentSession.Roles.Contains("Yonetim")";
+        $(".lessthanzerotable2").hide();
+
+        $(function () {
+            
+
+            $(".lessthanzero").hide();
+            $('#lessthanzero').change(function () {
+                if ($(this).is(':checked')) {
+                    $(".lessthanzerotable2").show();
+                    $(".lessthanzerotable").hide();
+
+                }
+                else {
+                    $(".lessthanzerotable").show();
+                    $(".lessthanzerotable2").hide();
+
+                }
+
+            });
+
+            $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                responsive: true,
+                pageLength: 10,
+                paging: true,
+                searching: true,
+                stateSave: true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+            });
+
+            $('#recordtablestok').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                responsive: true,
+                pageLength: 10,
+                paging: true,
+                searching: true,
+                stateSave: true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+            });
+
+            $('#bakiye').click(function () {
+                var id = $('#Order_CustomerId option:selected').attr("data-logoid");;
+                console.log(id)
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "Get",
+                    url: "/Order/GetCariBakiyeByLogoId/" + id ,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        $.LoadingOverlay("hide");
+                        if (msg.success) {
+                            var html = "";
+                            $.alert("<h3 class='text-center'>Bakiye :"+numeral(msg.data.bakiye).format('0,0')+"</h3>");
+
+                        } else {
+
+                        }
+
+
+
+                    }
+                });
+
+            });
+
+            $('#onaygonder').click(function () {
+                var id = $(this).attr("data-id");
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "Get",
+                    url: "/Order/UpdateStatusOnay?id=" + orderId + "&status=0",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+
+                        if (msg.success) {
+                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+                            location.reload();
+
+                        } else {
+                            $.alert(msg.message);
+                        }
+
+
+
+                    }
+                });
+
+            });
+
+            $('#btnonay').click(function () {
+
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "Get",
+                    url: "/Order/UpdateStatus?id=" + orderId + "&status=1",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+
+                        if (msg.success) {
+                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+                            location.reload();
+
+                        } else {
+                            $.alert(msg.message);
+                        }
+
+                    }
+                });
+
+            });
+
+
+
+            recordtable1 = $('#recordtable1').DataTable({
+                "responsive": true,
+                "serverSide": true,
+                "paging": false,
+                "searching": false,
+                "lengthChange": false,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "ajax": {
+                    "url": "/Order/GetOrderItemByOrderIdDatatables",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        d.additionalvalues = [orderId];
+                        return JSON.stringify(d);
+                        return d;
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "ProductName"
+                    },
+                    {
+                        "data": "Vat", className: "text-center"
+                    },
+                    {
+                        "data": "UnitPrice", className: "text-center", "render": function (data, type, row) {
+
+                            return numeral(data).format('0,0.00');
+
+                        }
+                    },
+                    {
+                        "data": "UnitsInStock", className: "text-center", "render": function (data, type, row) {
+
+                            return numeral(data).format('0,00');
+
+                        }
+                    }
+                    ,
+                    {
+                        "data": null, className: "text-center", "render": function (data, type, row) {
+
+
+                            return numeral(row.UnitPrice * row.UnitsInStock).format('0,0.00');
+                        }
+                    }
+                    ,
+                    {
+                        "data": "Id", className: "text-center", "render": function (data, type, row) {
+                            var html = "";
+
+                            if (Status == "-1" || Status == "3" || (Status == "0" && isadmin =="True") ) {
+                                html = html+ "<a data-id='" + data + "' class='btn btn-danger  btn-sm text-white  delete'>Sil</a>";
+
+                            }
+                            return html;
+                        }
+                    }
+                ]
+                ,
+                "rowCallback": function (row, data) {
+
+                    toplamtutarDizi.push(data.UnitPrice * data.UnitsInStock);
+                    toplamtutarKdvDizi.push((data.UnitPrice * data.UnitsInStock/1.18));
+
+                }, "drawCallback": function (settings) {
+
+
+                    toplamtutarDizi.forEach((element) => {
+                        toplamtutar = toplamtutar + element;
+                    })
+                    toplamtutarKdvDizi.forEach((element) => {
+                        toplamtutarKdv = toplamtutarKdv + element;
+                    })
+
+                    $('#toplamtutarKdvsiz').html(numeral(toplamtutar - toplamtutarKdv).format('0,0.00'))
+                    $('#toplamtutar').html(numeral(toplamtutar).format('0,0.00'))
+                    $('#toplamtutarKdv').html(numeral(toplamtutarKdv).format('0,0.00'))
+
+                    toplamtutarKdvDizi = [];
+                    toplamtutarDizi = [];
+                    toplamtutar = 0;
+                    toplamtutarKdv = 0;
+                }
+
+            });
+
+
+            $(".dataTable tbody").on("click", "a.delete", function () {
+                var id = $(this).attr("data-id");
+
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "GET",
+                    url: "/Order/DeleteOrderItem/"+id,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+
+                        $.LoadingOverlay("hide");
+
+                        if (msg.success) {
+                            recordtable1.draw();
+
+                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                        } else {
+
+                            $.alert(msg.message);
+                        }
+
+
+
+                    }
+                });
+
+            });
+            $(".stokinput").change(function () {
+                var max = parseInt($(this).attr('max'));
+                var min = parseInt($(this).attr('min'));
+                if ($(this).val() > max) {
+                    $(this).val(max);
+                }
+                else if ($(this).val() < min) {
+                    $(this).val(min);
+                }
+            });
+            $(".dataTable tbody").on("click", "a.addOrderItem", function () {
+                var id = $(this).attr("data-id");
+                var stok = $("#m-" + id + "").attr("stok-count");
+                var amount = $("#m-" + id + "").val();
+                console.log(amount)
+                //if (amount > stok) {
+                //    amount = stok;
+                //}
+                var price = $("#p-"+id+"").val();
+                price = price.replace(",", ".")
+
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "POST",
+                    url: "/Order/AddOrderItem/",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    "data": JSON.stringify({
+                        "OrderId": orderId,
+                        "Amount": amount,
+                        "LogoId": id,
+                        "Price": price
+                     }),
+                    success: function (msg) {
+
+                        $.LoadingOverlay("hide");
+                        console.log(msg)
+                        if (msg.success) {
+                            recordtable1.draw();
+
+                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                        } else {
+
+                            $.alert(msg.message);
+                        }
+
+
+
+                    }
+                });
+
+            });
+
+             $('.citySelection1').change(function () {
+             var id = $(this).val();
+            $('.townSelection1').empty();
+                $('.townSelection1').append('<option>Ilce seciniz</option>');
+                 GetTowns(id);
+             });
+            $('#btnsave').click(function () {
+                AddCustomerConsignment()
+            });
+
+        });
+
+
+
+        function AddCustomerConsignment() {
+
+            var data = {
+                CityId: $('.citySelection1').val(),
+                TownId: $('.townSelection1').val(),
+                Address: $('#Address').val(),
+                CustomerId: id
+            };
+
+
+            loader.start();
+            $.ajax({
+                type: "POST",
+                url: "/Customer/AddCustomerConsignment",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(data),
+                success: function (msg) {
+                    loader.stop();
+
+
+                    if (msg.success) {
+                        recordtable.draw();
+                        $('#Address').val("")
+                    } else {
+
+
+                    }
+                }
+            });
+
+        }
+
+        function GetTowns(cityId) {
+            var id = cityId;
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/GetTowns/' + id,
+                success: function (msg) {
+                    console.log(msg);
+                    msg.data.forEach(function (item) {
+                        $('.townSelection1').append('');
+                        $('.townSelection1').append('<option value=' + item.id + '>' + item.name + '</option>');
+                    });
+
+                }
+
+
+            });
+        }
+    </script>
+    <script type="text/template" id="formsiparisdetay">
+
+        <div class="col-md-12">
+            <div class="table-responsive">
+
+                <table id="recordtablecari" class="table table-sm table-striped table-bordered dataTable">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th class="pt-1 pb-1">LogoId</th>
+                            <th class="pt-1 pb-1">Müşteri Adı</th>
+                            <th class="pt-1 pb-1">Cari Kodu</th>
+                            <th class="pt-1 pb-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </script>
+}

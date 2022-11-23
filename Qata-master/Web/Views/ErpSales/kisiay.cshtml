@@ -1,0 +1,221 @@
+﻿@model kisiayModel
+
+@{ ViewData["Title"] = "personmonth";
+    Layout = "";
+    int i = 1; }
+
+<!DOCTYPE html>
+<html lang="tr">
+
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+          crossorigin="anonymous"
+          integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
+
+    <link href="/chart/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0
+        }
+    </style>
+    <style>
+        #progressBar {
+            width: 100%;
+            margin: 0px auto;
+            //height: 22px;
+            //background-color: #0A5F44;
+        }
+
+            #progressBar div {
+                height: 100%;
+                text-align: right;
+                padding: 0 10px;
+                //line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+                width: 0;
+                background-color: #CBEA00;
+                box-sizing: border-box;
+            }
+    </style>
+
+</head>
+
+<body>
+
+
+    <div style="position:absolute; left:0; top:0; width:100%; height:100%; z-index:10; opacity:0.4">
+        <table id="date" cellspacing="0" class="bg-font-dark" width="100%" height="100%">
+            <tbody>
+                <tr>
+                    <td align="center" style="font-size:230px" class="bg-font-grey"><b>@Helpertype.Aylar.FirstOrDefault(x => x.Key == DateTime.Now.Month).Value <br>@DateTime.Now.Year</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <table style="width:100%;height:100%;border:1px solid #eee;" class="bg-dark" border=1>
+        <tr>
+            <th width="3%" class="bg-font-red text-center" style="font-size:20px"><b>#</th>
+            <th width="12%" class="bg-font-red text-center" style="font-size:20px"><b>Sorumlu</th>
+            <th width="17%" class="bg-font-red text-center" style="font-size:20px"><b>Ciro</th>
+            <th width="17%" class="bg-font-red text-center" style="font-size:20px"><b>Adet</th>
+            <th width="17%" class="bg-font-red text-center" style="font-size:20px"><b>Çeşit</th>
+            <th width="17%" class="bg-font-red text-center" style="font-size:20px"><b>Firma</th>
+            <th width="17%" class="bg-font-red text-center" style="font-size:20px"><b>Penetrasyon</th>
+        </tr>
+
+        @foreach (var item in Model.kisiay)
+        {
+<tr bgcolor="#ddd">
+    <td class="bg-dark bg-font-dark text-center"><h4><b>@(i++)</b></h4></td>
+    <td style="font-size:20px">&nbsp;<b>@item.kullanici  </b></td>
+    <td>
+        <input type="hidden" id="ciro_0" value="100">
+        <table height="100%" width="100%">
+            <tr>
+                <td id="bar_ciro_0" width="@Helpertype.YuzdelikChart(item.ciro,Model.kisiay.Max(x => x.ciro))%" class="bg-red-mint bg-font-red-mint" nowrap style="padding:0 10px 0 10px;font-size:20px">
+                    <b>
+                        @string.Format("{0:C0}", (int)item.ciro)
+                    </b>
+                </td>
+                <td style="font-size:20px">
+                    @if (Model.kisiay.Max(x => x.ciro) == item.ciro)
+                    {
+    <div style="float:right;color:yellow" class="blink"><i class="fa fa-trophy"></i></div>}
+
+                    @if (Model.kisiay.Min(x => x.ciro) == item.ciro)
+                    {
+    <div style="color:#cc0000"><i class="fa fa-thumbs-down"></i></div>}
+
+                </td>
+            </tr>
+        </table>
+    </td>
+    <td>
+        <input type="hidden" id="adet_0" value="100">
+        <table height="100%" width="100%">
+            <tr>
+                <td id="bar_adet_0" width="@Helpertype.YuzdelikChart(item.adet,Model.kisiay.Max(x => x.adet))%" class="bg-purple bg-font-purple" nowrap style="padding:0 10px 0 10px;font-size:20px">
+
+                    <b> @item.adet </b>
+                </td>
+                <td style="font-size:20px">
+                    @if (Model.kisiay.Max(x => x.adet) == item.adet)
+                    {
+    <div style="float:right;color:yellow" class="blink"><i class="fa fa-trophy"></i></div>}
+
+                    @if (Model.kisiay.Min(x => x.adet) == item.adet)
+                    {
+    <div style="color:#cc0000"><i class="fa fa-thumbs-down"></i></div>}
+
+                </td>
+            </tr>
+        </table>
+    </td>
+    <td>
+        <input type="hidden" id="cesit_0" value="100">
+        <table height="100%" width="100%">
+            <tr>
+                <td id="bar_cesit_0" width="@Helpertype.YuzdelikChart(item.cesit,Model.kisiay.Max(x => x.cesit))%" class="bg-blue-steel bg-font-blue-steel" nowrap style="padding:0 10px 0 10px;font-size:20px">
+                    <b> @item.cesit </b>
+                </td>
+                <td style="font-size:20px">
+                    @if (Model.kisiay.Max(x => x.cesit) == item.cesit)
+                    {
+    <div style="float:right;color:yellow" class="blink"><i class="fa fa-trophy"></i></div>}
+
+                    @if (Model.kisiay.Min(x => x.cesit) == item.cesit)
+                    {
+    <div style="color:#cc0000"><i class="fa fa-thumbs-down"></i></div>}
+
+                </td>
+            </tr>
+        </table>
+    </td>
+    <td>
+        <input type="hidden" id="firma_0" value="100">
+        <table height="100%" width="100%">
+            <tr>
+                <td id="bar_firma_0" width="@Helpertype.YuzdelikChart(item.firma,Model.kisiay.Max(x => x.firma))%" class="bg-green-seagreen bg-font-green-seagreen" nowrap style="padding:0 10px 0 10px;font-size:20px">
+                    <b>@item.firma </b>
+                </td>
+                <td style="font-size:20px">
+                    @if (Model.kisiay.Max(x => x.firma) == item.firma)
+                    {
+    <div style="float:right;color:yellow" class="blink"><i class="fa fa-trophy"></i></div>}
+
+                    @if (Model.kisiay.Min(x => x.firma) == item.firma)
+                    {
+    <div style="color:#cc0000"><i class="fa fa-thumbs-down"></i></div>}
+
+                </td>
+            </tr>
+        </table>
+    </td>
+    <td>
+        <input type="hidden" id="penet_0" value="8">
+        <table height="100%" width="100%">
+            <tr>
+                <td id="bar_penet_0" width="@Helpertype.YuzdelikChart(item.penetrasyon,Model.kisiay.Max(x => x.penetrasyon))%" class="bg-yellow-gold bg-font-green-seagreen" nowrap style="padding:0 10px 0 10px;font-size:20px">
+
+                    %<b>@item.penetrasyon</b>
+                </td>
+                <td style="font-size:20px">
+                    @if (Model.kisiay.Max(x => x.penetrasyon) == item.penetrasyon)
+                    {
+    <div style="float:right;color:yellow" class="blink"><i class="fa fa-trophy"></i></div>}
+
+                    @if (Model.kisiay.Min(x => x.penetrasyon) == item.penetrasyon)
+                    {
+    <div style="color:#cc0000"><i class="fa fa-thumbs-down"></i></div>}
+
+
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+}
+
+
+
+
+    </table>
+
+
+
+
+
+
+    <script>
+        function barlar() {
+            var sayac =<%=i%>;
+            for (i = 0; i < sayac; i++) {
+                $('#bar_ciro_' + i).animate({ width: $('#ciro_' + i).val() + "%", }, 3000);
+                $('#bar_adet_' + i).animate({ width: $('#adet_' + i).val() + "%", }, 3000);
+                $('#bar_cesit_' + i).animate({ width: $('#cesit_' + i).val() + "%", }, 3000);
+                $('#bar_firma_' + i).animate({ width: $('#firma_' + i).val() + "%", }, 3000);
+                $('#bar_penet_' + i).animate({ width: $('#penet_' + i).val() + "%", }, 3000);
+            }
+        }</script>
+
+
+</body>
+
+</html>
+
+
+
+

@@ -1,0 +1,1343 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+    <meta charset="UTF-8">
+    <title>Gençpa ERP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- Primary Meta Tags -->
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="title" content="Volt - Free Bootstrap 5 Dashboard">
+    <meta name="author" content="Themesberg">
+    <meta name="description" content="Volt Pro is a Premium Bootstrap 5 Admin Dashboard featuring over 800 components, 10+ plugins and 20 example pages using Vanilla JS.">
+    <meta name="keywords" content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, themesberg, themesberg dashboard, themesberg admin dashboard" />
+
+    <!-- Favicon -->
+    <link rel="stylesheet" href="~/tema/font/iconsmind-s/css/iconsminds.css" />
+    <link rel="stylesheet" href="~/tema/font/simple-line-icons/css/simple-line-icons.css" />
+    <link rel="stylesheet" href="~/tema/css/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/tema/css/vendor/bootstrap.rtl.only.min.css" />
+    <link rel="stylesheet" href="~/tema/css/vendor/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/tema/css/vendor/select2.min.css" />
+    <link rel="stylesheet" href="~/tema/css/vendor/select2-bootstrap.min.css" />
+    <link rel="stylesheet" href="~/tema/css/vendor/component-custom-switch.min.css" />
+    <link href="/admin/assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+
+
+
+
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" />*@
+
+
+
+    
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    @RenderSection("Styles", false)
+
+
+    @*<link href="~/Toast/css/toast.css" rel="stylesheet" />*@
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="120x120" href="~/volt/html&css/assets/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/volt/html&css/assets/img/favicon/gencpapng2.1.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/volt/html&css/assets/img/favicon/gencpapng2.1.png">
+    <link rel="manifest" href="~/volt/html&css/assets/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="~/volt/html&css/assets/img/favicon/safari-pinned-tab.svg" color="#ffffff">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+    <link type="text/css" href="~/volt/html&css/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link type="text/css" href="~/volt/html&css/vendor/notyf/notyf.min.css" rel="stylesheet">
+    <link type="text/css" href="~/volt/html&css/css/volt.css" rel="stylesheet">
+    @RenderSection("Styles", false)
+    <style>
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+        
+
+    </style>
+
+</head>
+
+<body id="app-container" class="menu-sub-hidden show-spinner right-menu">
+
+    <nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
+        <a class="navbar-brand me-lg-5" href="/">
+            <img class="navbar-brand-dark" src="https://gencpa.com/wp-content/uploads/2020/01/logo.png" alt="Volt logo" />
+            <img class="navbar-brand-light" src="https://gencpa.com/wp-content/uploads/2020/01/logo.png" alt="Volt logo" />
+        </a>
+        <div class="d-flex align-items-center">
+            <button class="navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <nav id="sidebarMenu" class="sidebar d-lg-block bg-gray-800 text-white collapse" data-simplebar>
+
+
+        <div class="sidebar-inner px-4 pt-3">
+
+            <ul class="nav flex-column pt-3 pt-md-0">
+                <li style="margin-left:8px;" class="nav-item">
+                    <a href="/Home/Index" class="nav-link d-flex align-items-center">
+                        <span class="sidebar-icon">
+                            <img src="~/volt/logo2.svg" style="margin-left:40px;">
+                        </span>
+                    </a>
+                </li>
+
+
+                <li role="separator" class="dropdown-divider  border-gray-700"></li>
+
+
+                <li class="nav-item">
+
+                    <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                          data-bs-toggle="collapse" data-bs-target="#submenu-order">
+                        <span>
+                            <a href="#submenu-order">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                                </svg>                                <span class="sidebar-text" style="margin-left:15px;">Sipariş</span>
+                            </a>
+                        </span>
+                        <span class="link-arrow">
+                            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        </span>
+                    </span>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-order" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/Order/NewOrder">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Sipariş Oluştur</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-order" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/Order">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Sipariş Listem</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div> @if (CurrentSession.Roles.Contains("Yonetim"))
+                    {
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-order" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Order/OrderConfirmation">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                         <span class="d-inline-block" style="margin-left:5px;">Sipariş Onay</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>}
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-order" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/Order/StockControl">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Stok Durumu</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </li>
+
+
+                <li role="separator" class="dropdown-divider  border-gray-700"></li>
+
+                <li class="nav-item">
+
+                    <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                          data-bs-toggle="collapse" data-bs-target="#submenu-sales">
+                        <span>
+                            <a href="#submenu-sales">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
+                                    <path d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zm.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51z" />
+                                    <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
+                                </svg>                                <span class="sidebar-text" style="margin-left:15px;">Satış</span>
+                            </a>
+                        </span>
+                        <span class="link-arrow">
+                            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        </span>
+                    </span>
+
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/Sale">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Sipariş Listesi</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>  @*else
+                                    {
+                                        <div style="margin-left:29px;" class="multi-level collapse "
+                                         role="list" id="submenu-sales" aria-expanded="false">
+                                            <ul class="flex-column nav">
+                                                <li class="nav-item">
+                                                    <a href="/satis/siparislistesisatis">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                                        <span class="d-inline-block" style="margin-left:5px;">Sipariş Listesi</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                    *@
+
+
+
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/cariekstresi">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Cari Ekstresi</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                    {
+
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-sales" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/ErpSales/Alis">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                           <span class="d-inline-block" style="margin-left:5px;">Alış Listesi</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>}
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/GTS/gtstemsilci">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Bayi Sözleşmeleri</span>
+                                    </span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/iade">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">İade Raporu</span>
+                                    </span>
+                                    <span style="text-align:right">
+                                        <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                                    </span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/ciro">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Temsilci Ciro</span>
+                                    </span>
+                                    <span style="text-align:right;">
+                                        <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                                    </span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/satisanaliz">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Satış Analiz</span>
+                                    </span>
+                                    <span style="text-align:right;">
+                                        <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                                    </span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/top5">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">TOP 5 Satış</span>
+                                    </span>
+                                    <span style="text-align:right;">
+                                        <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                                    </span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/Tahsilatraporu">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Tahsilat Raporu</span>
+                                    </span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div> @*
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/satis/fiyatlistesi" target="_blank">
+                                    <i class="simple-icon-calculator" style="color:#b8b8b4"></i>
+                                    <span class="d-inline-block" style="margin-left:5px;">Fiyat Listesi</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>*@
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/fibabank">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Fibabank</span>
+                                    </span>
+                                    <span style="text-align:right;">
+                                        <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/imei">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">IMEI Sorgu</span>
+                                    </span>
+                                    <span style="text-align:right;">
+                                        <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/kargo">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Kargo</span>
+                                    </span>
+                                    <span style="text-align:right;">
+                                        <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-sales" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/Home/Gencpa">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                       <span class="d-inline-block" style="margin-left:5px;">IBAN Bilgileri</span>
+                                    </span>
+                                    <span style="text-align:right;">
+                                        <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                    {
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-sales" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/ErpSales/stokyaslandirma">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                       <span class="d-inline-block" style="margin-left:5px;">Stok Yaşlandırma</span>
+                        </span>
+
+                    </a>
+                </li>
+            </ul>
+        </div>}
+                </li>
+
+
+
+                <li role="separator" class="dropdown-divider  border-gray-700"></li>
+
+                <li class="nav-item">
+
+                    <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                          data-bs-toggle="collapse" data-bs-target="#submenu-customer">
+                        <span>
+                            <a href="#submenu-customer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                                    <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+                                </svg>                                <span class="sidebar-text" style="margin-left:15px;">Müşteri</span>
+                            </a>
+                        </span>
+                        <span class="link-arrow">
+                            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        </span>
+                    </span>
+
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-customer" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/Customer/AddCustomer">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Müşteri Tanımlama</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-customer" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/Customer/GetAllCustomers">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Müşteri Listem</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                    {
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-customer" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Customer/CustomerConfirmation">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Cari Onay</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>}
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-customer" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/BigData/Index">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Potansiyel Bayi</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li role="separator" class="dropdown-divider  border-gray-700"></li>
+                @if (CurrentSession.Roles.Contains("Yonetim"))
+                {
+    <li class="nav-item">
+
+        <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+              data-bs-toggle="collapse" data-bs-target="#submenu-system">
+            <span>
+                <a href="#submenu-system">
+                    <span>
+                        <svg style="color:#ffcc00 xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-body-text" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5Zm0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5Zm8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Z" />
+                        </svg>
+                        <span class="sidebar-text" style="margin-left:15px;">Sistem Tanımları</span>
+                    </span>
+                </a>
+            </span>
+            <span class="link-arrow">
+                <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+            </span>
+        </span>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Item/Index">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>
+                            <span class="d-inline-block" style="margin-left:5px;">Malzemeler</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/1">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>
+                            <span class="d-inline-block" style="margin-left:5px;">Müşteri Tipi</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/2">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>
+                            <span class="d-inline-block" style="margin-left:5px;">Müşteri Türü</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/3">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Müşteri Durumu</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+
+                <li class="nav-item">
+                    <a href="/Configure/Index/4">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Müşteri Sınıfı</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/5">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Bölge</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/6">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Depo</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/7">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Ödeme Tipi</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/8">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Teslimat Tipi</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/9">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Banka Bilgilerimiz</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/10">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Kargo Bilgileri</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Configure/Index/11">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Notlar</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-system" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/Settings/Update">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Gençpa</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </li>
+                    <li role="separator" class="dropdown-divider  border-gray-700"></li>
+}
+
+
+
+
+
+                @if (CurrentSession.Roles.Contains("Yonetim"))
+                {
+    <li class="nav-item">
+        <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+              data-bs-toggle="collapse" data-bs-target="#submenu-app">
+            <span>
+                <a href="#finasrapor">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z" />
+                    </svg>                    <span class="sidebar-text" style="margin-left:15px;">Finans Raporları</span>
+                </a>
+            </span>
+            <span class="link-arrow">
+                <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+            </span>
+        </span>
+        @*<div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-app" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/rapor/gelirgiderraporu?yil=@Helpertype.currentyaer&ay=@Helpertype.Aylarlistwihtcomma">
+                        <i class="simple-icon-shuffle" style="color:#b8b8b4"></i>
+                        <span class="d-inline-block" style="margin-left:5px;">Gelir-Gider Raporu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-app" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li>
+                    <a href="/rapor/karzararraporu?yil=@Helpertype.currentyaer&ay=@Helpertype.Aylarlistwihtcomma">
+                        <i class="simple-icon-question" style="color:#b8b8b4"></i>
+                        <span class="d-inline-block" style="margin-left:5px;">Kar Zarar Raporu</span>
+                    </a>
+                </li>
+            </ul>
+        </div> *@
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-app" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/ErpSales/aylikkarne">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                        <span class="d-inline-block" style="margin-left:5px;">Aylık Karne</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-app" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/ErpSales/yillikkarne?yil=@Helpertype.currentyaer&ay=@Helpertype.Aylarlistwihtcomma">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                        <span class="d-inline-block" style="margin-left:5px;">Yıllık Karne</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        @*<div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-app" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/accountcode/accountcodelist">
+                        <i class="simple-icon-calculator" style="color:#b8b8b4"></i>
+                        <span class="d-inline-block" style="margin-left:5px;">Muhasebe Kodları</span>
+                    </a>
+                </li>
+            </ul>
+        </div> *@
+    </li>
+
+                    <li role="separator" class="dropdown-divider  border-gray-700"></li>
+}
+
+
+
+
+
+                <li class="nav-item">
+                    <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                          data-bs-toggle="collapse" data-bs-target="#submenu-salesreports">
+                        <span>
+                            <a href="#salersrapor">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z" />
+                                </svg>                                <span class="sidebar-text" style="margin-left:15px">Satış Raporları</span>
+                            </a>
+                        </span>
+                        <span class="link-arrow">
+                            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        </span>
+                    </span>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-salesreports" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpReport/personelperformans">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Personel Performans </span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-salesreports" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpReport/bayiperformans">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Bayi Performans </span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </li>
+                <li role="separator" class="dropdown-divider  border-gray-700"></li>
+
+
+
+
+
+
+                <li class="nav-item">
+                    <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                          data-bs-toggle="collapse" data-bs-target="#submenu-performans">
+                        <span>
+                            <a href="#performance">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                                    <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z" />
+                                </svg>                                <span class="sidebar-text" style="margin-left:15px">Performans</span>
+                            </a>
+                        </span>
+                        <span class="link-arrow">
+                            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        </span>
+                    </span>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-performans" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/kisiay" target="_blank">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Kişi / Ay</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-performans" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/kisigun" target="_blank">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Kişi / Gün</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-performans" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/markaay" target="_blank">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Marka / Ay</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-left:29px;" class="multi-level collapse "
+                         role="list" id="submenu-performans" aria-expanded="false">
+                        <ul class="flex-column nav">
+                            <li class="nav-item">
+                                <a href="/ErpSales/markagun" target="_blank">
+                                    <span>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        </svg>                                    <span class="d-inline-block" style="margin-left:5px;">Marka / Gün</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </li>
+
+                <li role="separator" class="dropdown-divider  border-gray-700"></li>
+
+
+
+
+
+
+                @if (CurrentSession.Roles.Contains("Yonetim"))
+                {
+    <li class="nav-item">
+        <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+              data-bs-toggle="collapse" data-bs-target="#submenu-definition">
+            <span>
+                <a href="#definition" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                    </svg>
+                </a>
+                <span class="sidebar-text" style="margin-left:15px">Tanımlama</span>
+            </span>
+            <span class="link-arrow">
+                <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+            </span>
+        </span>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-definition" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/AppUser/GetAllAppUsers">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                <span class="d-inline-block" style="margin-left:5px;">Kullanıcılar</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-definition" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/AppUser/Add">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            </svg>                                <span class="d-inline-block" style="margin-left:5px;">Kullanıcı Ekle</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        @*<div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-definition" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/definition/salestargetslist">
+                        <i class="simple-icon-plus" style="color:#b8b8b4"></i>
+                        <span class="d-inline-block" style="margin-left:5px;">Satış Hedefi</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-left:29px;" class="multi-level collapse "
+             role="list" id="submenu-definition" aria-expanded="false">
+            <ul class="flex-column nav">
+                <li class="nav-item">
+                    <a href="/definition/productprice">
+                        <i class="simple-icon-pin" style="color:#b8b8b4"></i>
+                        <span class="d-inline-block" style="margin-left:5px;">Ürün Fiyat Güncelle </span>
+                    </a>
+                </li>
+            </ul>
+        </div> *@
+
+    </li>
+                    <li role="separator" class="dropdown-divider  border-gray-700"></li>
+}
+
+
+
+
+
+
+
+
+                <li class="nav-item">
+                    <a href="https://www.gencpaonline.com/" target="_blank">
+                        <span class="nav-link d-flex justify-content-between align-items-center"
+                              data-bs-target="#https://www.gencpaonline.com/">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wechat" viewBox="0 0 16 16">
+                                    <path d="M11.176 14.429c-2.665 0-4.826-1.8-4.826-4.018 0-2.22 2.159-4.02 4.824-4.02S16 8.191 16 10.411c0 1.21-.65 2.301-1.666 3.036a.324.324 0 0 0-.12.366l.218.81a.616.616 0 0 1 .029.117.166.166 0 0 1-.162.162.177.177 0 0 1-.092-.03l-1.057-.61a.519.519 0 0 0-.256-.074.509.509 0 0 0-.142.021 5.668 5.668 0 0 1-1.576.22ZM9.064 9.542a.647.647 0 1 0 .557-1 .645.645 0 0 0-.646.647.615.615 0 0 0 .09.353Zm3.232.001a.646.646 0 1 0 .546-1 .645.645 0 0 0-.644.644.627.627 0 0 0 .098.356Z" />
+                                    <path d="M0 6.826c0 1.455.781 2.765 2.001 3.656a.385.385 0 0 1 .143.439l-.161.6-.1.373a.499.499 0 0 0-.032.14.192.192 0 0 0 .193.193c.039 0 .077-.01.111-.029l1.268-.733a.622.622 0 0 1 .308-.088c.058 0 .116.009.171.025a6.83 6.83 0 0 0 1.625.26 4.45 4.45 0 0 1-.177-1.251c0-2.936 2.785-5.02 5.824-5.02.05 0 .1 0 .15.002C10.587 3.429 8.392 2 5.796 2 2.596 2 0 4.16 0 6.826Zm4.632-1.555a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0Zm3.875 0a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0Z" />
+                                </svg>
+                                <span class="sidebar-text" style="margin-left:15px;">Bayi</span>
+                            </span>
+                            <span>
+                                <span class="badge badge-sm bg-secondary ms-1 text-gray-800">B2B</span>
+                            </span>
+                        </span>
+
+                    </a>
+                </li>
+
+                <li role="separator" class="dropdown-divider  border-gray-700"></li>
+                <li class="nav-item">
+                    <a href="~/Announcements/duyurular.html">
+                        <span class="nav-link d-flex justify-content-between align-items-center"
+                              data-bs-target="#/Announcements/duyurular">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-megaphone" viewBox="0 0 16 16">
+                                    <path d="M13 2.5a1.5 1.5 0 0 1 3 0v11a1.5 1.5 0 0 1-3 0v-.214c-2.162-1.241-4.49-1.843-6.912-2.083l.405 2.712A1 1 0 0 1 5.51 15.1h-.548a1 1 0 0 1-.916-.599l-1.85-3.49a68.14 68.14 0 0 0-.202-.003A2.014 2.014 0 0 1 0 9V7a2.02 2.02 0 0 1 1.992-2.013 74.663 74.663 0 0 0 2.483-.075c3.043-.154 6.148-.849 8.525-2.199V2.5zm1 0v11a.5.5 0 0 0 1 0v-11a.5.5 0 0 0-1 0zm-1 1.35c-2.344 1.205-5.209 1.842-8 2.033v4.233c.18.01.359.022.537.036 2.568.189 5.093.744 7.463 1.993V3.85zm-9 6.215v-4.13a95.09 95.09 0 0 1-1.992.052A1.02 1.02 0 0 0 1 7v2c0 .55.448 1.002 1.006 1.009A60.49 60.49 0 0 1 4 10.065zm-.657.975 1.609 3.037.01.024h.548l-.002-.014-.443-2.966a68.019 68.019 0 0 0-1.722-.082z" />
+                                </svg>
+                                <span class="sidebar-text" style="margin-left:15px;">Duyurular</span>
+                            </span>
+                            <span>
+                                <span class="badge badge-sm bg-secondary ms-1 text-gray-800">Yeni</span>
+                            </span>
+                        </span>
+
+                    </a>
+                </li>
+
+                <li role="separator" class="dropdown-divider  border-gray-700"></li>
+
+                <li class="nav-item" style="width:110px; margin-left:50px;">
+                    <a href="/Auth/Logout">
+                        <span class="nav-link d-flex justify-content-between align-items-center"
+                              data-bs-target="#/Auth/Logout">
+                            <span>
+                                <i class="icon icon-mdi" style="color:#ffcc00"></i>
+                                <span class="sidebar-text" style="margin-left:20px">Çıkış</span>
+                            </span>
+                            <span class="link-arrow">
+                                <svg style="color:#990303" class="icon icon-mdi" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            </span>
+                        </span>
+                    </a>
+
+                </li>
+
+            </ul>
+        </div>
+
+    </nav>
+
+
+
+
+    <main id="content" class="content2" >
+
+        <div>
+            <div class="row" style="padding-left:16px; padding-right:16px;">
+                <button onclick="closeNav()" class="sidebar-toggle me-3 btn btn-icon-only d-none d-lg-inline-block align-items-center justify-content-center"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg></button>
+                <button onclick="openNav()" class="sidebar-toggle me-3 btn btn-icon-only d-none d-lg-inline-block align-items-center justify-content-center" ><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg></button>
+                @RenderBody()
+            </div>
+        </div>
+
+    </main>
+
+
+
+
+
+
+    <script>
+           var isyonetim = "@CurrentSession.Roles.Contains("Yonetim")";
+    </script>
+    <script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/admin/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/admin/assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="/admin/dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="/admin/dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="/admin/dist/js/custom.min.js"></script>
+    <!--This page JavaScript -->
+    <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
+    <!-- Charts js Files -->
+    <script src="/admin/assets/libs/flot/excanvas.js"></script>
+    <script src="/admin/assets/libs/flot/jquery.flot.js"></script>
+    <script src="/admin/assets/libs/flot/jquery.flot.pie.js"></script>
+    <script src="/admin/assets/libs/flot/jquery.flot.time.js"></script>
+    <script src="/admin/assets/libs/flot/jquery.flot.stack.js"></script>
+    <script src="/admin/assets/libs/flot/jquery.flot.crosshair.js"></script>
+    <script src="/admin/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+
+    <script src="/admin/assets/extra-libs/multicheck/jquery.multicheck.js"></script>
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+    @*<script src="assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.js"></script>*@
+    <script src="~/admin/assets/libs/select2/dist/js/select2.min.js"></script>
+    <script src="/admin/assets/libs/moment/min/moment-with-locales.min.js"></script>
+    <script src="/admin/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="/admin/assets/libs/bootstrap-datepicker/dist/locales/bootstrap-datepicker.tr.min.js"></script>
+    <script src="/admin/assets/libs/toastr/build/toastr.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    @*<script src="/admin/assets/datatables/datatables.defaults.js"></script>*@
+    <script src="/admin/dist/scripts.js"></script>
+
+    <script src="~/js/site.js"></script>
+    <!-- Core -->
+    <script src="~/volt/html&css/vendor/popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="~/volt/html&css/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Vendor JS -->
+    <script src="~/volt/html&css/vendor/onscreen/dist/on-screen.umd.min.js"></script>
+
+    <!-- Slider -->
+    <script src="~/volt/html&css/vendor/nouislider/distribute/nouislider.min.js"></script>
+
+    <!-- Smooth scroll -->
+    <script src="~/volt/html&css/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+
+    <!-- Charts -->
+    <script src="~/volt/html&css/vendor/chartist/dist/chartist.min.js"></script>
+    <script src="~/volt/html&css/vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+
+    <!-- Datepicker -->
+    <!-- Sweet Alerts 2 -->
+    <script src="~/volt/html&css/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Moment JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+
+    <!-- Vanilla JS Datepicker -->
+    <!-- Notyf -->
+    <script src="~/volt/html&css/vendor/notyf/notyf.min.js"></script>
+
+    <!-- Simplebar -->
+    <script src="~/volt/html&css/vendor/simplebar/dist/simplebar.min.js"></script>
+
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Volt JS -->
+
+    <script src="~/volt/html&css/assets/js/volt.js"></script>
+    <script src="/admin/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="/admin/assets/libs/bootstrap-datepicker/dist/locales/bootstrap-datepicker.tr.min.js"></script>
+    <script src="~/tema/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="~/tema/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/tema/js/vendor/moment.min.js"></script>
+    <script src="~/tema/js/vendor/fullcalendar.min.js"></script>
+    <script src="~/tema/js/vendor/perfect-scrollbar.min.js"></script>
+    <script src="~/tema/js/vendor/bootstrap-notify.min.js"></script>
+    <script src="~/tema/js/vendor/select2.full.js"></script>
+    <script src="~/tema/js/vendor/bootstrap-datepicker.js"></script>
+    <script src="~/tema/js/vendor/Sortable.js"></script>
+    <script src="~/tema/js/vendor/bootstrap-tagsinput.min.js"></script>
+    <script src="~/tema/js/vendor/nouislider.min.js"></script>
+    <script src="~/tema/js/vendor/jquery.barrating.min.js"></script>
+    <script src="~/tema/js/vendor/cropper.min.js"></script>
+    <script src="~/tema/js/vendor/typeahead.bundle.js"></script>
+    <script src="~/tema/js/vendor/mousetrap.min.js"></script>
+    <script src="~/tema/js/dore-plugins/select.from.library.js"></script>
+    <script src="~/tema/js/vendor/dropzone.min.js"></script>
+    <script src="~/tema/js/dore.script.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+
+    <script src="/admin/assets/libs/moment/min/moment-with-locales.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="~/Toast/js/toast.js"></script>
+
+
+
+
+
+
+    @*   <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+
+    *@
+
+
+
+
+
+    <script src="~/Toast/js/toast.js"></script>
+    @RenderSection("Scripts", required: false)
+
+
+    @*<script>
+            $('a').attr('target', '_blank');
+        </script>*@
+    <script>
+        function openNav() {
+            document.getElementById("sidebarMenu").style.width = "260px";
+            document.getElementById("content").style.marginLeft = "260px";
+
+        }
+
+        function closeNav() {
+            document.getElementById("sidebarMenu").style.width = "0";
+            document.getElementById("content").style.marginLeft = "0";
+        }
+    </script>
+
+
+
+</body>
+
+
+</html>

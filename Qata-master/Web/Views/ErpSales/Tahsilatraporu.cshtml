@@ -1,0 +1,162 @@
+﻿@model dynamic
+
+
+
+@{ ViewData["Title"] = "Stok Maliyet"; }
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var recordtable;
+        var _defaulttablename = "stokmaliyetQuery";
+
+
+
+        var tip;
+        var stock = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplammaliyetdizi = [];
+
+        $(function () {
+            $('#recordtable').DataTable({
+                dom: 'Bfrtip',
+                pageLength: 50,
+                paging: true,
+                searching: true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here
+                }],
+
+            });
+
+
+            $(".dataTable tbody").on("click", "a.btnsearch", function () {
+                var text = $(this).attr("data-text");
+                $('input[type=search]').val(text);
+                $('input[type=search]').keyup();
+                if (marka == '' || marka == null) {
+                    $('.filtre_silici').addClass('hidden');
+                }
+            });
+
+
+        });
+
+        /**/</script>
+
+
+}
+
+
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Tahsilat Raporu
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card">
+
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-body">
+
+
+                    <div class="table-responsive">
+
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:12px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+                                    <th> Sorumlu </th>
+                                    <th>Kod </th>
+                                    <th> Ünvan  </th>
+                                    <th>GECEN GUN  </th>
+                                    <th>Tutar </th>
+                                    <th>Modül </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            <a class=" btnsearch" data-text="@item.temsilci">@item.temsilci</a>
+                                        </td>
+                                        <td>
+                                            <a class=" btnsearch" data-text="@item.kod">@item.kod</a>
+
+                                        </td>
+                                        <td>
+                                            <a class="btnsearch" data-text=" @item.unvan"> @item.unvan</a>
+                                        </td>
+                                        <td>
+
+                                            @item.GECEN_GUN
+                                        </td>
+
+                                        <td>
+                                            @string.Format("{0:C0}", item.TUTAR)
+
+                                        </td>
+
+                                        @if (item.MODÜL == "VADE GEÇMİŞ!")
+                                        {
+                                            <td style="background-color: #d72f2f" class="text-center text-white">
+
+                                                @item.MODÜL
+                                            </td>
+ }
+                                        else
+                                        {
+                                            <td>
+
+                                                @item.MODÜL
+                                            </td>
+}
+
+
+
+
+                                    </tr>
+}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

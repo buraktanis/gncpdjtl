@@ -1,0 +1,94 @@
+﻿
+body {
+    font-family: Arial !important;
+    font-weight: 600 !important;
+    table-layout: fixed;
+}
+
+table.dataTable {
+    border: 1px solid #ededed
+}
+
+table.dataTable td {
+    
+    border: 2px solid #f3f3f3;
+    outline: initial !important;
+}
+
+table tbody td {
+    border-bottom: 1px solid #f3f3f3;
+    outline: initial !important;
+    font-family: "Open Sans",sans-serif;
+    font-weight: 400;
+}
+
+
+
+table tbody :hover {
+    background-color: #ededed;
+}
+
+.card .card-body {
+    padding: 1.10rem;
+}
+
+.tabletitle {
+    font-size: 18px;
+}
+
+.baslik {
+    width: 150px;
+}
+
+.aynu {
+    font-size: 14px;
+    color: black;
+}
+
+.toplamnu {
+    font-size: 16px;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.toplamay {
+    font-size: 14px;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.toplamortalama {
+    font-size: 14px;
+    color: #66962b;
+    font-weight: bold;
+}
+
+.first-level .has-arrow::after {
+    top: 16px;
+}
+
+/*table#recordtable thead {
+    font-family: Nunito,sans-serif;
+    border: 3px solid #000000;
+    background-color: #FFFFFf;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    font-size: 1.10rem;
+    font-weight: bold;
+}*/
+
+
+/*table#recordtable tbody {
+    font-family: Nunito,sans-serif;
+    border: 3px solid #000000;
+    background-color: #FFFFFF;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    font-size: 1rem;
+}
+    */
+.table {
+    color: rgba(17, 24, 39, 0.075);
+}

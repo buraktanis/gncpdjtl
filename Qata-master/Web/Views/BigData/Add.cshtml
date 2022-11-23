@@ -1,0 +1,416 @@
+﻿
+@model Web.Models.BigdataViewModel
+
+@{
+    ViewData["Title"] = "AddbigData";
+}
+
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Bigdata
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+        <div class="pt-3 bg-white col-md-12" style="padding-right:2%;margin-top:10px">
+
+            <form class="form-horizontal" asp-action="Add">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!--Müşteri Bilgileri-->
+                <div class="row   ">
+
+                    <h4 class="card-title pl-3 pt-3 col-sm-12 acco"><strong>Müşteri Bilgileri</strong> </h4>
+
+                    <hr class="container-fluid bg-light" />
+
+                    <div class="col-md-6 ">
+                        <!---->
+                        <div class="card ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Name" class="text-end control-label col-form-label">Müşteri Adı*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="bigData.Name" type="text" class="form-control">
+                                            <input asp-for="bigData.Id" hidden class="form-control">
+
+                                            <span asp-validation-for="bigData.Name" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    @*<div class="form-group row">
+                                            <div class="col-sm-3">
+                                                <label asp-for="bigData.bigDataClass" class="text-end control-label col-form-label">Müşteri Sınıfı*</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownListFor(m => m.bigData.bigDataClass, (List<SelectListItem>)Model.bigDataClasses, new { @class = "form-control" })
+                                                <span asp-validation-for="bigDataClasses" class="text-danger"></span>
+                                            </div>
+
+                                        </div>*@
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.KindOf" class=" text-end control-label col-form-label">Müşteri Türü*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.bigData.KindOf, (List<SelectListItem>)Model.KindOfbigDatas, new { @class = "form-control" })
+                                            <span asp-validation-for="bigData.KindOf" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Status" class=" text-end control-label col-form-label">Müşteri Durumu*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.bigData.Status, (List<SelectListItem>)Model.bigDataStatus, new { @class = "form-control" })
+                                            <span asp-validation-for="bigData.Status" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 ">
+                        <!---->
+                        <div class=" pl-3 pr-3 ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.PersonInCharge" class="text-end control-label col-form-label">Yetkilisi*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="bigData.PersonInCharge" class="form-control">
+                                            <span asp-validation-for="bigData.PersonInCharge" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Representative" class="text-end control-label col-form-label">Temsilcisi*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.bigData.Slsman, (List<SelectListItem>)Model.Representatives, new { @class = "form-control" })
+                                            <span asp-validation-for="bigData.Slsman" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Type" class=" text-end control-label col-form-label">Müşteri Tipi*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.bigData.Type, (List<SelectListItem>)Model.bigDataTypes, new { @class = "form-control" })
+                                            <span asp-validation-for="bigData.Type" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+                                    @*<div class="form-group row" >
+                                            <div class="col-sm-3">
+                                                <label id="taxandtcNumberlabel" asp-for="bigData.TaxandtcNumber" data-leng="10" class="text-end control-label col-form-label">Vergi No*</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input asp-for="bigData.TaxandtcNumber" class="form-control">
+                                                <span asp-validation-for="bigData.TaxandtcNumber" class="text-danger"></span>
+                                            </div>
+
+                                        </div>*@
+                                    <div class="form-group row" id="taxAdministration">
+                                        <div class="col-sm-3">
+                                            <label id="taxandtcNumberlabel" asp-for="bigData.TaxAdministration" data-leng="10" class="text-end control-label col-form-label">Vergi No*</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input asp-for="bigData.TaxAdministration" class="form-control">
+                                            <span asp-validation-for="bigData.TaxAdministration" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <a href="#" c class="tcAndVergiKontrol btn btn-info"> Kontrol Et</a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="tcIdentityNumber">
+                                        <div class="col-sm-3">
+                                            <label id="taxandtcNumberlabel" asp-for="bigData.TcIdentityNumber" data-leng="10" class="text-end control-label col-form-label">Tc No*</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input asp-for="bigData.TcIdentityNumber" class="form-control">
+                                            <span asp-validation-for="bigData.TcIdentityNumber" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <a href="#" c class="tcAndVergiKontrol btn btn-info">Kontrol Et</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h4 class="card-title pl-3 pt-3 col-sm-12"><strong>İletişim Bilgileri</strong></h4>
+                    <hr class="container-fluid bg-light" />
+
+
+                    <div class="col-md-6">
+                        <!---->
+                        <div class="cad pl-3 pr-3 ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Email" class="text-end control-label col-form-label">E-Posta 1*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="bigData.Email" class="form-control">
+                                            <span asp-validation-for="bigData.Email" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Email1" class="text-end control-label col-form-label">E-Posta 2</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="bigData.Email1" class="form-control">
+                                            <span asp-validation-for="bigData.Email1" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Email2" class="text-end control-label col-form-label">E-Posta 3</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="bigData.Email2" class="form-control">
+                                            <span asp-validation-for="bigData.Email2" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Phone" class=" text-end control-label col-form-label">Telefon 1*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            <input asp-for="bigData.Phone" class="form-control" placeholder="Başında sıfır olmadan giriniz.">
+                                            <span asp-validation-for="bigData.Phone" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Phone1" class=" text-end control-label col-form-label">Telefon 2</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            <input asp-for="bigData.Phone1" class="form-control" placeholder="Başında sıfır olmadan giriniz.">
+                                            <span asp-validation-for="bigData.Phone1" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!---->
+                        <div class="cad pl-3 pr-3 ">
+                            <div class="form-horizontal">
+
+                                <div class="card-body ">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Region" class=" text-end control-label col-form-label">Bölge*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.bigData.Region, (List<SelectListItem>)Model.Regions, new { @class = "form-control" })
+
+                                        </div>
+                                        <span asp-validation-for="bigData.Region" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.City" class="text-end control-label col-form-label">İl*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <select asp-for="bigData.City" class="form-control citySelection1">
+                                                @foreach (var item in Model.Cities)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            </select>
+
+                                            @* @Html.DropDownListFor(m => m.bigData.City, (List<SelectListItem>)Model.Cities, new { @class = "form-control" })*@
+
+                                        </div>
+                                        <span asp-validation-for="bigData.City" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Town" class="text-end control-label col-form-label">İlce*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.bigData.Town, (new List<SelectListItem> { }), new { @class = "form-control" })
+                                            @*@Html.DropDownListFor(m => m.bigData.Town, (List<SelectListItem>)Model.Cities, new { @class = "form-control" })*@
+                                            <span asp-validation-for="bigData.Town" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="bigData.Address" class=" text-end control-label col-form-label">Adres*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+
+                                            <textarea asp-for="bigData.Address" class="form-control"></textarea>
+                                            <span asp-validation-for="bigData.Address" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class=" col-lg-12  pb-3">
+                        <div class="float-sm-right">
+                            <a class="btn btn-secondary mr-1 btn-raised " href="/bigData/Index"> Vazgeç</a>
+                            <button type="submit" class="btn btn-warning mr-1 btn-raised"> Kaydet</button>
+
+
+                            <style>
+                                .btn-raised {
+                                    transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+                                    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+                                }
+
+                                    .btn-raised:not([disabled]):active,
+                                    .btn-raised:not([disabled]):focus,
+                                    .btn-raised:not([disabled]):hover {
+                                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                                        transform: translate3d(0, -1px, 0)
+                                    }
+                            </style>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        $(".tcAndVergiKontrol").click(function () {
+            var numar;
+            if ($("#Customer_Type option:selected").text() == "Firma") {
+                numar = $("#Customer_TaxAdministration").val()
+            } else {
+
+                numar = $("#Customer_TcIdentityNumber").val()
+            }
+
+            $.LoadingOverlay("show");
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/TcAndVergiKontrol?id=' + numar + "&type=" + $("#Customer_Type option:selected").val(),
+                success: function (msg) {
+                    $.LoadingOverlay("hide");
+                    if (msg.success) {
+
+                        $.alert("Her hangi bir cari bulunamadı");
+                    } else {
+                        $.alert(msg.message);
+                    }
+                }
+
+
+            });
+        });
+
+
+
+        $("#tcIdentityNumber").hide();
+
+        $('#Customer_Type').on('change', function () {
+
+
+            if ($("#Customer_Type option:selected").text() == "Firma") {
+                $("#taxAdministration").show()
+                $("#tcIdentityNumber").hide();
+            } else {
+                $("#taxAdministration").hide()
+                $("#tcIdentityNumber").show();
+            }
+
+        });
+
+        $('.citySelection1').change(function () {
+            var id = $(this).val();
+            $('.townSelection1').empty();
+            $('.townSelection1').append('<option>Ilce seciniz</option>');
+            GetTowns(id);
+        });
+
+        function GetTowns(cityId) {
+            var id = cityId;
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/GetTowns/' + id,
+                success: function (msg) {
+                    $('#bigData_Town').html('');
+                    msg.data.forEach(function (item) {
+                      
+                        $('#bigData_Town').append('<option value=' + item.name + '>' + item.name + '</option>');
+                    });
+
+                }
+
+
+            });
+        }
+    </script>
+}

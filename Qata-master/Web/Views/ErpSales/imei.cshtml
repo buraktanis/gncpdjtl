@@ -1,0 +1,175 @@
+﻿@model imeiModel
+
+@{ ViewData["Title"] = "Şiparişler";
+    }
+
+
+
+
+
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    IMEI Sorgulama
+                </h3>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-12 ">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="form-row">
+
+
+                    <div class="form-group col-md-10 p-3">
+
+                        <form action="/ErpSales/imei" method="get">
+
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    <input class="form-control" id="imei" name="imei" />
+
+                                </div>
+                                <div class="col-md-4">
+                                    <button style="background-color:#f0bc74;" class="btn" type="submit">Sorgula</button>
+                                </div>
+
+
+
+                            </div>
+
+
+
+                        </form>
+
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="card mb-3">
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                    <thead class="thead-light" style="background-color:#1f2937; height:42px;">
+
+                        <tr style="color:#F1F1F1; ">
+                            <th style="width:50%;">Alış</th>
+                            <th style="width:50%;">Alış Tarihi</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.model1)
+                        {
+            <tr>
+                <td>@item.CH_ÜNVANI</td>
+                <td>@item.TARİH</td>
+            </tr>
+}
+
+                    </tbody>
+                </table>
+
+                <div style="margin-top:50px;">
+
+                </div>
+
+                <table id="recordtable2" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                    <thead class="thead-light" style="background-color:#1f2937; height:42px;">
+
+                        <tr style="color:#F1F1F1; ">
+
+                            <th style="width:25%">Satış</th>
+                            <th style="width:25%">Satış Tarihi</th>
+                            <th style="width:25%">Satış Tutari(KDV Hariç)</th>
+                            <th style="width:25%">Temsilci</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.model2)
+                        {
+            <tr>
+                <td>
+                    @item.CH_ÜNVANI
+                </td>
+                <td>
+                    @item.TARİH
+                </td>
+                <td>
+                    @item.TOTAL
+                </td>
+                <td>
+                    @item.TEMSİLCİ
+                </td>
+            </tr>}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">var recordtable;
+        var recordtable2;
+        var _defaulttablename = "imeiQuery";
+        var Id;
+        var GonderiNo = 0;
+        var BelgeNo = 0;
+        var FirmaAdi;
+        var Tarih;
+        var bosluk;
+
+        $(function () {
+
+            $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                pageLength: 50,
+                paging: true,
+                searching: true,
+                break: true
+            });
+
+
+                $('#recordtable2').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                    },
+                    pageLength: 50,
+                    paging: true,
+                    searching: true
+
+                });
+
+        });</script>
+
+
+}

@@ -1,0 +1,196 @@
+﻿@model Entities.DTOs.ConfigurationTypeDto
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    @Model.Name
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+
+    <div class="bg-white  mt-4" style="">
+        <div class="row bg-white rounded">
+            <div class="col-sm-12">
+                
+                <div class="ml-auto mb-3 mt-3 text-right" style="text-align:right">
+                    <a href="/Configure/NewConfiguration/@Model.Id" class="btn btn-success btn-sm text-white"> <i class="simple-icon-plus"></i>Yeni</a>
+                    @*<i class="fas fa-filter border  p-2 mr-1 rounded-circle border-warning btn-outline-warning float-right"></i>
+                    <i class="fa  fa-ellipsis-h border p-2 mr-1 rounded-circle btn-outline-secondary float-right"></i>*@
+                </div>
+
+
+            </div>
+            <hr class="container-fluid bg-light pl-5">
+        
+            <div class="col-sm-12 table-responsive">
+                <table id="recordtable" class="table-bordered display" style="width:100%; font-size:16px;">
+                    <thead class="thead-light" style="background-color:#1f2937; height:42px;">
+                        <tr style="color:#F1F1F1;">
+                            <th class="pt-1 pb-1">İsim</th>
+                            <th class="pt-1 pb-1">Açıklama</th>
+                            <th class="pt-1 pb-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-color: #d1d5db; border-style: solid; border-width: 1px;">
+                            <td class="col-sm-1">İsim</td>
+                            <td class="col-sm-1"><i class="fa fa-ellipsis-v border border-info p-2 btn-outline-info " style="border-radius:30%;"></i></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            
+        </div>
+    </div>
+
+  
+
+
+
+
+
+
+    @section Scripts{
+
+        <script type="text/javascript">
+        var configurationType = "@Model.Id"
+            var recordtable;
+            var stock = 0;
+            var toplammaliyet = 0;
+            var stockdizi = [];
+            var toplammaliyetdizi = [];
+            var toplammaliyetdizi = [];
+            $(function () {
+
+                ///  $('#recordtable1_paginate').hide();
+
+                recordtable = $('#recordtable').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                    },
+                    "responsive": true,
+                    "serverSide": true,
+                    "searching": true,
+                    "lengthChange": false,
+                    //"jQueryUI": true,
+                    "stateSave": false,
+                    "pagingType": "full_numbers",
+                    "ajax": {
+                        "url": "/Configure/GetConfigurationDatatables",
+                        "type": "POST",
+                        "contentType": "application/json; charset=utf-8",
+                        "data": function (d) {
+                            d.additionalvalues = [configurationType];
+                            return JSON.stringify(d);
+                        }
+                    },
+                    "columns": [
+                        {
+                            "data": "Name"
+                        },
+                        {
+                            "data": "Info"
+                        },
+                        {
+                            "data": "Id", className: "text-center", "render": function (data, type, row) {
+                                var html = "" + "<a data-id='" + data + "' class='btn btn-warning   btn-sm text-black  detail' href='/Configure/UpdateConfiguration/" + data + "'>Güncelle</a>"
+                                    + "<a data-id='" + data + "' class='btn btn-danger  btn-sm text-white  delete'>Sil</a>"
+
+                                return html;
+                            }
+                        }
+                    ]
+                    ,
+                    "rowCallback": function (row, data) {
+
+                        /*  toplammaliyetdizi.push((data.fiyat * data.adet))*/
+
+                    }, "drawCallback": function (settings) {
+
+                        //toplammaliyet = 0;
+
+
+                        //toplammaliyetdizi.forEach((element) => {
+                        //    toplammaliyet = toplammaliyet + element;
+
+                        //})
+
+                        //$('#toplammaliyet').html(" Toplam: " + numeral(toplammaliyet).format('0,0') + " TL")
+
+                        //toplammaliyetdizi = [];
+
+
+
+                    }
+
+                });
+
+
+                $(".dataTable tbody").on("click", "a.delete", function () {
+                    var id = $(this).attr("data-id");
+
+                    $.confirm({
+                        title: 'Sil?',
+                        content: 'Bu kaydı silmek istediğinize emin misiniz?',
+                        autoClose: 'cancelAction|8000',
+                        buttons: {
+                            deleteUser: {
+                                text: 'Evet',
+                                action: function () {
+                                    $.LoadingOverlay("show");
+                                    $.ajax({
+                                        type: "Get",
+                                        url: "/Configure/DeleteConfiguration/" + id,
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (msg) {
+
+                                            $.LoadingOverlay("hide");
+                                            if (msg.success) {
+                                                recordtable.draw();
+                                                utilities.onscreen(utilities.dil_ceviri("Silindi", "kayit_basarili"));
+
+                                            } else {
+                                                recordtable.draw();
+                                                $.alert(msg.errors.map(e => e.message).join());
+                                            }
+
+
+
+                                        }
+                                    });
+                                }
+                            }, cancelAction: {
+                                text: 'Hayır',
+                                action: function () {
+
+
+                                }
+                            }
+                        }
+                    });
+                  
+
+
+
+                });
+
+
+            });
+
+        </script>
+
+    }

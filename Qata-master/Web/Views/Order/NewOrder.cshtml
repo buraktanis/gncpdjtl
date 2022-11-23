@@ -1,0 +1,357 @@
+﻿@model OrderViewModel
+
+@{ ViewData["Title"] = "NewOrder"; }
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Sipariş Oluştur
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+
+<div class="bg-white  mt-4">
+    <form class="form-horizontal" asp-action="NewOrder">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!--Müşteri Bilgileri-->
+        <div>
+
+
+
+
+            <div class="col-md-6">
+                <!---->
+                <div class="card pl-3 pr-3 mt-4 ">
+                    <div class="form-horizontal">
+                        <div class="card-body ">
+
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label asp-for="Order.CustomerId" class="text-end control-label col-form-label">Müşteri*</label>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <a href="#!" class="btn btn-secondary" id="cDiv">Müşteri</a>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="#!" class="btn btn-secondary" id="bakiye">Bakiye</a>
+                                </div>
+                                <div class="col-md-5" id="customerDivId">
+
+                                </div>
+                                <span asp-for="Order.CustomerId" class="text-danger"></span>
+
+                            </div>
+
+                            <div class="form-group row" id="CustomerConsignment">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Şubeler</label>
+
+                                </div>
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(m => m.Order.CustomerConsignmentId, new List<SelectListItem> { }, new { @class = "form-control" })
+                                    <span asp-validation-for="Order.CustomerConsignmentId" class="text-danger"></span>
+
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Teslimat*</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(m => m.Order.DeliveryType, (List<SelectListItem>)Model.DeliveryType, new { @class = "form-control" })
+                                    <span asp-validation-for="Order.DeliveryType" class="text-danger"></span>
+
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label asp-for="Order.Not" class="text-end control-label col-form-label">Sipariş Notu</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea asp-for="Order.Not" type="text" class="form-control"></textarea>
+
+                                    <span asp-validation-for="Order.Not" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+
+                                <label class="text-end control-label col-form-label mt-2">Tarih: @DateTime.Now</label>
+
+                                <div class="col-sm-6">
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!---->
+                <div class="card pl-3 pr-3 mt-4 ">
+                    <div class="form-horizontal">
+                        <div class="card-body ">
+
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Temsilci</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    @if (CurrentSession.Roles.Contains("Yonetim"))
+                                    {
+                        @Html.DropDownListFor(m => m.Order.Slsman, (List<SelectListItem>)Model.Slsmans, new { @class = "form-control" }) }
+                    else
+                    {
+        @Html.DropDownListFor(m => m.Order.Slsman, new List<SelectListItem> { new SelectListItem { Text = CurrentSession.Name, Value = CurrentSession.Name } }, new { @class = "form-control" })}
+
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Depo*</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(m => m.Order.WareHouse, (List<SelectListItem>)Model.WareHouses, new { @class = "form-control" })
+                                    <span asp-validation-for="Order.WareHouse" class="text-danger"></span>
+
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label class="text-end control-label col-form-label">Ödeme Tipi*</label>
+                                </div>
+                                <div class="col-sm-9  ">
+                                    @Html.DropDownListFor(m => m.Order.TypeOfPayment, (List<SelectListItem>)Model.PaymentTypes, new { @class = "form-control" })
+                                    <span asp-validation-for="Order.TypeOfPayment" class="text-danger"></span>
+
+                                </div>
+                                <span class="text-danger"></span>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class=" col-lg-12  pb-3 ">
+                <div>
+
+                    <input type="submit" value="Ürün Ekle " class="btn btn-warning rounded center mt-4" />
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        $('#bakiye').click(function () {
+            var id = $('#Order_CustomerId option:selected').attr("data-logoid");;
+            console.log(id)
+            $.LoadingOverlay("show");
+            $.ajax({
+                type: "Get",
+                url: "/Order/GetCariBakiyeByLogoId/" + id,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    $.LoadingOverlay("hide");
+                    if (msg.success) {
+                        $.alert("<h3 class='text-center'>Bakiye :" + numeral(msg.data.bakiye).format('0,0') + "</h3>");
+
+                    } else {
+
+                    }
+
+
+
+                }
+            });
+
+        });
+
+        function GetAddressCustomerId(id) {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Order/GetAddressCLIENTREF/' + id,
+                success: function (msg) {
+
+                    $('#Order_CustomerConsignmentId').html('');
+                    $('#Order_CustomerConsignmentId').append('<option value="0">Merkez</option>');
+                    msg.data.forEach(function (item) {
+
+                        $('#Order_CustomerConsignmentId').append('<option value=' + item.id + '>' + item.cityId + ' ' + item.townId + ' ' + item.address + '</option>');
+                    });
+
+                }
+
+            });
+        }
+
+
+
+        $('#cDiv').click(function () {
+            $.confirm({
+                title: 'Müşteriler',
+                content: $("#formsiparisdetay").html(),
+                columnClass: 'col-md-8',
+                containerFluid: true,
+                buttons: {
+                    formSubmit: {
+                        text: 'Kapat',
+                        btnClass: 'btn-blue'
+
+                    }
+
+                },
+                onOpen: function () {
+                    var self = this;
+                    recordtable = $('#recordtable').DataTable({
+                        "serverSide": true,
+                        "searching": true,
+                        "lengthChange": false,
+                        //"jQueryUI": true,
+                        "stateSave": false,
+                        "pagingType": "full_numbers",
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                        },
+                        "ajax": {
+                            "url": "/Customer/GetCustomerDatatables",
+                            "type": "POST",
+                            "contentType": "application/json; charset=utf-8",
+                            "data": function (d) {
+                                //d.dataqueryname = _defaulttablename;
+                                d.additionalvalues = [$("#Order_Slsman").val(), 1, "", "", "", "", ""];
+                                return JSON.stringify(d);
+                                return d;
+                            }
+                        },
+                        "columns": [
+                            {
+                                "data": "LogoId"
+                            },
+                            {
+                                "data": "Name"
+                            },
+                            {
+                                "data": "CariKodu"
+                            },
+                            {
+                                "data": "Id", className: "text-center", "render": function (data, type, row) {
+                                    var html = ""
+                                        + "<a data-logoid='" + row.LogoId + "'  data-name='" + row.Name + "'  data-id='" + data + "' class='btn btn-danger  btn-sm text-white  sec'>Seç</a>"
+
+                                    return html;
+                                }
+                            }
+                        ]
+                        ,
+                        "rowCallback": function (row, data) {
+
+
+                        }, "drawCallback": function (settings) {
+
+
+
+
+                        }
+
+
+
+
+                    });
+                },
+                onContentReady: function () {
+                    var jc = this;
+                    this.$content.find(".dataTable tbody").on("click", "a.sec", function () {
+                        //$('#customerDivId').show();
+                        var id = $(this).attr("data-id");
+                        var logoid = $(this).attr("data-logoid");
+                        var name = $(this).attr("data-name");
+                        $('#customerDivId').html("");
+                        $('#customerDivId').append('  <select class="form-control valid" data-val="true" data-val-required="The CustomerId field is required." id="Order_CustomerId" name="Order.CustomerId" aria-describedby="Order_CustomerId-error" aria-invalid="false" ><option data-logoid="' + logoid + '"  value=' + id + '>' + name + '</option> </select > ');
+                        GetAddressCustomerId(logoid)
+                        jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    });
+
+
+                    this.$content.find('form').on('submit', function (e) {
+                        // if the user submits the form by pressing enter in the field.
+                        e.preventDefault();
+                        jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    });
+                }
+            });
+        });
+
+
+
+    </script>
+    <script type="text/template" id="formsiparisdetay">
+
+        <div class="col-md-12">
+            <div class="table-responsive">
+
+                <table id="recordtable" class="table table-sm table-striped table-bordered dataTable">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th class="pt-1 pb-1">LogoId </th>
+                            <th class="pt-1 pb-1">Müşteri Adı</th>
+                            <th class="pt-1 pb-1">Cari Kodu</th>
+                            <th class="pt-1 pb-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </script>
+    <script type="text/template" id="formaddress">
+
+        <div class="col-md-12">
+            <div class="table-responsive">
+
+                <table id="recordtable" class="table table-bordered pt-0 pb-0">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th class="pt-1 pb-1">İl</th>
+                            <th class="pt-1 pb-1">İlçe</th>
+                            <th class="pt-1 pb-1">Adres</th>
+                            <th class="pt-1 pb-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </script>
+}

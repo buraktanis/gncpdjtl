@@ -1,0 +1,564 @@
+﻿@model Web.Models.CustomerViewModel
+
+@{ ViewData["Title"] = "AddCustomer"; }
+
+<style>
+     .posti {
+        border: 1px solid;
+        padding: 8px;
+        background-color:#083358;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        color:white
+    }
+</style>
+
+
+<div class="row ">
+
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Müşteri Tanımlama
+                    </h3>
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="dropdown show">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Müşteri Tanımlama &#10507;
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="#">Sevk Adresi</a>
+
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="pt-3 bg-white mt-4">
+
+        <form class="form-horizontal" asp-action="AddCustomer">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!--Müşteri Bilgileri-->
+            <div class="row   ">
+
+                <h4 class="card-title pl-3 pt-3 col-sm-12 acco"><strong>Müşteri Bilgileri</strong> </h4>
+
+                <hr class="container-fluid bg-light" />
+
+                <div class="col-md-6 ">
+                    <!---->
+                    <div class="card ">
+                        <div class="form-horizontal">
+                            <div class="card-body ">
+
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Name" class="text-end control-label col-form-label">Müşteri Adı*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Customer.Name" type="text" class="form-control">
+                                        <input asp-for="Customer.Id" hidden class="form-control">
+
+                                        <span asp-validation-for="Customer.Name" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.CustomerClass" class="text-end control-label col-form-label">Müşteri Sınıfı*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(m => m.Customer.CustomerClass, (List<SelectListItem>)Model.CustomerClasses, new { @class = "form-control" })
+                                        <span asp-validation-for="CustomerClasses" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.KindOf" class=" text-end control-label col-form-label">Müşteri Türü*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(m => m.Customer.KindOf, (List<SelectListItem>)Model.KindOfCustomers, new { @class = "form-control" })
+                                        <span asp-validation-for="Customer.KindOf" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Status" class=" text-end control-label col-form-label">Müşteri Durumu*</label>
+                                    </div>
+
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(m => m.Customer.Status, (List<SelectListItem>)Model.CustomerStatus, new { @class = "form-control" })
+                                        <span asp-validation-for="Customer.Status" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.PostCode" class="text-end control-label col-form-label">Posta Kodu*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Customer.PostCode" type="text" class="form-control">
+
+
+                                        <span asp-validation-for="Customer.PostCode" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+</div>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <!---->
+                    <div class=" pl-3 pr-3 ">
+                        <div class="form-horizontal">
+                            <div class="card-body ">
+
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.PersonInCharge" class="text-end control-label col-form-label">Yetkili İsim*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Customer.PersonInCharge" class="form-control">
+                                        <span asp-validation-for="Customer.PersonInCharge" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.PersonInChargeSurName" class="text-end control-label col-form-label">Yetkili Soyisim*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Customer.PersonInChargeSurName" class="form-control">
+                                        <span asp-validation-for="Customer.PersonInChargeSurName" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Representative" class="text-end control-label col-form-label">Temsilcisi*</label>
+                                    </div>
+
+                                    <div class="col-sm-9">
+
+                                        @Html.DropDownListFor(m => m.Customer.Slsman, (List<SelectListItem>)Model.Representatives, new { @class = "form-control " })
+
+                                        <span asp-validation-for="Customer.Slsman" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Type" class=" text-end control-label col-form-label">Müşteri Tipi*</label>
+                                    </div>
+
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(m => m.Customer.Type, (List<SelectListItem>)Model.CustomerTypes, new { @class = "form-control" })
+                                        <span asp-validation-for="Customer.Type" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                                @*<div class="form-group row" >
+                                    <div class="col-sm-3">
+                                    <label id="taxandtcNumberlabel" asp-for="Customer.TaxandtcNumber" data-leng="10" class="text-end control-label col-form-label">Vergi No*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                    <input asp-for="Customer.TaxandtcNumber" class="form-control">
+                                    <span asp-validation-for="Customer.TaxandtcNumber" class="text-danger"></span>
+                                    </div>
+
+                                    </div>*@
+                                <div class="form-group row" id="taxAdministration">
+                                    <div class="col-sm-3">
+                                        <label id="taxandtcNumberlabel" asp-for="Customer.TaxAdministration" data-leng="10" class="text-end control-label col-form-label">Vergi No*</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input asp-for="Customer.TaxAdministration" class="form-control">
+                                        <span asp-validation-for="Customer.TaxAdministration" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="#" c class="tcAndVergiKontrol btn btn-info2"> Kontrol </a>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group row" id="tcIdentityNumber">
+                                    <div class="col-sm-3">
+                                        <label id="taxandtcNumberlabel" asp-for="Customer.TcIdentityNumber" data-leng="10" class="text-end control-label col-form-label">Tc No*</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input asp-for="Customer.TcIdentityNumber" class="form-control">
+                                        <span asp-validation-for="Customer.TcIdentityNumber" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <a href="#" c class="tcAndVergiKontrol btn btn-info">Kontrol </a>
+                                    </div>
+                                </div>
+                                <div class="form-group row " id="taxInfo">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.TaxInfo" class="text-end control-label col-form-label">Vergi dairesi*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <textarea asp-for="Customer.TaxInfo" class="form-control" rows="3"></textarea>
+                                        <span asp-validation-for="Customer.TaxInfo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <h4 class="card-title pl-3 pt-3 col-sm-12"><strong>İletişim Bilgileri</strong></h4>
+                <hr class="container-fluid bg-light" />
+
+
+                <div class="col-md-6">
+                    <!---->
+                    <div class="cad pl-3 pr-3 ">
+                        <div class="form-horizontal">
+                            <div class="card-body ">
+
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Email" class="text-end control-label col-form-label">E-Posta 1*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Customer.Email" class="form-control">
+                                        <span asp-validation-for="Customer.Email" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Email1" class="text-end control-label col-form-label">E-Posta 2</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Customer.Email1" class="form-control">
+                                        <span asp-validation-for="Customer.Email1" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Email2" class="text-end control-label col-form-label">E-Posta 3</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for="Customer.Email2" class="form-control">
+                                        <span asp-validation-for="Customer.Email2" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Phone" class=" text-end control-label col-form-label">Telefon 1*</label>
+                                    </div>
+
+                                    <div class="col-sm-8">
+                                        <input asp-for="Customer.Phone" class="form-control" placeholder="Başında sıfır olmadan giriniz.">
+                                        <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <a href="#" class="telControl btn btn-info2">Kontrol </a>
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Phone1" class=" text-end control-label col-form-label">Telefon 2</label>
+                                    </div>
+
+                                    <div class="col-sm-9">
+                                        <input asp-for="Customer.Phone1" class="form-control" placeholder="Başında sıfır olmadan giriniz.">
+                                        <span asp-validation-for="Customer.Phone1" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!---->
+                    <div class="cad pl-3 pr-3 ">
+                        <div class="form-horizontal">
+
+                            <div class="card-body ">
+
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.City" class="text-end control-label col-form-label">İl*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select asp-for="Customer.City" class="form-control citySelection1">
+                                            @foreach (var item in Model.Cities)
+                                            {
+                                <option value="@item.Value">@item.Text</option>
+}
+                                        </select>
+
+                                        @* @Html.DropDownListFor(m => m.Customer.City, (List<SelectListItem>)Model.Cities, new { @class = "form-control" })*@
+
+                                    </div>
+                                    <span asp-validation-for="Customer.City" class="text-danger"></span>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Town" class="text-end control-label col-form-label">İlce*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(m => m.Customer.Town, (new List<SelectListItem> { }), new { @class = "form-control" })
+                                        @*Html.DropDownListFor(m => m.Customer.Town, (List<SelectListItem>
+                                            )Model.Cities, new { sclass = "form-control" })*@
+                                        <span asp-validation-for="Customer.Town" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Region" class=" text-end control-label col-form-label">Bölge*</label>
+                                    </div>
+
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(m => m.Customer.Region, (new List<SelectListItem> { }), new { @class = "form-control" })
+
+                                    </div>
+                                    <span asp-validation-for="Customer.Region" class="text-danger"></span>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        <label asp-for="Customer.Address" class=" text-end control-label col-form-label">Adres*</label>
+                                    </div>
+
+                                    <div class="col-sm-9">
+
+                                        <textarea asp-for="Customer.Address" class="form-control"></textarea>
+                                        <span asp-validation-for="Customer.Address" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                              
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class=" col-lg-12  pb-3">
+                    <div class="float-sm-right">
+                        <a class="btn btn-secondary mr-1 btn-raised " href="/Customer/GetAllCustomers"> Vazgeç</a>
+                        <button type="submit" id="buton" class="btn btn-warning mr-1 btn-raised"> Kaydet</button>
+
+
+                        <style>
+                            .btn-raised {
+                                transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+                                box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+                            }
+
+                                .btn-raised:not([disabled]):active,
+                                .btn-raised:not([disabled]):focus,
+                                .btn-raised:not([disabled]):hover {
+                                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                                    transform: translate3d(0, -1px, 0)
+                                }
+
+                            body {
+                                font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+                            }
+                        </style>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+</div>
+<p> &nbsp;</p>
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        var customerType = "@Model.Customer.Type";
+
+        $(function () {
+
+        if (customerType == "0") {
+            $("#taxAdministration").show()
+            $("#tcIdentityNumber").hide();
+        }
+
+        if (customerType == "1") {
+            $("#taxAdministration").hide()
+            $("#tcIdentityNumber").show();
+        }
+        if (customerType == "2") {
+            $("#taxAdministration").hide()
+            $("#tcIdentityNumber").hide();
+        }
+
+        });
+            $(".tcAndVergiKontrol").click(function () {
+                var numar;
+                if ($("#Customer_Type option:selected").text() == "Firma") {
+                    numar = $("#Customer_TaxAdministration").val()
+                } else {
+
+                    numar = $("#Customer_TcIdentityNumber").val()
+                }
+
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: 'GET',
+                    url: '/Customer/TcAndVergiKontrol?id=' + numar + "&type=" + $("#Customer_Type option:selected").val(),
+                    success: function (msg) {
+                        $.LoadingOverlay("hide");
+                        if (msg.success) {
+
+                            $.alert("Logoda cari bulunmadı. Kayıt açabilirsiniz.");
+                        } else {
+                            $.alert(msg.message);
+                        }
+                    }
+
+
+                });
+            });
+
+        $(".telControl").click(function () {
+
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: 'GET',
+                    url: '/Customer/TelControl?id=' + $("#Customer_Phone").val(),
+                    success: function (msg) {
+                        $.LoadingOverlay("hide");
+                        if (msg.success) {
+
+                            $.alert("Logoda cari bulunmadı. Kayıt açabilirsiniz.");
+                        } else {
+                            $.alert(msg.message);
+                        }
+                    }
+
+
+                });
+            });
+
+
+
+            $("#tcIdentityNumber").hide();
+
+            $('#Customer_Type').on('change', function () {
+
+
+                if ($("#Customer_Type option:selected").val() == "0") {
+                    $("#taxAdministration").show()
+                    $("#tcIdentityNumber").hide();
+                    $("#taxInfo").show();
+
+                }
+
+                if ($("#Customer_Type option:selected").val() == "1") {
+                    $("#taxAdministration").hide()
+                    $("#tcIdentityNumber").show();
+                    $("#taxInfo").show();
+                }
+                if ($("#Customer_Type option:selected").val() == "2") {
+                    $("#taxAdministration").hide()
+                    $("#tcIdentityNumber").hide();
+                    $("#taxInfo").hide();
+
+                }
+
+            });
+
+            $('.citySelection1').change(function () {
+                var id = $(this).val();
+                $('.townSelection1').empty();
+                $('#Customer_Region').empty();
+                $('.townSelection1').append('<option>Ilce seciniz</option>');
+                GetTowns(id);
+                GetArea(id)
+            });
+
+            function GetTowns(cityId) {
+                var id = cityId;
+                $.ajax({
+                    type: 'GET',
+                    url: '/Customer/GetTowns/' + id,
+                    success: function (msg) {
+                        console.log(msg);
+                        msg.data.forEach(function (item) {
+                            $('#Customer_Town').append('');
+                            $('#Customer_Town').append('<option value=' + item.name + '>' + item.name + '</option>');
+                        });
+
+                    }
+
+
+                });
+            }
+            function GetArea(cityId) {
+                var id = cityId;
+                $.ajax({
+                    type: 'GET',
+                    url: '/Customer/GetArea/' + id,
+                    success: function (msg) {
+                        msg.data.forEach(function (item) {
+                            $('#Customer_Region').append('');
+                            $('#Customer_Region').append('<option value=' + item.areaCode + '>' + item.area + '</option>');
+                        });
+
+                    }
+
+                });
+            }
+        document.getElementById('buton').addEventListener('submit', function () {
+            Swal.fire(
+                'Kaydedildi!',
+                '',
+                'success'
+            )
+        });
+        Swal.fire.onshow = function () {
+            setTimeout(Swal.fire.close, 600000);
+        }
+    </script>
+}

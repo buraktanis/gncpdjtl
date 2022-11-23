@@ -1,0 +1,261 @@
+﻿@model sozlesmeModel
+
+
+
+@{ ViewData["Title"] = "Stok Maliyet"; }
+
+
+@section Scripts{
+    <script type="text/javascript" language="”JavaScript”">window.history.forward(1);</script>
+
+    <script type="text/javascript">
+    var recordtable;
+        var _defaulttablename = "stokmaliyetQuery";
+
+
+
+        var tip;
+        var stock = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplammaliyetdizi = [];
+
+
+        $(function () {
+
+
+
+            $('#recordtable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here
+                }],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                pageLength: 10,
+                paging: true,
+                searching: true
+
+            });
+
+            $(".dataTable tbody").on("click", "a.btnsearch", function () {
+                var text = $(this).attr("data-text");
+                $('input[type=search]').val(text);
+                $('input[type=search]').keyup();
+                if (marka == '' || marka == null) {
+                    $('.filtre_silici').addClass('hidden');
+                }
+            });
+
+
+        });</script>
+
+
+}
+
+
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Bayi Sözleşmeleri
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="form-group col-md-2  p-3">
+            <label>Temsilci </label>
+            <input id="temsilci" class="form-control " placeholder="Temsilci" value="@CurrentSession.Username" disabled>
+        </div>
+        <div class="col-12">
+            <div class="card">
+
+            </div>
+        </div>
+        @if (CurrentSession.Roles.Contains("Yonetim"))
+        {
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+
+
+
+                        <div class="table-responsive">
+
+                            <table id="" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                                <thead style="background-color:#1f2937; height:42px;">
+
+                                    <tr style="color:#F1F1F1; ">
+                                        <th>Temsilci</th>
+                                        <th>Toplam Bayi</th>
+                                        <th>Toplam Onaylı Bayi</th>
+                                        <th>Toplam Onaylı Red </th>
+                                        <th>Toplam İşlem</th>
+                                        <th>Red İşlem Edilen</th>
+                                        <th>Kuryede Olan İşlem</th>
+                                        <th>Onaylı İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model.model1)
+                                    {
+
+
+
+
+
+                                        <tr>
+
+                                            <td>
+
+                                                @item.Temsilcisi
+                                            </td>
+                                            <td>
+                                                @item.toplambayi
+
+                                            </td>
+
+                                            <td>
+
+                                                @item.toplamonyli
+
+                                            </td>
+
+
+
+                                            <td>
+                                                @item.toplamret
+                                            </td>
+                                            <td>
+                                                @item.topalmislem
+                                            </td>
+                                            <td>
+                                                @item.red
+                                            </td>
+                                            <td>
+                                                @item.beklemekte
+                                            </td>
+                                            <td>
+                                                @item.onayli
+                                            </td>
+
+
+
+
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>}
+            <div class="col-12" style="margin-top:50px;">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px; ">
+                                <thead style="background-color:#1f2937; height:42px;">
+
+                                    <tr style="color:#F1F1F1; ">
+                                        <th>Temsilci</th>
+                                        <th>Adı</th>
+                                        <th>Durum</th>
+                                        <th>Onay</th>
+                                        <th>Toplam</th>
+                                        <th>Red</th>
+                                        <th>Bekleyen</th>
+                                        <th>Onaylı</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model.model2)
+                                    {
+
+
+                                        @if (item.Temsilcisi == CurrentSession.Username)
+                                        {
+
+
+                                            <tr>
+
+                                                <td>
+
+                                                    @item.Temsilcisi
+                                                </td>
+                                                <td>
+                                                    @item.Adi
+
+                                                </td>
+
+                                                <td>
+
+                                                    @item.active
+
+                                                </td>
+
+
+
+                                                <td>
+                                                    @item.approve
+                                                    @item.Approvetext
+                                                </td>
+                                                <td>
+                                                    @item.tislem
+                                                </td>
+                                                <td>
+                                                    @item.red
+                                                </td>
+                                                <td>
+                                                    @item.beklemekte
+                                                </td>
+                                                <td>
+                                                    @item.onayli
+                                                </td>
+
+
+
+
+
+                                            </tr>
+                                        }}
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</div>

@@ -1,0 +1,67 @@
+﻿@model Entities.Concrete.Setting
+
+@{
+    ViewData["Title"] = "NewConfiguration";
+}
+
+<div class="">
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Güncelle
+                    </h3>
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+
+</div>
+
+<div class="bg-white  mt-4 ">
+    <div class="row bg-white rounded">
+        <p> &nbsp; </p>
+        <div class="col-sm-6">
+            <form asp-action="Update">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">Şirket Unvanı</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label">Adres</label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <input asp-for="Id" hidden />
+                <div class="form-group">
+                    <label asp-for="WarehouseOfficer" class="control-label">Depo Yetkilisi/Telefonu:</label>
+                    <input asp-for="WarehouseOfficer" class="form-control" />
+                    <span asp-validation-for="WarehouseOfficer" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="WarehouseAddress" class="control-label">Depo Adresi:</label>
+                    <input asp-for="WarehouseAddress" class="form-control" />
+                    <span asp-validation-for="WarehouseAddress" class="text-danger"></span>
+                </div>
+                <p> &nbsp; </p>
+                <div class="form-group">
+                    <input type="submit" value="Kaydet" class="btn btn-primary" />
+                </div>
+                <p> &nbsp; </p>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

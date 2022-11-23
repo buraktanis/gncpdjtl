@@ -1,0 +1,198 @@
+﻿
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="">
+    <div class="">
+        <div class="col-md-12">
+
+            <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+                <ol class="breadcrumb ">
+
+                    <li class="breadcrumb-item active" aria-current="page ">
+                        <h3>
+                            Sipariş Ekranı
+                        </h3>
+                    </li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="bg-white  mt-4" style="margin-left:2%;margin-right:2%;">
+            <div class="row bg-white rounded">
+
+                <div class="col-sm-12">
+                    <div class="col-md-12" style="text-align:right">
+                        <a class="btn btn-outline-success" asp-action="Add">Ekle</a>
+                    </div>
+
+
+                </div>
+
+                <hr class="container-fluid bg-light pl-5" @*style="width:95%;"*@ />
+                <div class="col-sm-12">
+          
+                </div>
+                <div class="col-sm-12">
+                    <table id="recordtable" class="table table-sm table-striped table-bordered dataTable">
+                        <thead style="background-color:#1f2937; height:42px;">
+
+                            <tr style="color:#F1F1F1; ">
+                                <th class="pt-1 pb-1">İsim</th>
+                                <th class="pt-1 pb-1">Kod</th>
+                                <th class="pt-1 pb-1">logoId</th>
+                                <th class="pt-1 pb-1">Fiyat </th>
+                                <th class="pt-1 pb-1">Stok</th>
+                                <th class="pt-1 pb-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        var recordtable;
+        var stock = 0;
+        var toplammaliyet = 0;
+        var stockdizi = [];
+        var toplammaliyetdizi = [];
+        $(function () {
+
+            $('#searchDiv').click(function () {
+                recordtable.draw();
+            });
+
+
+
+            recordtable = $('#recordtable').DataTable({
+                "responsive": true,
+                "serverSide": true,
+                "searching": true,
+                "lengthChange": false,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "ajax": {
+                    "url": "/Item/GetDatatables",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        //d.dataqueryname = _defaulttablename;
+                        d.additionalvalues = [0];
+                        return JSON.stringify(d);
+                        return d;
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "Name"
+                    },
+                    {
+                        "data": "Code"
+                    },
+                    {
+                        "data": "logoId"
+                    },
+                    {
+                        "data": "Price"
+                    },
+                    {
+                        "data": "Stock"
+                    },
+
+                    {
+                        "data": "Id", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+
+                                + "<a data-id='" + data + "' class='btn btn-warning   btn-sm text-black detail' href='/Item/Update/" + data + "'>Güncelle</a>"
+                                + "<a data-id='" + data + "' class='btn btn-danger  btn-sm text-white delete'>Sil</a>"
+
+                            return html;
+                        }
+                    }
+                ]
+                ,
+                "rowCallback": function (row, data) {
+
+
+                }, "drawCallback": function (settings) {
+
+
+
+
+                }
+
+            });
+
+
+            $(".dataTable tbody").on("click", "a.delete", function () {
+                var id = $(this).attr("data-id");
+  
+                $.confirm({
+                    title: 'Sil?',
+                    content: 'Bu kaydı silmek istediğinize emin misiniz?" ',
+                    autoClose: 'cancelAction|8000',
+                    buttons: {
+                        deleteUser: {
+                            text: 'EVET',
+                            action: function () {
+
+                                $.LoadingOverlay("show");
+                                $.ajax({
+                                    type: "Get",
+                                    url: "/Item/Delete/" + id,
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (msg) {
+
+                                        $.LoadingOverlay("hide");
+                                        console.log(msg)
+                                        if (msg.success) {
+                                            recordtable.draw();
+
+                                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                                        } else {
+                                            recordtable.draw();
+                                            $.alert(msg.errors.map(e => e.message).join());
+                                        }
+
+
+
+                                    }
+                                });
+                            }
+                        }, cancelAction: {
+                            text: 'Hayır',
+                            action: function () {
+
+                            }
+                        }
+                    }
+                });
+            });
+
+
+        });
+
+    </script>
+
+}

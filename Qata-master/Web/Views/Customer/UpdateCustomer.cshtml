@@ -1,0 +1,1040 @@
+﻿@model Web.Models.CustomerViewModel
+
+
+<style>
+     .post {
+        border: 1px solid;
+        padding: 8px;
+        background-color:#79A8A9;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        color:white
+    }
+     .posti {
+        border: 1px solid;
+        padding: 8px;
+        background-color:#083358;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        color:white
+    }
+     .postik {
+        border: 1px solid;
+        padding: 8px;
+        background-color:#4D727E;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        color:white
+    }
+     .postikl {
+        border: 1px solid;
+        padding: 8px;
+        background-color: #70a6b8;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        color:white
+    }
+
+</style>
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Müşteri Tanımlama
+                    </h3>
+
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+    <div class="row ">
+
+        <div class="card d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 col-md-2">
+            <div class="card-body d-block w-100 p-4 text-center">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item categoryitem active">
+                        <a href="/Customer/UpdateCustomer/@Model.Customer.Id" class="nav-content-bttn open-font  text-white">
+                            Müşteri Tanımlama <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
+
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="card d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 col-md-2">
+            <div class="card-body d-block w-100 p-4 text-center">
+                <ul class="list-group list-group-flush">
+
+
+                    @if (Model.Customer.ConfirmationType == 1)
+                    {
+        <li class="list-group-item categoryitem post" data-name="Borsa">
+            <a href="/Customer/CustomerConsignmentAdd/@Model.Customer.Id" class="nav-content-bttn open-font text-white">
+                Sevk Adresi   <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
+            </a>
+        </li> }
+                    else
+                    {
+        <li class="list-group-item categoryitem post" data-name="Borsa">
+            <a href="#" class="nav-content-bttn open-font text-white" id="sevkAdresi">
+                Sevk Adresi  <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3 "></i>
+            </a>
+        </li>}
+
+
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="card d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 col-md-2">
+            <div class="card-body d-block w-100 p-4 text-center">
+                <ul class="list-group list-group-flush">
+
+
+                    @if (Model.Customer.ConfirmationType == 1)
+                    {
+
+
+        <li class="list-group-item categoryitem posti" data-name="Borsa">
+            <a id="callReport" href="#" class="nav-content-bttn open-font text-white">
+                Bayi Arama Analizi    <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
+            </a>
+        </li>
+}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 col-md-2">
+            <div class="card-body d-block w-100 p-4 text-center">
+                <ul class="list-group list-group-flush">
+
+                    @if (Model.Customer.ConfirmationType == 1)
+                    {
+
+
+        <li class="list-group-item categoryitem postik" data-name="Borsa">
+            <a id="myorders" href="#" class="nav-content-bttn open-font text-white">
+                Siparişler  <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
+            </a>
+        </li>
+
+}
+
+                </ul>
+            </div>
+        </div>
+        <div class="card d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 col-md-2">
+            <div class="card-body d-block w-100 p-4 text-center">
+                <ul class="list-group list-group-flush">
+                    @if (Model.Customer.ConfirmationType == 1)
+                    {
+
+        <li class="list-group-item categoryitem postikl" data-name="Borsa">
+            <a id="cariekstresi" href="#" class="nav-content-bttn open-font text-white">
+                Cari Ekstresi     <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
+            </a>
+        </li>}
+
+                </ul>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="pt-3 bg-white col-md-12">
+
+            <form class="form-horizontal" asp-action="UpdateCustomer">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!--Müşteri Bilgileri-->
+                <div class="row   ">
+
+                    <h4 class="card-title pl-3 pt-3 col-sm-12 acco"><strong>Müşteri Bilgileri</strong> <a href="#" class="btn btn-info2 float-right" id="logoUpdate" style="margin-right:5%; ">Cari Codu getir </a></h4>
+
+                    <hr class="container-fluid bg-light" />
+
+                    <div class="col-md-6 ">
+                        <!---->
+                        <div class="card ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Name" class="text-end control-label col-form-label">Müşteri Adı*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.Name" type="text" class="form-control">
+                                            <input asp-for="Customer.Id" hidden class="form-control">
+
+                                            <span asp-validation-for="Customer.Name" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.CustomerClass" class="text-end control-label col-form-label">Müşteri Sınıfı*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.Customer.CustomerClass, (List<SelectListItem>)Model.CustomerClasses, new { @class = "form-control" })
+                                            <span asp-validation-for="CustomerClasses" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.KindOf" class=" text-end control-label col-form-label">Müşteri Türü*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.Customer.KindOf, (List<SelectListItem>)Model.KindOfCustomers, new { @class = "form-control" })
+                                            <span asp-validation-for="Customer.KindOf" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Status" class=" text-end control-label col-form-label">Müşteri Durumu*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.Customer.Status, (List<SelectListItem>)Model.CustomerStatus, new { @class = "form-control" })
+                                            <span asp-validation-for="Customer.Status" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.PostCode" class="text-end control-label col-form-label">Posta Kodu*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.PostCode" type="text" class="form-control">
+
+
+                                            <span asp-validation-for="Customer.PostCode" class="text-danger"></span>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="form-group row ">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.CariKodu" class="text-end control-label col-form-label">CariKodu*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input value="@Model.Customer.CariKodu" class="form-control" disabled>
+                                            <span asp-validation-for="Customer.CariKodu" class="text-danger"></span>
+                                            <input asp-for="Customer.CariKodu" class="form-control" hidden>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 ">
+                        <!---->
+                        <div class=" pl-3 pr-3 ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.PersonInCharge" class="text-end control-label col-form-label">Yetkili İsim*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.PersonInCharge" class="form-control">
+                                            <span asp-validation-for="Customer.PersonInCharge" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.PersonInChargeSurName" class="text-end control-label col-form-label">Yetkili Soyisim*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.PersonInChargeSurName" class="form-control">
+                                            <span asp-validation-for="Customer.PersonInChargeSurName" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Slsman" class="text-end control-label col-form-label">Temsilcisi*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.Customer.Slsman, (List<SelectListItem>)Model.Representatives, new { @class = "form-control" })
+                                            <span asp-validation-for="Customer.Slsman" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Type" class=" text-end control-label col-form-label">Müşteri Tipi*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.Customer.Type, (List<SelectListItem>)Model.CustomerTypes, new { @class = "form-control" })
+                                            <span asp-validation-for="Customer.Type" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group row" id="taxAdministration">
+                                        <div class="col-sm-3">
+                                            <label id="taxandtcNumberlabel" asp-for="Customer.TaxAdministration" data-leng="10" class="text-end control-label col-form-label">Vergi No*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.TaxAdministration" class="form-control">
+                                            <span asp-validation-for="Customer.TaxAdministration" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row" id="tcIdentityNumber">
+                                        <div class="col-sm-3">
+                                            <label id="taxandtcNumberlabel" asp-for="Customer.TcIdentityNumber" data-leng="10" class="text-end control-label col-form-label">Tc No*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.TcIdentityNumber" class="form-control">
+                                            <span asp-validation-for="Customer.TcIdentityNumber" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row " id="taxInfo">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.TaxInfo" class="text-end control-label col-form-label">Vergi dairesi*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <textarea asp-for="Customer.TaxInfo" class="form-control" rows="3"></textarea>
+                                            <span asp-validation-for="Customer.TaxInfo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.LogoId" class="text-end control-label col-form-label">LogoId*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input value="@Model.Customer.LogoId" class="form-control" disabled>
+                                            <span asp-validation-for="Customer.LogoId" class="text-danger"></span>
+                                            <input asp-for="Customer.LogoId" hidden>
+                                        </div>
+
+                                        <input asp-for="Customer.ConfirmationType" hidden>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 ">
+                        <!---->
+                        <div class=" pl-3 pr-3 ">
+                            <div class="form-horizontal">
+                                <div class="card-body row ">
+
+
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h4 class="card-title pl-3 pt-3 col-sm-12"><strong>İletişim Bilgileri</strong></h4>
+                    <hr class="container-fluid bg-light" />
+
+
+                    <div class="col-md-6">
+                        <!---->
+                        <div class="cad pl-3 pr-3 ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Email" class="text-end control-label col-form-label">E-Posta 1*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.Email" type="email" class="form-control">
+                                            <span asp-validation-for="Customer.Email" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Email1" class="text-end control-label col-form-label">E-Posta 2</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.Email1" type="email" class="form-control">
+                                            <span asp-validation-for="Customer.Email1" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Email2" class="text-end control-label col-form-label">E-Posta 3</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.Email2" type="email" class="form-control">
+                                            <span asp-validation-for="Customer.Email2" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Phone" class=" text-end control-label col-form-label">Telefon 1*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.Phone" type="tel" class="form-control" placeholder="Başında sıfır olmadan giriniz.">
+                                            <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Phone1" class=" text-end control-label col-form-label">Telefon 2</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            <input asp-for="Customer.Phone1" type="tel" class="form-control" placeholder="Başında sıfır olmadan giriniz.">
+                                            <span asp-validation-for="Customer.Phone1" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!---->
+                        <div class="cad pl-3 pr-3 ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.City" class="text-end control-label col-form-label">İl*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <select asp-for="Customer.City" class="form-control citySelection1">
+                                                @foreach (var item in Model.Cities)
+                                                {
+                                    <option value="@item.Value">@item.Text</option>}
+                                            </select>
+
+                                            @* @Html.DropDownListFor(m => m.Customer.City, (List<SelectListItem>)Model.Cities, new { @class = "form-control" })*@
+
+                                        </div>
+                                        <span asp-validation-for="Customer.City" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Town" class="text-end control-label col-form-label">İlce*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.Customer.Town, (List<SelectListItem>)Model.Towns, new { @class = "form-control" })
+
+                                            @*Html.DropDownListFor(m => m.Customer.Town, (List<SelectListItem>
+                                                )Model.Cities, new { class = "form-control" })*@
+                                                <span asp-validation-for="Customer.Town" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Region" class=" text-end control-label col-form-label">Bölge*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(m => m.Customer.Region, (List<SelectListItem>)Model.Regions, new { @class = "form-control" })
+
+                                        </div>
+                                        <span asp-validation-for="Customer.Region" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Customer.Address" class=" text-end control-label col-form-label">Adres*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+
+                                            <textarea asp-for="Customer.Address" class="form-control"></textarea>
+                                            <span asp-validation-for="Customer.Address" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class=" col-lg-12  pb-3">
+                        <div class="float-sm-right">
+                            <a class="btn btn-secondary mr-1 btn-raised " href="/Order"> Vazgeç</a>
+                            <button type="submit" id="buton" class="btn btn-warning mr-1 btn-raised"> Kaydet</button>
+
+
+                            <style>
+                                .btn-raised {
+                                    transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+                                    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+                                }
+
+                                    .btn-raised:not([disabled]):active,
+                                    .btn-raised:not([disabled]):focus,
+                                    .btn-raised:not([disabled]):hover {
+                                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                                        transform: translate3d(0, -1px, 0)
+                                    }
+
+                                body {
+                                    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+                                }
+                            </style>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p> &nbsp;</p>
+
+
+
+    </div>
+
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        var id = "@Model.Customer.Id";
+        var customerType = "@Model.Customer.Type";
+        var cariKodu = "@Model.Customer.CariKodu";
+
+        $("#logoUpdate").click(function () {
+            $.LoadingOverlay("show");
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/LogoUpdate/' + id,
+                success: function (msg) {
+                    $.LoadingOverlay("hide");
+                    if (msg.success) {
+                        window.location.href = '/Customer/UpdateCustomer/' + id;
+
+                    } else {
+                        $.alert(msg.message);
+                    }
+                }
+
+
+            });
+        });
+        $("#sevkAdresi").click(function () {
+            $.alert("Bayi Onay Bekleniyor");
+        });
+
+
+        if (customerType == "0") {
+            $("#taxAdministration").show()
+            $("#tcIdentityNumber").hide();
+        }
+
+        if (customerType == "1") {
+            $("#taxAdministration").hide()
+            $("#tcIdentityNumber").show();
+        }
+        if (customerType == "2") {
+            $("#taxAdministration").hide()
+            $("#tcIdentityNumber").hide();
+        }
+        $('#Customer_Type').on('change', function () {
+
+
+            if ($("#Customer_Type option:selected").val() == "0") {
+                $("#taxAdministration").show()
+                $("#tcIdentityNumber").hide();
+            }
+
+            if ($("#Customer_Type option:selected").val() == "1") {
+                $("#taxAdministration").hide()
+                $("#tcIdentityNumber").show();
+            }
+            if ($("#Customer_Type option:selected").val() == "2") {
+                $("#taxAdministration").hide()
+                $("#tcIdentityNumber").hide();
+            }
+
+
+        });
+
+        $('.citySelection1').change(function () {
+            var id = $(this).val();
+            $('#Customer_Town').empty();
+            $('#Customer_Region').empty();
+            $('.townSelection1').append('<option>Ilce seciniz</option>');
+            GetTowns(id);
+            GetArea(id);
+        });
+
+        function GetTowns(cityId) {
+            var id = cityId;
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/GetTowns/' + id,
+                success: function (msg) {
+
+                    msg.data.forEach(function (item) {
+                        $('#Customer_Town').append('');
+                        $('#Customer_Town').append('<option value=' + item.name + '>' + item.name + '</option>');
+                    });
+
+                }
+
+
+            });
+        }
+        function GetArea(cityId) {
+            var id = cityId;
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/GetArea/' + id,
+                success: function (msg) {
+                    msg.data.forEach(function (item) {
+                        $('#Customer_Region').append('');
+                        $('#Customer_Region').append('<option value=' + item.areaCode + '>' + item.area + '</option>');
+                    });
+
+                }
+
+            });
+        }
+        $("#callReport").click(function () {
+
+
+            $.confirm({
+                title: 'Bayi Arama Analizi',
+                content: $("#formCallReport").html(),
+                columnClass: 'col-md-8',
+                containerFluid: true,
+                buttons: {
+                    formSubmit: {
+                        text: 'Kapat',
+                        btnClass: 'btn-blue'
+
+                    }
+
+                },
+                onOpen: function () {
+                    var self = this;
+                    recordtable1 = $('#recordtable1').DataTable({
+                        "serverSide": true,
+                        "paging": true,
+                        "searching": false,
+                        "lengthChange": false,
+                        //"jQueryUI": true,
+                        "stateSave": false,
+                        "pagingType": "full_numbers",
+                        "ajax": {
+                            "url": "/Customer/GetCallReportDatatables",
+                            "type": "POST",
+                            "contentType": "application/json; charset=utf-8",
+                            "data": function (d) {
+                                d.additionalvalues = [$("#Customer_Phone").val()];
+                                return JSON.stringify(d);
+                                return d;
+                            }
+                        },
+                        "columns": [
+                            {
+                                "data": "phone", className: "text-center", "render": function (data, type, row) {
+
+                                    return data
+
+                                }
+                            },
+                            {
+                                "data": "date", className: "text-center", "render": function (data, type, row) {
+
+                                    if (data != null && data != "")
+                                        return moment(data).format("DD.MM.YYYY");
+                                    else
+                                        return "";
+
+                                }
+                            }
+                            ,
+                            {
+                                "data": "time", className: "text-center", "render": function (data, type, row) {
+
+
+                                    return data
+                                }
+                            }
+                            ,
+                            {
+                                "data": "second", className: "text-center", "render": function (data, type, row) {
+
+                                    return data
+
+                                }
+                            }
+
+
+                        ]
+
+
+                    });
+                },
+                onContentReady: function () {
+                    var jc = this;
+
+
+                    this.$content.find('form').on('submit', function (e) {
+                        // if the user submits the form by pressing enter in the field.
+                        e.preventDefault();
+                        jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    });
+                }
+            });
+
+        });
+
+
+        $("#myorders").click(function () {
+
+
+            $.confirm({
+                title: 'Siparişler',
+                content: $("#formorders").html(),
+                columnClass: 'col-md-8',
+                containerFluid: true,
+                buttons: {
+                    formSubmit: {
+                        text: 'Kapat',
+                        btnClass: 'btn-blue'
+                    }
+
+                },
+                onOpen: function () {
+                    var self = this;
+                    recordtable2 = $('#recordtable2').DataTable({
+                        "serverSide": true,
+                        "paging": true,
+                        "searching": false,
+                        "lengthChange": false,
+                        //"jQueryUI": true,
+                        "stateSave": false,
+                        "pagingType": "full_numbers",
+                        "ajax": {
+                            "url": "/Order/GetCustomerOrders",
+                            "type": "POST",
+                            "contentType": "application/json; charset=utf-8",
+                            "data": function (d) {
+                                d.additionalvalues = [id];
+                                return JSON.stringify(d);
+                                return d;
+                            }
+                        },
+                        "columns": [
+                            {
+                                "data": "OrderNo", className: "text-center"
+                            },
+                            {
+                                "data": "Name", className: "text-center"
+                            },
+                            {
+                                "data": "TotalPrice", className: "text-center", "render": function (data, type, row) {
+                                    return numeral(data).format('0,0.00');
+                                }
+                            },
+                            {
+                                "data": "OrderDate", className: "text-center", "render": function (data, type, row) {
+                                    if (data != null && data != "")
+                                        return moment(data).format("DD.MM.YYYY");
+                                    else
+                                        return "";
+                                }
+                            },
+                            {
+                                "data": "Id", className: "text-center", "render": function (data, type, row) {
+                                    var html = ""
+
+                                        + "<a data-id='" + data + "' class='btn btn-warning   btn-sm text-white  detail' href='/Order/UpdateOrder/" + data + "'>Detay</a>"
+
+
+
+                                    return html;
+                                }
+                            }
+                        ]
+
+
+                    });
+                },
+                onContentReady: function () {
+                    var jc = this;
+
+
+                    this.$content.find('form').on('submit', function (e) {
+                        // if the user submits the form by pressing enter in the field.
+                        e.preventDefault();
+                        jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    });
+                }
+            });
+
+        });
+
+
+        $("#cariekstresi").click(function () {
+
+
+            $.confirm({
+                title: 'Cari Ekstresi',
+                content: $("#formcariekstresi").html(),
+                columnClass: 'col-md-8',
+                containerFluid: true,
+                buttons: {
+                    formSubmit: {
+                        text: 'Kapat',
+                        btnClass: 'btn-blue'
+
+                    }
+
+                },
+                onOpen: function () {
+                    this.$content.find(".input-daterange").datepicker({
+                        isRTL: false,
+                        format: 'dd.mm.yyyy',
+                        autoclose: true,
+                        language: 'tr'
+                    });
+                    var self = this;
+                    recordtable3 = $('#recordtable3').DataTable({
+                        "serverSide": true,
+                        "paging": true,
+                        "searching": false,
+                        "lengthChange": true,
+                        //"jQueryUI": true,
+                        "stateSave": false,
+                        buttons: [
+
+                            {
+                                titleAttr: "Excel'e Aktar",
+                                extend: 'excelHtml5',
+                                text: '<i class="fa fa-file-excel"></i>',
+                                className: "btn btn-success",
+                                title: $("h4.page-title").html(),
+                                filename: moment().format("YYYY.MM.DD_HH.mm")
+                            }
+                        ],
+                        "pagingType": "full_numbers",
+                        "ajax": {
+                            "url": "/Customer/GetCARIEKSTRE",
+                            "type": "POST",
+                            "contentType": "application/json; charset=utf-8",
+                            "data": function (d) {
+                                d.additionalvalues = [cariKodu, moment($("#bastarih").datepicker("getDate")).format("YYYY-MM-DD"), moment($("#bistarih").datepicker("getDate")).format("YYYY-MM-DD")];
+                                return JSON.stringify(d);
+                                return d;
+                            }
+                        },
+                        "columns": [
+                            { "data": "unvan" },
+                            { "data": "carikodu" },
+                            {
+                                "data": "tarih", className: "text-center", "render": function (data, type, row) {
+                                    if (data != null && data != "")
+                                        return moment(data).format("DD.MM.YYYY");
+                                    else
+                                        return "";
+                                }
+                            },
+                            { "data": "islemno" },
+                            { "data": "borc" },
+                            { "data": "alacak" },
+
+                            {
+                                "data": "bakiye", className: "text-center", "render": function (data, type, row) {
+
+                                    if (data != null && data != "")
+                                        return numeral(data).format('0,0');
+                                    else
+                                        return "";
+                                }
+                            },
+                            { "data": "hareketturu" }
+
+                        ]
+
+
+                    });
+                },
+                onContentReady: function () {
+                    var jc = this;
+
+                    this.$content.find("#searchcariekstresiDiv").click(function () {
+                        recordtable3.draw();
+
+                    });
+
+
+
+
+                    this.$content.find('form').on('submit', function (e) {
+                        // if the user submits the form by pressing enter in the field.
+                        e.preventDefault();
+                        jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    });
+                }
+            });
+
+        });
+
+
+
+document.getElementById('buton').addEventListener('click', function () {
+   Swal.fire(
+  'Kaydedildi!',
+  '',
+  'success'
+
+)
+});
+ Swal.fire.onshow = function () {
+        setTimeout(Swal.fire.close, 600000);
+    }
+    </script>
+
+    <script type="text/template" id="formCallReport">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="recordtable1" class="table table-sm table-striped table-bordered dataTable">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th class="pt-1 pb-1">Cep Telefonu</th>
+                            <th class="pt-1 pb-1">Tarih</th>
+                            <th class="pt-1 pb-1">Saat</th>
+                            <th class="pt-1 pb-1">Saniye</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+        </div>
+    </script>
+
+    <script type="text/template" id="formorders">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="recordtable2" class="table table-sm table-striped table-bordered dataTable">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th class="pt-1 pb-1">OrderNo</th>
+                            <th class="pt-1 pb-1">Name</th>
+                            <th class="pt-1 pb-1">Sipariş Tutarı</th>
+                            <th class="pt-1 pb-1">OrderDate</th>
+                            <th class="pt-1 pb-1"></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+        </div>
+    </script>
+
+
+    <script type="text/template" id="formcariekstresi">
+
+        <div class="row">
+            <div class="col-sm-12 row">
+                <div class="form-group  p-3 col-sm-6">
+                    <label>İşlem Tarihi</label>
+                    <div class="input-daterange input-group" id="datepicker">
+                        <input type="text" class="input-sm form-control" name="start"
+                               value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                               id="bastarih"
+                               placeholder="Start" />
+                        <span class="input-group-addon"></span>
+                        <input type="text" class="input-sm form-control" name="end"
+                               value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                               id="bistarih"
+                               placeholder="End" />
+                    </div>
+                </div>
+                <div class="form-group  p-3 col-sm-6">
+                    <button class="btn btn-warning mr-1 btn-raised" id="searchcariekstresiDiv"><i class="fa fa-search"></i> Uygula</button>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <table id="recordtable3" class="table table-sm table-striped table-bordered dataTable">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th>Cari Unvanı</th>
+                            <th>Cari Kodu  </th>
+                            <th>Tarih  </th>
+                            <th>İşlem No </th>
+                            <th>Borç  </th>
+                            <th>Alacak </th>
+                            <th>Bakiye </th>
+                            <th>Hareket Türü</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+        </div>
+    </script>
+
+}

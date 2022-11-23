@@ -1,0 +1,196 @@
+﻿@model Entities.Concrete.AppUser
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+<div class="">
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Müşteri Tanımlama
+                    </h3>
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+    <div class="">
+
+        <div class="pt-3 " style="padding-left:2%;padding-right:2%;">
+
+            <form asp-action="Update">
+
+                <!--Müşteri Bilgileri-->
+                <div class="row bg-white rounded ">
+
+                    <h4 class="card-title pl-5 pt-5 col-sm-12 acco"><strong>Müşteri</strong> <small>Bilgileri</small></h4>
+
+                    <hr class="container-fluid bg-light" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-6 ">
+                        <!---->
+                        <div class="card pl-3 pr-3 ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Name" class="text-end control-label col-form-label">Adı*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Name" type="text" class="form-control">
+                                        </div>
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Email" class=" text-end control-label col-form-label">Email*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            <input class="form-control" asp-for="Email" />
+                                            @*@Html.DropDownListFor(m => m.Email, (List<SelectListItem>)Model.Email, new { @class = "form-control" })*@
+                                        </div>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Password" class="text-end control-label col-form-label">Şifre*</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Password" class="form-control">
+                                        </div>
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 ">
+                        <!---->
+                        <div class=" pl-3 pr-3 ">
+                            <div class="form-horizontal">
+                                <div class="card-body ">
+
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <label asp-for="Department" class="text-end control-label col-form-label">Bölümü*</label>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            <select asp-for="Department" class="form-control">
+                                                <option value="Yonetim">Yönetim</option>
+                                                <option value="Satis">Satiş</option>
+
+                                            </select>
+                                        </div>
+                                        <span asp-validation-for="Department" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-lg-12  pb-3">
+                        <div class="float-sm-right">
+                            <a class="btn btn-secondary mr-1 btn-raised mt-3 " href="/AppUser/GetAllAppUsers"> Vazgeç</a>
+                            <button type="submit" class="btn btn-warning ml-1 mr-1 mt-3 btn-raised"> Oluştur</button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <style>
+        .btn-raised {
+            transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+        }
+
+            .btn-raised:not([disabled]):active,
+            .btn-raised:not([disabled]):focus,
+            .btn-raised:not([disabled]):hover {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                transform: translate3d(0, -1px, 0)
+            }
+    </style>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        //$("form").submit(function (e) {
+
+        //    //prevent Default functionality
+        //    e.preventDefault();
+
+        //    //get the action-url of the form
+        //    var actionurl = e.currentTarget.action;
+
+        //    //do your own request an handle the results
+
+
+        //    e.preventDefault();
+
+        //});
+
+
+
+
+        $("#tcIdentityNumber").hide();
+
+        $('#Customer_Type').on('change', function () {
+
+
+            if ($("#Customer_Type option:selected").text() == "Firma") {
+                $("#tcIdentityNumber").hide();
+                $("#taxAdministration").show();
+
+            } else {
+                $("#taxAdministration").hide();
+                $("#tcIdentityNumber").show();
+            }
+
+        });
+
+        $('.citySelection1').change(function () {
+            var id = $(this).val();
+            $('.townSelection1').empty();
+            $('.townSelection1').append('<option>Ilce seciniz</option>');
+            GetTowns(id);
+        });
+
+        function GetTowns(cityId) {
+            var id = cityId;
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/GetTowns/' + id,
+                success: function (msg) {
+                    console.log(msg);
+                    msg.data.forEach(function (item) {
+                        $('.townSelection1').append('');
+                        $('.townSelection1').append('<option value=' + item.name + '>' + item.name + '</option>');
+                    });
+
+                }
+
+
+            });
+        }
+    </script>
+}

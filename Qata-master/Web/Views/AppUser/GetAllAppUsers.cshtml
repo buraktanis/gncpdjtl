@@ -1,0 +1,251 @@
+﻿@model IEnumerable<Entities.Concrete.AppUser>
+
+@{
+    ViewData["Title"] = "GetAllAppUsers";
+}
+
+<div class="">
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Kullanıcılar
+                    </h3>
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+    <div class="">
+
+        <div class="bg-white  mt-4 mb-5" style="margin-left:2%;margin-right:2%;">
+
+            <div class="row bg-white rounded">
+      
+                <div class="col-sm-12 mt-4">
+                    <div class="col-md-12" style="text-align:right">
+                        <a class="btn btn-outline-success" asp-action="Add">Ekle</a>
+                    </div>
+
+
+                </div>
+
+
+                <div class="container-fluid mb-5">
+
+                    <div class="col-12 ">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="recordtable" class="table table-sm table-striped table-bordered dataTable" style="width:100%; font-size:16px;">
+                                    <thead style="background-color:#1f2937; height:42px;">
+
+                                        <tr style="color:#F1F1F1; ">
+                                            <th>
+                                                İsim
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Email)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Department)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+    @section Scripts{
+
+        <script type="text/javascript">
+
+            var recordtable;
+            var stock = 0;
+            var toplammaliyet = 0;
+            var stockdizi = [];
+            var toplammaliyetdizi = [];
+            $(function () {
+
+                ///  $('#recordtable1_paginate').hide();
+
+                recordtable = $('#recordtable').DataTable({
+                    "responsive": true,
+                    "serverSide": true,
+                    "searching": true,
+                    "lengthChange": false,
+                    //"jQueryUI": true,
+                    "stateSave": false,
+                    "pagingType": "full_numbers",
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                    },
+                    "ajax": {
+                        "url": "/AppUser/GetUserDatatables",
+                        "type": "POST",
+                        "contentType": "application/json; charset=utf-8",
+                        "data": function (d) {
+                            //d.dataqueryname = _defaulttablename;
+                            //d.additionalvalues = [tipval, markaval];
+                            return JSON.stringify(d);
+                            return d;
+                        }
+                    },
+                    "columns": [
+                        {
+                            "data": "Name"
+                        },
+                        {
+                            "data": "Email"/*, "visible": false*/
+                        },
+                        {
+                            "data": "Department"/*, "visible": false*/
+                        },
+                        {
+                            "data": "Id", className: "text-center", "render": function (data, type, row) {
+                                var html = "<a href='/AppUser/Update/" + data + "' class='btn btn-warning   btn-sm text-black  '>Güncelle</a>"
+                                    + "<a data-id='" + data + "'  class='btn btn-danger  btn-sm text-white delete '>Sil</a>"
+
+                                return html;
+                            }
+                        }
+                    ]
+                    ,
+                    "rowCallback": function (row, data) {
+
+                        /*  toplammaliyetdizi.push((data.fiyat * data.adet))*/
+
+                    }, "drawCallback": function (settings) {
+
+                        //toplammaliyet = 0;
+
+
+                        //toplammaliyetdizi.forEach((element) => {
+                        //    toplammaliyet = toplammaliyet + element;
+
+                        //})
+
+                        //$('#toplammaliyet').html(" Toplam: " + numeral(toplammaliyet).format('0,0') + " TL")
+
+                        //toplammaliyetdizi = [];
+
+
+
+                    }
+
+                });
+
+
+
+                $(".dataTable tbody").on("click", "a.delete", function () {
+                    var id = $(this).attr("data-id");
+
+                    $.confirm({
+                        title: 'Sil?',
+                        content: 'Bu kaydı silmek istediğinize emin misiniz?" ',
+                        autoClose: 'cancelAction|8000',
+                        buttons: {
+                            deleteUser: {
+                                text: 'EVET',
+                                action: function () {
+
+                                    $.LoadingOverlay("show");
+                                    $.ajax({
+                                        type: "Get",
+                                        url: "/AppUser/Delete/" + id,
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (msg) {
+
+                                            $.LoadingOverlay("hide");
+                                            console.log(msg)
+                                            if (msg.success) {
+                                                recordtable.draw();
+
+                                                utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                                            } else {
+                                                recordtable.draw();
+                                                $.alert(msg.errors.map(e => e.message).join());
+                                            }
+
+
+
+                                        }
+                                    });
+                                }
+                            }, cancelAction: {
+                                text: 'Hayır',
+                                action: function () {
+
+                                }
+                            }
+                        }
+                    });
+                });
+
+                $(".dataTable tbody").on("click", "a.update", function () {
+                    var id = $(this).attr("data-id");
+                    var Malzid = $(this).attr("data-Malzid");
+                    var Adet = $("#adet-" + id + "").val();
+                    var fiyat = $("#fiyat-" + id + "").val();
+
+                    $.LoadingOverlay("show");
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Sepet/Update",
+                        data: JSON.stringify({
+                            "Malzid": Malzid,
+                            "id": id,
+                            "Adet": Adet,
+                            "Fiyat": fiyat
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (msg) {
+
+                            $.LoadingOverlay("hide");
+                            if (msg.errors.length == 0) {
+                                recordtable1.draw();
+                                utilities.onscreen(utilities.dil_ceviri("Sepete Eklendi", "kayit_basarili"));
+
+                            } else {
+                                recordtable1.draw();
+                                $.alert(msg.errors.map(e => e.message).join());
+                            }
+
+
+
+                        }
+                    });
+
+
+
+                });
+
+
+            });
+
+        </script>
+
+    }

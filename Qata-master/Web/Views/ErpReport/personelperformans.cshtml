@@ -1,0 +1,252 @@
+﻿@model dynamic
+@{ ViewData["Title"] = "personelPerformans";
+
+
+
+                dynamic markalar = string.Format(@"SELECT [Marka Kodu] MARKA FROM ARY_017_01_AYRINTILI_FATURA_RAPORU WHERE [Marka Kodu] IS NOT NULL GROUP BY [Marka Kodu] ORDER BY [Marka Kodu]").GetDynamicQuery("SCSlogo");
+
+                dynamic tips = string.Format(@"SELECT [Malzeme Grup Kodu] tip FROM ARY_017_01_AYRINTILI_FATURA_RAPORU WHERE [Malzeme Grup Kodu] IN ('AKSESUAR','TABLET','DİĞER ÜRÜN','CEP TELEFONU') GROUP BY [Malzeme Grup Kodu] ORDER BY [Malzeme Grup Kodu]").GetDynamicQuery("SCSlogo"); }
+@section Scripts{
+    <script type="text/javascript">
+        var recordtable;
+        var _defaulttablename = "bayiPerformansQuery";
+
+
+        var tips = "@ViewBag.tips";
+
+        $(function () {
+
+
+            $("#markaselect").val("@ViewBag.select")
+            $("#bastarih").val("@ViewBag.bastarih")
+            $("#bistarih").val("@ViewBag.bistarih")
+
+            //    for (const val of tips.split(",")) {
+            //    $("#che-"+val+"").prop( "checked", true );
+            //}
+
+
+
+            $("#btnara").click(function () {
+
+
+                var bastarih = $("#bastarih").val();
+                var bistarih = $("#bistarih").val();
+                var markaselect = $("#markaselect").val();
+                var cboxval = [];
+                var tips;
+                $.each($("#tips .tip"), function () {
+
+                    var tip = $(this).attr("data-tip");
+
+                    if ($('input[name="che-' + tip + '"]').is(':checked')) {
+                        cboxval.push(tip);
+                    }
+
+                })
+
+
+                window.location.href = "/salerapor/personelPerformans?bastarih=" + bastarih + "&bistarih=" + bistarih + "&markaselect=" + markaselect + "&tips=" + cboxval.join(",");
+            });
+
+            $('#recordtable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here 
+                }],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                pageLength: 50,
+                paging: true,
+                searching: true,
+                order: [[0, "asc"]],
+                columnDefs: [{ orderable: false, targets: [7] }] // 6 was the highest index, not 7
+            });
+
+
+            $('.datepicker').datepicker({
+                format: 'MM'
+                //startDate: '-3d'
+            });
+
+        });
+
+        /**/</script>
+
+
+    <script type="text/template" id="formtemplete">
+
+        <div class="form-group">
+            <label class="col-4 float-left">Şube Adı</label>
+            <input class="form-control col-8 notnull" data-table="dealers" data-column="title" data-type="string" data-maxlength="250" />
+        </div>
+        <div class="form-group">
+            <label class="col-4 float-left">Aktif</label>
+            <input type="checkbox" class="form-control col-8" data-table="dealers" data-column="status" data-type="int" />
+        </div>
+    </script>
+}
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+                    Personel Performans
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+
+
+<div class="row">
+    <div class="form-group col-md-2  p-3">
+        <label>Temsilci </label>
+        <input id="temsilci" class="form-control " placeholder="Temsilci" value="@CurrentSession.Username" disabled>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="card  mb-3">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                        <table id="recordtable" class="table table-sm table-striped table-bordered dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+
+                                <th> İsim </th>
+                                <th> Firma </th>
+                                <th> Fatura </th>
+                                <th> Marka </th>
+                                <th> Çeşit </th>
+                                <th> Adet </th>
+                                <th> Ciro </th>
+                                <th> Penetrasyon </th>
+                            </tr>
+                        </thead>
+
+                        <tbody style="font-size:14px;">
+                            @if (CurrentSession.Roles.Contains("Yonetim"))
+                            {
+
+                @foreach (var item in Model)
+                {
+<tr>
+    <td style="font-size:14px;">
+        <p>@item.KULLANICI </p>
+    </td>
+    <td style="font-size:14px;">
+        <p>@item.BAYI </p>
+    </td>
+
+
+    <td style="font-size:14px;">
+        <p>@item.FIRMA </p>
+    </td>
+
+    <td style="font-size:14px;">
+        <p>@item.MARKA </p>
+    </td>
+    <td style="font-size:14px;">
+        <p>@item.CESIT </p>
+    </td>
+    <td style="font-size:14px;">
+        <p>@item.ADET </p>
+    </td>
+    <td style="font-size:14px;">
+        <p>@string.Format("{0:#,0}", item.CIRO) </p>
+    </td>
+    <td style="font-size:14px;">
+
+        <div class="mb-1">
+            <p class="mb-1">
+                @item.KULLANICI
+                <span class="float-right text-muted">@item.PENETRASYON%/100</span>
+            </p>
+            <div class="progress" style="height: 12px;">
+
+                <div class="progress-bar"
+                     role="progressbar" aria-valuenow="@item.PENETRASYON" aria-valuemin="0" aria-valuemax="100" style="width: @item.PENETRASYON%; background-color:#e10f2c;
+                                                 "></div>
+            </div>
+        </div>
+
+
+    </td>
+
+</tr>} }
+                            else
+                            {
+                @foreach (var item in Model)
+                {
+@if (@item.KULLANICI == @CurrentSession.Username)
+{
+<tr>
+    <td style="font-size:14px;">
+        <p>@item.KULLANICI </p>
+    </td>
+    <td style="font-size:14px;">
+        <p>@item.BAYI </p>
+    </td>
+
+
+    <td style="font-size:14px;">
+        <p>@item.FIRMA </p>
+    </td>
+
+    <td style="font-size:14px;">
+        <p>@item.MARKA </p>
+    </td>
+    <td style="font-size:14px;">
+        <p>@item.CESIT </p>
+    </td>
+    <td style="font-size:14px;">
+        <p>@item.ADET </p>
+    </td>
+    <td style="font-size:14px;">
+        <p>@string.Format("{0:#,0}", item.CIRO) </p>
+    </td>
+    <td style="font-size:14px;">
+
+        <div class="mb-1">
+            <p class="mb-1">
+                @item.KULLANICI
+                <span class="float-right text-muted">@item.PENETRASYON%/100</span>
+            </p>
+            <div class="progress" style="height: 12px;">
+
+                <div class="progress-bar"
+                     role="progressbar" aria-valuenow="@item.PENETRASYON" aria-valuemin="0" aria-valuemax="100" style="width: @item.PENETRASYON%; background-color:#e10f2c;
+                                                 "></div>
+            </div>
+        </div>
+
+
+    </td>
+
+</tr>}}}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

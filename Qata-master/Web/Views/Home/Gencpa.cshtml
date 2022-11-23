@@ -1,0 +1,242 @@
+﻿@model Entities.Concrete.Setting
+
+<div class="col-md-12">
+
+    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+        <ol class="breadcrumb ">
+
+            <li class="breadcrumb-item active" aria-current="page ">
+                <h3>
+IBAN Bilgileri
+                </h3>
+            </li>
+        </ol>
+    </nav>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+
+<div class="bg-white  mt-4" style="">
+    <div class="row bg-white rounded">
+        <div class="col-sm-12 row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <h6  class="control-label">Şirket Unvanı : @Model.Name</h6>
+
+                </div>
+            </div> 
+            <div class="col-md-12">
+                <div class="form-group">
+                    <h6 class="control-label">Adres : @Model.Address</h6>
+
+                </div>
+            </div> 
+            <div class="col-md-12">
+                <div class="form-group">
+                    <h6 class="control-label">Depo Yetkilisi/Telefonu : @Model.WarehouseOfficer</h6>
+
+                </div>
+            </div>   
+            <div class="col-md-12">
+                <div class="form-group">
+                    <h6 class="control-label">Depo Adresi : @Model.WarehouseAddress</h6>
+
+                </div>
+            </div>
+
+
+        </div>
+        <hr class="container-fluid bg-light pl-5">
+       
+        <div class="col-sm-6">
+            <h6>
+                Banka Bilgilerimiz IBAN
+            </h6>   
+            <table id="recordtable1" class="table table-bordered pt-0 pb-0">
+                <thead style="background-color:#1f2937; height:42px;">
+                    <tr style="color:#F1F1F1; ">
+                        <th class="pt-1 pb-1">İsim</th>
+                        <th class="pt-1 pb-1">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-sm-1">Name</td>
+                        <td class="col-sm-1"><i class="fa fa-ellipsis-v border border-info p-2 btn-outline-info " style="border-radius:30%;"></i></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="col-sm-6">
+            <h6>
+                Kargo Bilgileri
+            </h6>
+            <table id="recordtable" class="table table-bordered pt-0 pb-0">
+                <thead style="background-color:#1f2937; height:42px;">
+                    <tr style="color:#F1F1F1; ">
+                        <th class="pt-1 pb-1">İsim</th>
+                        <th class="pt-1 pb-1">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-sm-1">Name</td>
+                        <td class="col-sm-1"><i class="fa fa-ellipsis-v border border-info p-2 btn-outline-info " style="border-radius:30%;"></i></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+        <hr class="container-fluid bg-light pl-5">
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var configurationType = "10"
+            var recordtable;
+            var stock = 0;
+            var toplammaliyet = 0;
+            var stockdizi = [];
+            var toplammaliyetdizi = [];
+            var toplammaliyetdizi = [];
+            $(function () {
+
+                ///  $('#recordtable1_paginate').hide();
+
+                recordtable = $('#recordtable').DataTable({
+                    "responsive": true,
+                    "serverSide": true,
+                    "searching": false,
+                    "lengthChange": false,
+                    //"jQueryUI": true,
+                    "stateSave": false,
+                    "pagingType": "full_numbers",
+                    "bInfo": false,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                    },
+                    "ajax": {
+                        "url": "/Configure/GetConfigurationDatatables",
+                        "type": "POST",
+                        "contentType": "application/json; charset=utf-8",
+                        "data": function (d) {
+                            d.additionalvalues = [10];
+                            return JSON.stringify(d);
+                        }
+                    },
+                    "columns": [
+                        {
+                            "data": "Name"
+                        },
+                        {
+                            "data": "Info"
+                        }
+                    ]
+                    ,
+                    "rowCallback": function (row, data) {
+
+                        /*  toplammaliyetdizi.push((data.fiyat * data.adet))*/
+
+                    }, "drawCallback": function (settings) {
+
+                        //toplammaliyet = 0;
+
+
+                        //toplammaliyetdizi.forEach((element) => {
+                        //    toplammaliyet = toplammaliyet + element;
+
+                        //})
+
+                        //$('#toplammaliyet').html(" Toplam: " + numeral(toplammaliyet).format('0,0') + " TL")
+
+                        //toplammaliyetdizi = [];
+
+
+
+                    }
+
+                });
+
+                recordtable1 = $('#recordtable1').DataTable({
+                    "responsive": true,
+                    "serverSide": true,
+                    "searching": false,
+                    "lengthChange": false,
+                    //"jQueryUI": true,
+                    "stateSave": false,
+                    "pagingType": "full_numbers",
+                    "bInfo": false,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                    },
+                    "ajax": {
+                        "url": "/Configure/GetConfigurationDatatables",
+                        "type": "POST",
+                        "contentType": "application/json; charset=utf-8",
+                        "data": function (d) {
+                            d.additionalvalues = [9];
+                            return JSON.stringify(d);
+                        }
+                    },
+                    "columns": [
+                        {
+                            "data": "Name"
+                        },
+                        {
+                            "data": "Info"
+                        }
+                    ]
+                    ,
+                    "rowCallback": function (row, data) {
+
+                        /*  toplammaliyetdizi.push((data.fiyat * data.adet))*/
+
+                    }, "drawCallback": function (settings) {
+
+                        //toplammaliyet = 0;
+
+
+                        //toplammaliyetdizi.forEach((element) => {
+                        //    toplammaliyet = toplammaliyet + element;
+
+                        //})
+
+                        //$('#toplammaliyet').html(" Toplam: " + numeral(toplammaliyet).format('0,0') + " TL")
+
+                        //toplammaliyetdizi = [];
+
+
+
+                    }
+
+                });
+
+
+            
+
+            });
+
+    </script>
+
+}

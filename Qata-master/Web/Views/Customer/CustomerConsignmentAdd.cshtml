@@ -1,0 +1,300 @@
+﻿@model Web.Models.CustomerConsignmentViewModel
+
+
+   
+    <div class="col-md-12">
+
+        <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+            <ol class="breadcrumb ">
+
+                <li class="breadcrumb-item active" aria-current="page ">
+                    <h3>
+                        Sevk Adresleri
+                    </h3>
+                </li>
+            </ol>
+        </nav>
+
+    </div>
+
+        <div class="row" >
+        <div class="card d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 col-md-2 margin-right: 5px;">
+            <div class="card-body d-block w-100 p-4 text-center">
+                <ul class="list-group list-group-flush">
+
+                            <li class="list-group-item categoryitem active">
+                                <a href="/Customer/UpdateCustomer/@Model.Id" class="nav-content-bttn open-font text-white">
+                                    Müşteri Tanımlama <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
+
+                                </a>
+                            </li>
+
+                       
+
+
+                        </ul>
+                    </div>
+                </div>
+
+        <div class="card d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 col-md-2 margin-right: 5px;">
+            <div class="card-body d-block w-100 p-4 text-center">
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item categoryitem active" data-name="Borsa">
+                        <a href="/Customer/CustomerConsignmentAdd/@Model.Id" class="nav-content-bttn open-font text-white">
+                            Sevk Adresi   <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pt-3 bg-white col-md-12" >
+            <div class=" bg-white rounded">
+               
+                <div class="col-sm-12">
+                    <div class="row">
+
+                        <div class="  col-lg-6">
+                            <div class="form-group row p-2">
+                                <label class="font-weight-light">İl*</label>
+                                <select class="form-control citySelection1">
+                                    <option>Il Seciniz</option>
+                                    @foreach (var item in Model.Cities)
+                                    {
+                                        <option value="@item.Text">@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row p-2">
+                                <label class="font-weight-light">Ilce*</label>
+                                <select class="form-control townSelection1">
+                                    <option>Ilce seciniz</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row p-2 ">
+                                <label class="font-weight-light">Başlık</label>
+                                <input name="name" class="form-control" id="name" />
+                            </div>
+                        </div>     
+                        <div class="col-lg-6">
+                            <div class="form-group row p-2 ">
+                                <label class="font-weight-light">Adres*</label>
+                                <textarea name="Address" class="form-control" id="Address"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group row p-2 ">
+
+                                <button class="btn btn-warning mr-1 btn-raised" style="margin-top:20px" id="btnsave"> Kaydet</button>
+                                <!--Buton Hover Effect-->
+                                <style>
+                                    .btn-raised {
+                                        transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
+                                        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26)
+                                    }
+
+                                        .btn-raised:not([disabled]):active,
+                                        .btn-raised:not([disabled]):focus,
+                                        .btn-raised:not([disabled]):hover {
+                                            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .4);
+                                            transform: translate3d(0, -1px, 0)
+                                        }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <table id="recordtable" class="table table-bordered pt-0 pb-0">
+                        <thead class="thead-light ">
+                            <tr>
+                                <th class="pt-1 pb-1">İl</th>
+                                <th class="pt-1 pb-1">İlçe</th>
+                                <th class="pt-1 pb-1">Adress</th>
+                                <th class="pt-1 pb-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        var recordtable;
+        var id = "@Model.Id";
+        var CLIENTREF = "@Model.customer.LogoId";
+        var CariKodu = "@Model.customer.CariKodu";
+        $(function () {
+
+            ///  $('#recordtable1_paginate').hide();
+
+            recordtable = $('#recordtable').DataTable({
+                "serverSide": true,
+                "searching": true,
+                "lengthChange": false,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "/Customer/GetConsignmentDatatables",
+                    "type": "POST",
+                    "contentType": "application/json; charset=utf-8",
+                    "data": function (d) {
+                        d.additionalvalues = [CLIENTREF];
+                        return JSON.stringify(d);
+                        return d;
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "CityId"
+                    },
+                    {
+                        "data": "TownId"
+                    },
+                    {
+                        "data": "Address"
+
+                    },
+                    {
+                        "data": "Id", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+                                + "<a data-id='" + data + "' class='btn btn-danger  btn-sm text-white  delete'>Sil</a>";
+
+                            return html;
+                        }
+                    }
+                ]
+                ,
+                "rowCallback": function (row, data) {
+
+
+                }, "drawCallback": function (settings) {
+
+
+
+
+                }
+
+            });
+
+
+             $(".dataTable tbody").on("click", "a.delete", function () {
+                var id = $(this).attr("data-id");
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "Get",
+                    url: "/Customer/DeleteCustomerConsignment/" + id,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+
+                        $.LoadingOverlay("hide");
+                        console.log(msg)
+                        if (msg.success) {
+                            recordtable.draw();
+
+                            utilities.onscreen(utilities.dil_ceviri("İşlem Başarılı", "kayit_basarili"));
+
+                        } else {
+                            recordtable.draw();
+                            $.alert(msg.errors.map(e => e.message).join());
+                        }
+
+
+
+                    }
+                });
+
+            });
+
+             $('.citySelection1').change(function () {
+             var id = $(this).val();
+            $('.townSelection1').empty();
+                $('.townSelection1').append('<option>Ilce seciniz</option>');
+                 GetTowns(id);
+             });
+            $('#btnsave').click(function () {
+                AddCustomerConsignment()
+            });
+             
+        });
+
+     
+        function AddCustomerConsignment() {
+
+            var data = {
+                CityId: $('.citySelection1').val(),
+                TownId: $('.townSelection1').val(),
+                Address: $('#Address').val(),
+                Name: $('#name').val(),
+                CustomerId: id,
+                CLIENTREF: CLIENTREF,
+                CariKodu: CariKodu
+            };
+
+
+            loader.start();
+            $.ajax({
+                type: "POST",
+                url: "/Customer/AddCustomerConsignment",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(data),
+                success: function (msg) {
+                    loader.stop();
+                  
+
+                    if (msg.success) {
+                        recordtable.draw();
+                        $('#Address').val("")
+                        $('#name').val("")
+                    } else {
+
+                        $.alert(msg.message)
+                    }
+                }
+            });
+
+        }
+
+        function GetTowns(cityId) {
+            var id = cityId;
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/GetTowns/' + id,
+                success: function (msg) {
+                    console.log(msg);
+                    msg.data.forEach(function (item) {
+                        $('.townSelection1').append('');
+                        $('.townSelection1').append('<option value=' + item.name + '>' + item.name + '</option>');
+                    });
+
+                }
+
+
+            });
+        }
+    </script>
+
+}

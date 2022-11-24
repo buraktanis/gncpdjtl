@@ -10,6 +10,7 @@ namespace Business.OrderItemManagement
     public interface IOrderItemService
     {
         DataTablesObjectResult GetOrderItemByOrderIdDatatables(DatatablesObject requestobj);
+        DataTablesObjectResult riskkontrol(DatatablesObject requestobj);
         IResult Add(OrderItem orderItem);
         IResult Update(OrderItem orderItem);
         IResult Delete(OrderItem orderItem);

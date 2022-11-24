@@ -347,6 +347,21 @@ namespace Web.Controllers
                 return new JsonResult(new { error = "Internal Server Error" });
             }
         }
+        [HttpPost]
+        public IActionResult RiskKontrol([FromBody] DatatablesJS.DatatablesObject requestobj)
+        {
+            try
+            {
+                var result = _orderItemService.riskkontrol(requestobj);
+                return new JsonResult(_orderItemService.riskkontrol(requestobj));
+
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+                return new JsonResult(new { error = "Internal Server Error" });
+            }
+        }
         public IActionResult StockControl()
         {
             var model = _logoManagement.GetLogoStok();
@@ -457,6 +472,19 @@ namespace Web.Controllers
         {
 
             return new SuccessDataResult<List<AddressDTOs>>(_customerService.GetAddressCLIENTREF(id).Data);
+        }
+
+        public IResult RiskControl(string logoid)
+        {
+            var risk = _logoManagement.RiskControl(logoid);
+
+            if (risk.Data.Count > 0)
+            {
+                return new ErrorResult(string.Format("Bu kayıt logoda '{0}' adına kayıtlıdır.Temsilcisi '{1}' ", risk.Data[0].Slsman));
+            }
+
+            return new SuccessResult();
+
         }
     }
 }

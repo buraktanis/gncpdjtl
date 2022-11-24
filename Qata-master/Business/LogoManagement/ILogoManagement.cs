@@ -21,5 +21,7 @@ namespace Business.LogoManagement
         DataResult<List<ARY_017_SİPARİŞ_HAREKETLERI>> ARY_017_SİPARİŞ_HAREKETLERI_List(List<string> carinos);
         public DataTablesObjectResult GetCARIEKSTRE(DatatablesObject requestobj);
         public DataResult<List<Customer>> TelControl(string no);
+        public DataResult<List<Order>> RiskControl(string logoid);
+
     }
 }

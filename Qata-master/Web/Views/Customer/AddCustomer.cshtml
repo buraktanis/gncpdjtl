@@ -110,18 +110,7 @@
                                     </div>
 
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-3">
-                                        <label asp-for="Customer.PostCode" class="text-end control-label col-form-label">Posta Kodu*</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <input asp-for="Customer.PostCode" type="text" class="form-control">
-
-
-                                        <span asp-validation-for="Customer.PostCode" class="text-danger"></span>
-                                    </div>
-
-                                </div>
+                                
 </div>
                             </div>
                     </div>
@@ -323,8 +312,7 @@
                                         <select asp-for="Customer.City" class="form-control citySelection1">
                                             @foreach (var item in Model.Cities)
                                             {
-                                <option value="@item.Value">@item.Text</option>
-}
+                                <option value="@item.Value">@item.Text</option>}
                                         </select>
 
                                         @* @Html.DropDownListFor(m => m.Customer.City, (List<SelectListItem>)Model.Cities, new { @class = "form-control" })*@
@@ -339,7 +327,7 @@
                                     <div class="col-sm-9">
                                         @Html.DropDownListFor(m => m.Customer.Town, (new List<SelectListItem> { }), new { @class = "form-control" })
                                         @*Html.DropDownListFor(m => m.Customer.Town, (List<SelectListItem>
-                                            )Model.Cities, new { sclass = "form-control" })*@
+                )Model.Cities, new { sclass = "form-control" })*@
                                         <span asp-validation-for="Customer.Town" class="text-danger"></span>
                                     </div>
 
@@ -357,6 +345,18 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-3">
+                                        <label asp-for="Customer.PostCode" class="text-end control-label col-form-label">Posta Kodu*</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(m => m.Customer.PostCode, (new List<SelectListItem> { }), new { @class = "form-control" })
+
+
+                                        <span asp-validation-for="Customer.PostCode" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
                                         <label asp-for="Customer.Address" class=" text-end control-label col-form-label">Adres*</label>
                                     </div>
 
@@ -367,7 +367,7 @@
                                     </div>
 
                                 </div>
-                              
+
                             </div>
 
                         </div>
@@ -513,9 +513,12 @@
                 var id = $(this).val();
                 $('.townSelection1').empty();
                 $('#Customer_Region').empty();
+                $('#Customer_PostCode').empty();
+
                 $('.townSelection1').append('<option>Ilce seciniz</option>');
                 GetTowns(id);
                 GetArea(id)
+                GetPostCode(id)
             });
 
             function GetTowns(cityId) {
@@ -543,13 +546,28 @@
                     success: function (msg) {
                         msg.data.forEach(function (item) {
                             $('#Customer_Region').append('');
-                            $('#Customer_Region').append('<option value=' + item.areaCode + '>' + item.area + '</option>');
+                            $('#Customer_Region').append('<option value=' + item.area + '>' + item.area + '</option>');
                         });
 
                     }
 
                 });
             }
+        function GetPostCode(cityId) {
+            var id = cityId;
+            $.ajax({
+                type: 'GET',
+                url: '/Customer/GetPostCode/' + id,
+                success: function (msg) {
+                    msg.data.forEach(function (item) {
+                        $('#Customer_PostCode').append('');
+                        $('#Customer_PostCode').append('<option value=' + item.postCode + '>' + item.postCode + '</option>');
+                    });
+
+                }
+
+            });
+        }
         document.getElementById('buton').addEventListener('submit', function () {
             Swal.fire(
                 'Kaydedildi!',

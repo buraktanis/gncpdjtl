@@ -31,6 +31,6 @@ namespace Entities.Concrete
         public string OrderNo { get; set; }
         public string Slsman { get; set; }
         public string Not { get; set; }
-
+        
     }
 }

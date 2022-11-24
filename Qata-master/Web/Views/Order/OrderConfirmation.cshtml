@@ -65,7 +65,7 @@
 
 
 
-                <hr class="container-fluid bg-light pl-5"/>
+                <hr class="container-fluid bg-light pl-5" />
                 <div class="col-sm-12">
                     <div class="row" id="sonuc" style="display:none;">
 
@@ -75,10 +75,12 @@
                                 <select class="form-control" id="selecttemsici">
                                     @if (CurrentSession.Roles.Contains("Yonetim"))
                                     {
-                        <option value=" ">Temsilçi Seçiniz</option> }
-                                    else
-                                    {
-                        <option value="@CurrentSession.Name">@CurrentSession.Name</option>}
+                        <option value=" ">Temsilçi Seçiniz</option>
+ }
+                    else
+                    {
+        <option value="@CurrentSession.Name">@CurrentSession.Name</option>
+}
 
                                 </select>
                             </div>
@@ -98,7 +100,7 @@
                         <div class="col-lg-1">
                             <div class="form-group row p-2 ">
                                 <button class="btn btn-secondary mr-1 btn-raised   "><i class="fa fa-times"></i> Temizle</button>
-                                
+
                                 <button class="btn btn-warning mr-1 btn-raised" id="searchDiv"><i class="fa fa-search"></i> Uygula</button>
                                 <!--Buton Hover Effect-->
                                 <style>
@@ -127,7 +129,7 @@
                                 <th class="pt-1 pb-1">Müşteri</th>
                                 <th class="pt-1 pb-1">Temsilci</th>
                                 <th class="pt-1 pb-1">Sipariş Tutarı</th>
-                               
+
                                 <th class="pt-1 pb-1">Sipariş Durumu</th>
                                 <th class="pt-1 pb-1"></th>
                             </tr>
@@ -151,7 +153,8 @@
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>
-    <script type="text/javascript">var recordtable;
+    <script type="text/javascript">
+    var recordtable;
         var stock = 0;
         var toplammaliyet = 0;
         var stockdizi = [];
@@ -195,24 +198,31 @@
                         }
                     },
                     {
-                        "data": "Name"
+                        "data": "Name", className: "text-center", "render": function (data, type, row) {
+                            var html = ""
+
+                                + "<a data-logoid='" + data + "' class='btn btn-outline-info  riskControl' >Risk</a>"
+
+
+                            return data + html;
+                        }
                     },
                     {
                         "data": "Slsman"
-                        
+
                     },
                     {
                         "data": "TotalPrice", className: "text-center", "render": function (data, type, row) {
                             return numeral(data).format('0,0.00');
                         }
                     },
-                   
+
                     {
                         "data": "Status", className: "text-center", "render": function (data, type, row) {
 
                             var html = ``;
-                          
-                              if (data == -1) {
+
+                            if (data == -1) {
                                 html = `<span>Taslak</span>`;
                             }
                             if (data == 0) {
@@ -224,7 +234,7 @@
                             if (data == 2) {
                                 html = `<span style="">Faturalandı &#128221;</span>`;
                             }
-                       
+
                             return html;
                         }
 
@@ -242,7 +252,8 @@
 
                             return html;
                         }
-                    }
+                    },
+
                 ]
                 ,
                 "rowCallback": function (row, data) {
@@ -256,6 +267,27 @@
                 }
 
             });
+
+            /* $(".dataTable tbody").on("click", "a.riskControl", function () {
+                 var logoid = $(this).attr("data-id");
+
+                 $.LoadingOverlay("show");
+                 $.ajax({
+                     type: 'GET',
+                     url: '/Order/RiskControl?id=' + logoid,
+                     success: function (msg) {
+                         $.LoadingOverlay("hide");
+                         if (msg.success) {
+
+                             $.alert(logoid);
+                         } else {
+                             $.alert(msg.message);
+                         }
+                     }
+
+
+                 });
+             }); */
 
 
             $(".dataTable tbody").on("click", "a.delete", function () {
@@ -335,7 +367,7 @@
                 });
 
             });
-            
+
 
             $(".dataTable tbody").on("click", "a.ret", function () {
                 var id = $(this).attr("data-id");
@@ -366,7 +398,91 @@
                 });
 
             });
-            
+
+            $(".dataTable tbody").on("click", "a.riskControl", function () {
+                var logoid = $(this).attr("data-logoid");
+
+                $.confirm({
+                    title: logoid,
+                    content: $("#formrisk").html(),
+                    columnClass: 'col-md-8',
+                    containerFluid: true,
+                    buttons: {
+                        formSubmit: {
+                            text: 'Kapat',
+                            btnClass: 'btn-blue'
+
+                        }
+
+                    },
+                    onOpen: function () {
+                        var self = this;
+                        recordtable2 = $('#recordtable2').DataTable({
+                            "serverSide": true,
+                            "paging": false,
+                            "searching": false,
+                            "lengthChange": false,
+                            //"jQueryUI": true,
+                            "stateSave": false,
+                            "pagingType": "full_numbers",
+                            "ajax": {
+                                "url": "/Order/RiskKontrol",
+                                "type": "POST",
+                                "contentType": "application/json; charset=utf-8",
+                                data: function (d) {
+                                    d.additionalvalues = [logoid];
+                                    return JSON.stringify(d);
+                                    return d;
+                                },
+                                success: function (result) {
+                                    console.log(result);
+                                }
+                            },
+                            "columns": [
+                                {
+                                    "data": "temsilci", className: "text-center", "render": function (data, type, row) {
+
+                                        return data;
+
+                                    }                                },
+                                {
+                                    "data": "kod", className: "text-center", "render": function (data, type, row) {
+
+                                        return data;
+
+                                    }                                },
+                                {
+                                    "data": "unvan", className: "text-center", "render": function (data, type, row) {
+
+                                        return data;
+
+                                    }                                },
+                                {
+                                    "data": "GECEN_GUN", className: "text-center", "render": function (data, type, row) {
+
+                                        return data;
+
+                                    }                                }
+                                ,
+                                {
+                                    "data": "MODÜL", className: "text-center", "render": function (data, type, row) {
+
+                                        return data;
+
+                                    }                                },
+                                
+
+                            ],
+                            
+                            
+
+
+
+                        });
+                    }
+                });
+            });
+
 
             $(".dataTable tbody").on("click", "a.ozet", function () {
                 var toplamtutarKdvDizi = [];
@@ -496,12 +612,13 @@
                 });
 
             });
-        });</script>
-    <script type="text/template" id="formozet">
+        });
+    </script>
+    <script type="text/template" id="formrisk">
 
         <div class="row">
             <div class="col-sm-12">
-                <table id="recordtable1" class="table table-sm table-striped table-bordered dataTable">
+                <table id="recordtable2" class="table table-sm table-striped table-bordered dataTable">
                     <thead class="thead-light ">
                         <tr>
                             <th class="pt-1 pb-1">AD</th>
@@ -523,30 +640,60 @@
 
 
             </div>
-            <div class="col-md-3">
-                <table class="table table-sm table-striped table-bordered dataTable">
-                    @*<tr>
-                            <th></th>
-                            <th></th>
-
-                        </tr>*@
-
-                    <tr>
-                        <td class="text-center"><h4>Ara Toplam</h4></td>
-                        <td><h4 class="float-right " id="toplamtutarKdv"></h4> </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"> <h4>Kdv </h4></td>
-                        <td><h4 class="float-right " id="toplamtutarKdvsiz"></h4> </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><h4>Toplam</h4></td>
-                        <td><h4 class="float-right " id="toplamtutar"></h4> </td>
-                    </tr>
-                </table>
-
-
-
-            </div>
+            
         </div>
-    </script>}
+    </script>
+
+<script type="text/template" id="formozet">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="recordtable1" class="table table-sm table-striped table-bordered dataTable">
+                <thead class="thead-light ">
+                    <tr>
+                        <th class="pt-1 pb-1">AD</th>
+                        <th class="pt-1 pb-1">KDV</th>
+                        <th class="pt-1 pb-1">Fiyat</th>
+                        <th class="pt-1 pb-1">Miktar</th>
+                        <th class="pt-1 pb-1">Toplam</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+
+
+        </div>
+        <div class="col-md-9">
+
+
+
+        </div>
+        <div class="col-md-3">
+            <table class="table table-sm table-striped table-bordered dataTable">
+                @*<tr>
+                        <th></th>
+                        <th></th>
+
+                    </tr>*@
+
+                <tr>
+                    <td class="text-center"><h4>Ara Toplam</h4></td>
+                    <td><h4 class="float-right " id="toplamtutarKdv"></h4> </td>
+                </tr>
+                <tr>
+                    <td class="text-center"> <h4>Kdv </h4></td>
+                    <td><h4 class="float-right " id="toplamtutarKdvsiz"></h4> </td>
+                </tr>
+                <tr>
+                    <td class="text-center"><h4>Toplam</h4></td>
+                    <td><h4 class="float-right " id="toplamtutar"></h4> </td>
+                </tr>
+            </table>
+
+
+
+        </div>
+    </div>
+</script>}

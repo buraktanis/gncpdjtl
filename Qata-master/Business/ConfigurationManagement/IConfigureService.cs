@@ -21,6 +21,8 @@ namespace Business.ConfigurationManagement
         IDataResult<List<Town>> GetTownsByCityId(int cityId);
         IDataResult<City> GetTownsByCityName(string name);
         DataResult<List<Cities_Area>> GetCities_Area(string no);
+        DataResult<List<Cities_Area>> GetCities_PostCode(string no);
+
         IDataResult<IList<Configuration>> GetConfigurationType(int type);
     
     }

@@ -533,6 +533,16 @@ namespace Web.Controllers
             }
             return new SuccessDataResult<List<Cities_Area>>(areas.Data);
         }
+
+        public IDataResult<List<Cities_Area>> GetPostCode(string id)
+        {
+            var postcodes = _configureService.GetCities_PostCode(id);
+            if (postcodes.Data == null)
+            {
+                return new SuccessDataResult<List<Cities_Area>>();
+            }
+            return new SuccessDataResult<List<Cities_Area>>(postcodes.Data);
+        }
         public IDataResult<List<AppUser>> GetUserAll()
         {
             return _appUserService.GetAll();

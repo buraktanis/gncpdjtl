@@ -204,6 +204,10 @@ namespace Core.DataTables
                 return result;
             }
 
+
+
+            
+
             public object getresults(DatatablesObject requestobj)
             {
                 throw new NotImplementedException();
@@ -224,6 +228,7 @@ namespace Core.DataTables
             {
                 throw new NotImplementedException();
             }
+            
         }
 
         public class DatatablesObject

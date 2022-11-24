@@ -10,5 +10,6 @@ namespace Entities.Concrete
         public string City { get; set; }
         public string AreaCode { get; set; }
         public string Area { get; set; }
+        public string PostCode { get; set; }
     }
 }

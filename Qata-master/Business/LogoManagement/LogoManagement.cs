@@ -155,6 +155,17 @@ namespace Business.LogoManagement
             return new SuccessDataResult<List<Customer>>(model);
         }
 
+        public DataResult<List<Order>> RiskControl(string logoid)
+        {
+            List<Order> model = string.Format(@"SELECT  TEMSİLCİ temsilci, [CH KODU] kod, [CH UNVANI] unvan, GECEN_GUN, CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END [MODÜL]  
+    , SUM(TUTAR) TUTAR FROM ARY_XXX_TAHSILAT WHERE {0} [TEMSİLCİ] NOT IN ('PASİF','BOŞ','HUKUK') GROUP BY [CH KODU], [CH UNVANI],
+  TEMSİLCİ,GECEN_GUN, CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END ORDER
+ BY [CH UNVANI], CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END, SUM(TUTAR) DESC where [TEMSİLCİ] = '{0}' ", logoid).GetQuery<Order>("SCSlogo");
+
+            return new SuccessDataResult<List<Order>>(model);
+
+        }
+
 
         public DataResult<List<STOK_DURUM>> GetLogoStok()
         {

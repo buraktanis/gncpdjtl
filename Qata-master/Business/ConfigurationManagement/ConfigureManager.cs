@@ -66,6 +66,14 @@ namespace Business.ConfigurationManagement
 
             return new SuccessDataResult<List<Cities_Area>>(model);
         }
+
+        public DataResult<List<Cities_Area>> GetCities_PostCode(string no)
+        {
+            List<Cities_Area> model = string.Format(@"Select * from Cities_Area where City='{0}' ", no).GetQuery<Cities_Area>();
+
+            return new SuccessDataResult<List<Cities_Area>>(model);
+        }
+
         public IDataResult<List<City>> GetAllCities()
         {
             return new SuccessDataResult<List<City>>(_cityDal.GetList().Data.ToList());

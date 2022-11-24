@@ -37,6 +37,7 @@ namespace Entities.Concrete
         public string Phone2 { get; set; }
         public int Type { get; set; }
         public int Status { get; set; }
+        [Required(ErrorMessage = "Zorunlu Alan")]
         public string City { get; set; }
 
         [Required(ErrorMessage = "Zorunlu Alan")]
@@ -69,16 +70,13 @@ namespace Entities.Concrete
         public string Slsman { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
+        [Required(ErrorMessage = "Zorunlu Alan")]
         public string TaxInfo { get; set; }
         public string Facebook { get; set; }
         public string Youtube { get; set; }
         public string Twitter { get; set; }
         public string LinkedIn { get; set; }
 
-       public Customer()
-        {
-            this.PostCode = "00000";
-        }
+       
     }
 }

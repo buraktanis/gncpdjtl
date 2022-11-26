@@ -201,10 +201,10 @@
                         "data": "Name", className: "text-center", "render": function (data, type, row) {
                             var html = ""
 
-                                + "<a data-logoid='" + data + "' class='btn btn-outline-info  riskControl' >Risk</a>"
+                                + "<a data-logoid='" + data + "' class='btn btn-outline-danger riskControl' >Risk</a>"
 
 
-                            return data + html;
+                            return html + "  " + data;
                         }
                     },
                     {
@@ -403,7 +403,7 @@
                 var logoid = $(this).attr("data-logoid");
 
                 $.confirm({
-                    title: logoid,
+                    title: "Risk Raporu",
                     content: $("#formrisk").html(),
                     columnClass: 'col-md-8',
                     containerFluid: true,
@@ -434,9 +434,7 @@
                                     return JSON.stringify(d);
                                     return d;
                                 },
-                                success: function (result) {
-                                    console.log(result);
-                                }
+                                
                             },
                             "columns": [
                                 {
@@ -463,6 +461,14 @@
                                         return data;
 
                                     }                                }
+                                ,
+                                {
+                                    "data": "TUTAR", className: "text-center", "render": function (data, type, row) {
+
+                                        return data;
+
+                                    }
+                                }
                                 ,
                                 {
                                     "data": "MODÜL", className: "text-center", "render": function (data, type, row) {
@@ -523,6 +529,9 @@
                                     return JSON.stringify(d);
                                     return d;
                                 }
+
+
+
                             },
                             "columns": [
                                 {
@@ -621,11 +630,12 @@
                 <table id="recordtable2" class="table table-sm table-striped table-bordered dataTable">
                     <thead class="thead-light ">
                         <tr>
-                            <th class="pt-1 pb-1">AD</th>
-                            <th class="pt-1 pb-1">KDV</th>
-                            <th class="pt-1 pb-1">Fiyat</th>
-                            <th class="pt-1 pb-1">Miktar</th>
-                            <th class="pt-1 pb-1">Toplam</th>
+                            <th class="pt-1 pb-1">Temsilci</th>
+                            <th class="pt-1 pb-1">Kod</th>
+                            <th class="pt-1 pb-1">Firma</th>
+                            <th class="pt-1 pb-1">Geçen Gün</th>
+                            <th class="pt-1 pb-1">Tutar</th>
+                            <th class="pt-1 pb-1">Modül</th>
                         </tr>
                     </thead>
                     <tbody>

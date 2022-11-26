@@ -38,13 +38,17 @@ namespace Business.OrderItemManagement
 
         public DataTablesObjectResult riskkontrol(DatatablesObject requestobj)
         {
-            
+            string query = @"SELECT *
+  FROM [TahsilatRisk]  ";
+            requestobj.dbtype = "SCSlogo";
             string privadewhere = "";
             var tip = requestobj.additionalvalues.ElementAt(0);
-            string query = string.Format(@"SELECT  TEMSİLCİ temsilci, [CH KODU] kod, [CH UNVANI] unvan, GECEN_GUN, CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END [MODÜL]  
-    , SUM(TUTAR) TUTAR FROM ARY_XXX_TAHSILAT WHERE [TEMSİLCİ] NOT IN ('PASİF','BOŞ','HUKUK') AND [CH UNVANI] = '{0}' GROUP BY [CH KODU], [CH UNVANI],
-  TEMSİLCİ,GECEN_GUN, CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END ORDER
- BY [CH UNVANI], CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END, SUM(TUTAR) DESC ", tip);
+
+            if (!tip.isNull())
+            {
+                privadewhere = string.Format(" unvan='{0}' ", tip);
+            }
+            
 
             
 

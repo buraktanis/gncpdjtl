@@ -8,6 +8,7 @@ using Core.Extensions;
 
 
 namespace Core.DataTables
+
 {
     public class DatatablesJS
     {

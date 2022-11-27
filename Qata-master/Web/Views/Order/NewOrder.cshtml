@@ -114,10 +114,10 @@
                                 <div class="col-sm-9">
                                     @if (CurrentSession.Roles.Contains("Yonetim"))
                                     {
-                        @Html.DropDownListFor(m => m.Order.Slsman, (List<SelectListItem>)Model.Slsmans, new { @class = "form-control" }) }
-                    else
-                    {
-        @Html.DropDownListFor(m => m.Order.Slsman, new List<SelectListItem> { new SelectListItem { Text = CurrentSession.Name, Value = CurrentSession.Name } }, new { @class = "form-control" })}
+                                        @Html.DropDownListFor(m => m.Order.Slsman, (List<SelectListItem>)Model.Slsmans, new { @class = "form-control" }) }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => m.Order.Slsman, new List<SelectListItem> { new SelectListItem { Text = CurrentSession.Name, Value = CurrentSession.Name } }, new { @class = "form-control" })}
 
                                 </div>
                                 <span class="text-danger"></span>

@@ -14,9 +14,7 @@ namespace Entities.Concrete
         public int Id { get; set; }
         [Required(ErrorMessage = "Zorunlu Alan")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Zorunlu Alan")]
         public string PersonInCharge { get; set; }
-        [Required(ErrorMessage = "Zorunlu Alan")]
         public string PersonInChargeSurName { get; set; }
         public string KindOf { get; set; }
 
@@ -37,7 +35,6 @@ namespace Entities.Concrete
         public string Phone2 { get; set; }
         public int Type { get; set; }
         public int Status { get; set; }
-        [Required(ErrorMessage = "Zorunlu Alan")]
         public string City { get; set; }
 
         [Required(ErrorMessage = "Zorunlu Alan")]
@@ -50,7 +47,6 @@ namespace Entities.Concrete
         public string Region { get; set; }
         //[MaxLength(11, ErrorMessage = "11 Karakterden fazla girilemez")]
         [RegularExpression("^([0-9]{10})$", ErrorMessage = "Format hatası")]
-        [Required(ErrorMessage = "Zorunlu Alan")]
         public string TaxAdministration { get; set; }
         public string TaxNumber { get; set; }
         //[MaxLength(11, ErrorMessage = "11 Karakterden fazla girilemez")]
@@ -70,7 +66,6 @@ namespace Entities.Concrete
         public string Slsman { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        [Required(ErrorMessage = "Zorunlu Alan")]
         public string TaxInfo { get; set; }
         public string Facebook { get; set; }
         public string Youtube { get; set; }

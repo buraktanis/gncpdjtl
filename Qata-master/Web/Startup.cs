@@ -68,13 +68,13 @@ namespace Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
               .AddCookie(options =>
               {
-            
+
                   options.LoginPath = new PathString("/Auth/Login");
                   options.LogoutPath = new PathString("/Auth/Logout");
                   options.AccessDeniedPath = new PathString("/Auth/Login");
                   options.SlidingExpiration = true;
                   options.ExpireTimeSpan = TimeSpan.FromDays(1);
-            
+
               });
 
 
@@ -87,8 +87,8 @@ namespace Web
             services.AddSingleton<IErpSalesManagement, ErpSalesManagement>();
 
             services.AddSingleton<INotDal, EfNotDal>();
-            services.AddSingleton<INotManager, NotManager>();         
-            
+            services.AddSingleton<INotManager, NotManager>();
+
             services.AddSingleton<ISettingDal, EfSettingDal>();
             services.AddSingleton<ISettingManager, SettingManager>();
 

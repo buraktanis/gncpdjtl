@@ -16,10 +16,10 @@ namespace Core.Repositories.EntityFramework
     where TContext : DbContext, new()
     {
 
-        
+
         public IDataResult<TEntity> Add(TEntity entity)
         {
-            using (var context=new TContext())
+            using (var context = new TContext())
             {
                 var addedEntity = context.Entry(entity);
                 addedEntity.State = EntityState.Added;
@@ -38,7 +38,7 @@ namespace Core.Repositories.EntityFramework
 
         public IResult Delete(TEntity entity)
         {
-            using (var context = new TContext()) 
+            using (var context = new TContext())
             {
                 var deletedEntity = context.Entry(entity);
                 deletedEntity.State = EntityState.Deleted;
@@ -50,7 +50,7 @@ namespace Core.Repositories.EntityFramework
 
         public IDataResult<TEntity> Get(Expression<Func<TEntity, bool>> filter = null)
         {
-            using (var context =new TContext())
+            using (var context = new TContext())
             {
                 return new SuccessDataResult<TEntity>(context.Set<TEntity>().FirstOrDefault(filter));
             }
@@ -66,15 +66,15 @@ namespace Core.Repositories.EntityFramework
 
         public IResult Update(TEntity entity)
         {
-            using var context= new TContext();
+            using var context = new TContext();
             var updatedEntity = context.Entry(entity);
             updatedEntity.State = EntityState.Modified;
             context.SaveChanges();
             return new SuccessResult();
-        } 
+        }
         public IResult UpdateAsync(TEntity entity)
         {
-            using var context= new TContext();
+            using var context = new TContext();
             var updatedEntity = context.Entry(entity);
             updatedEntity.State = EntityState.Modified;
             context.SaveChangesAsync();

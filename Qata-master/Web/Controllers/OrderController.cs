@@ -225,7 +225,7 @@ namespace Web.Controllers
 
             if (logoitem == null && item.Data == null)
             {
-                return new ErrorResult("Mazeme Bulunmadı");
+                return new ErrorResult("Malzeme Bulunmadı");
 
             }
 
@@ -364,7 +364,7 @@ namespace Web.Controllers
         }
         public IActionResult StockControl()
         {
-            var model = _logoManagement.GetLogoStok();
+            var model = _logoManagement.GetLogoStok2();
             return View(model.Data);
         }
 

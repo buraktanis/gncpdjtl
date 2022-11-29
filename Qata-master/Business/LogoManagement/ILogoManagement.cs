@@ -15,7 +15,6 @@ namespace Business.LogoManagement
         public DataTablesObjectResult GetStokDatatables(DatatablesObject requestobj);
         public DataResult<List<STOK_DURUM>> GetLogoStok();
         public DataResult<List<STOK_DURUM>> GetLogoStok2();
-
         IResult bayiPerformans(string bastarih, string bistarih, string temsilci = "Tüm Kişiler", string tips = "");
         public DataResult<List<Customer>> Carilist();
         public DataResult<List<MALZEME_LISTESI>> Get_MALZEME_LISTESI_By_LOGICALREF(int logoid);

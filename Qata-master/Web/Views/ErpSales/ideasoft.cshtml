@@ -1,0 +1,166 @@
+﻿@{ ViewData["Title"] = "Index"; }
+
+
+<div class="">
+    <div class="">
+        <div class="col-md-12">
+
+            <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+                <ol class="breadcrumb ">
+
+                    <li class="breadcrumb-item active" aria-current="page ">
+                        <h3>
+                            Sipariş Listesi
+                        </h3>
+                    </li>
+                </ol>
+            </nav>
+
+        </div>
+
+        
+        <div class="bg-white  mt-4">
+            <div class="row bg-white rounded">
+
+
+
+                <hr class="container-fluid bg-light pl-5" />
+
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+                                    <th class="pt-1 pb-1">Sipariş No</th>
+                                    <th class="pt-1 pb-1">Müşteri</th>
+                                    <th class="pt-1 pb-1">Not</th>
+                                    <th class="pt-1 pb-1">Temsilci</th>
+                                    <th class="pt-1 pb-1">Sipariş Tutarı</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var token = 'MmNhNWRmNjYzMTY1ZDJkNTkzMWEwMmUxMDMwMzBjZGVkNzhmMDM4MWU5ZWJhZjFmOTllMjgzN2YzN2NjMDNiMQ';
+
+
+
+
+        
+        $(function () {
+            console.log("zort")
+            $.ajax({
+                url: "https://gencpatek.myideasoft.com/api/payments?sort=-id&limit=100",
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                headers: {
+                    'Host': 'gencpatek.myideasoft.com',
+                    'Authorization' : `Bearer MmNhNWRmNjYzMTY1ZDJkNTkzMWEwMmUxMDMwMzBjZGVkNzhmMDM4MWU5ZWJhZjFmOTllMjgzN2YzN2NjMDNiMQ`,
+                },
+                dataType: 'jsonp',
+                success: function (result, status, xhr) {
+                    alert("success")
+                    ShowData(result);
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+            
+
+            recordtable = $('#recordtable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                "responsive": false,
+                "serverSide": true,
+                "searching": true,
+                "lengthChange": false,
+                //"jQueryUI": true,
+                "stateSave": false,
+                "pagingType": "full_numbers",
+                "ajax": {
+                    "url": "https://gencpatek.myideasoft.com/api/payments?sort=-id&limit=100",
+                    "method": "GET",
+                    "type": "GET",
+                    headers: {
+                        Authorization: 'Bearer MmNhNWRmNjYzMTY1ZDJkNTkzMWEwMmUxMDMwMzBjZGVkNzhmMDM4MWU5ZWJhZjFmOTllMjgzN2YzN2NjMDNiMQ',
+                    },
+                    "data": function (d) {
+                        console.log(d);
+                        alert(d);
+                        return JSON.stringify(d);
+                        return d;
+                        console.log(d);
+                        alert(d);
+                    },
+                    "success": function (result) {
+                        alert(result);
+                        console.log(result);
+                    },
+                    "error" : function (xhr, status, error) {
+                        alert("Hata : " + error);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "OrderNo"
+                    },
+                    {
+                        "data": "Name"
+                    },
+                    {
+                        "data": "Notlar"
+                    },
+                    {
+                        "data": "Slsman"
+                    },
+                    {
+                        "data": "TotalPrice", className: "text-center", "render": function (data, type, row) {
+                            return numeral(data).format('0,0.00');
+                        }
+                    },
+                    {
+                        "data": "OrderDate", className: "text-center", "render": function (data, type, row) {
+                        }
+                    },
+                    {
+                        "data": "Status", className: "text-center", "render": function (data, type, row) {
+                            
+                        }
+
+                    },
+                    {
+                        "data": "Id", className: "text-center", "render": function (data, type, row) {
+                            
+                        }
+                    }
+                ]
+                ,
+                
+
+            });
+
+
+
+        });
+
+    </script>
+}

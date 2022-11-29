@@ -398,5 +398,11 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
 
             return View(model);
         }
+        [HttpGet]
+        public IActionResult ideasoft()
+        {
+            return View();
+        }
+
     }
 }

@@ -154,11 +154,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>
     <script type="text/javascript">
+
     var recordtable;
         var stock = 0;
         var toplammaliyet = 0;
         var stockdizi = [];
         var toplammaliyetdizi = [];
+
         $(function () { $.fn.dataTable.moment('DD.MM.YYYY, h:mm:ss'); })
         $(function () {
             $('#searchDiv').click(function () {

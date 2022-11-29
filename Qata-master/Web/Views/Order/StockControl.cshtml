@@ -52,14 +52,14 @@
                                 <th class="pt-1 pb-1">Mal Kodu</th>
                                 <th class="pt-1 pb-1"> Mal Adı </th>
                                 <th class="pt-1 pb-1">MarkaKodu</th>
+                                <th class="pt-1 pb-1 hide">Malzeme</th>
                                 @if (CurrentSession.Roles.Contains("Yonetim"))
                                 {
 
-                                    <th class="pt-1 pb-1"> En Düşük Maliyet</th>
-                                    <th class="pt-1 pb-1">En Yüksek Maliyet</th>
-                                    <th class="pt-1 pb-1"> Son Maliyet</th>
-                                    <th class="pt-1 pb-1"> Ortalama Maliyet</th>
-                                }
+                            <th class="pt-1 pb-1"> En Düşük Maliyet</th>
+                                            <th class="pt-1 pb-1">En Yüksek Maliyet</th>
+                                                            <th class="pt-1 pb-1"> Son Maliyet</th>
+                                                                            <th class="pt-1 pb-1"> Ortalama Maliyet</th>}
                                 <th class="pt-1 pb-1"> Fiili Stok </th>
 
 
@@ -77,6 +77,9 @@
                                     </td>
                                     <td class="searching">
                                         <a class="btnsearch" style="color:Highlight" data-text="@item.MarkaKodu">@item.MarkaKodu</a>
+                                    </td>
+                                    <td class="searching hide">
+                                        <a>@item.MalzemeGrupKodu</a>
                                     </td>
                                     @if (CurrentSession.Roles.Contains("Yonetim"))
                                     {
@@ -120,7 +123,7 @@
                                 <th class="pt-1 pb-1">Mal Kodu</th>
                                 <th class="pt-1 pb-1"> Mal Adı </th>
                                 <th class="pt-1 pb-1">MarkaKodu</th>
-                                <th class="pt-1 pb-1"> MalzemeGrupKodu</th>
+                                <th class="pt-1 pb-1 hide"> Malzeme</th>
                                 @if (CurrentSession.Roles.Contains("Yonetim"))
                                 {
 
@@ -189,7 +192,6 @@
 
 
         var tip;
-
         $(".lessthanzerotable2").hide();
 
 

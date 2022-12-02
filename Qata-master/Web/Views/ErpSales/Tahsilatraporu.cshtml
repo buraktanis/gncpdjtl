@@ -108,47 +108,47 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
+                                <tr>
 
-                                        <td>
-                                            <a class=" btnsearch" data-text="@item.temsilci">@item.temsilci</a>
-                                        </td>
-                                        <td>
-                                            <a class=" btnsearch" data-text="@item.kod">@item.kod</a>
+                                    <td>
+                                        <a class=" btnsearch" data-text="@item.temsilci">@item.temsilci</a>
+                                    </td>
+                                    <td>
+                                        <a class=" btnsearch" data-text="@item.kod">@item.kod</a>
 
-                                        </td>
-                                        <td>
-                                            <a class="btnsearch" data-text=" @item.unvan"> @item.unvan</a>
-                                        </td>
-                                        <td>
+                                    </td>
+                                    <td>
+                                        <a class="btnsearch" data-text=" @item.unvan"> @item.unvan</a>
+                                    </td>
+                                    <td>
 
-                                            @item.GECEN_GUN
-                                        </td>
+                                        @item.GECEN_GUN
+                                    </td>
 
-                                        <td>
-                                            @string.Format("{0:C0}", item.TUTAR)
+                                    <td>
+                                        @string.Format("{0:C0}", item.TUTAR)
 
-                                        </td>
+                                    </td>
 
-                                        @if (item.MODÜL == "VADE GEÇMİŞ!")
+                                    @if (item.MODÜL == "VADE GEÇMİŞ!")
                                         {
-                                            <td style="background-color: #d72f2f" class="text-center text-white">
+                                    <td style="        color: #e11d48;" class="text-center">
 
-                                                @item.MODÜL
-                                            </td>
+                                        @item.MODÜL
+                                    </td>
  }
                                         else
                                         {
-                                            <td>
+                                    <td style="        color: #10b981;" class="text-center">
 
-                                                @item.MODÜL
-                                            </td>
+                                        @item.MODÜL
+                                    </td>
 }
 
 
 
 
-                                    </tr>
+                                </tr>
 }
                             </tbody>
 

@@ -200,10 +200,10 @@
                         }
                     },
                     {
-                        "data": "Name", className: "text-center", "render": function (data, type, row) {
+                        "data": "Name",  "render": function (data, type, row) {
                             var html = ""
 
-                                + "<a data-logoid='" + data + "' class='btn btn-outline-danger riskControl' >Risk</a>"
+                                + "<a data-logoid='" + data + "' class='btn btn-danger riskControl' >Risk</a>"
 
 
                             return html + "  " + data;
@@ -245,11 +245,11 @@
                         "data": "Id", className: "text-center", "render": function (data, type, row) {
                             var html = ""
 
-                                + "<a data-id='" + data + "' class='btn btn-outline-secondary  detail' href='/Order/UpdateOrder/" + data + "'>Güncelle</a>"
-                                + "<a data-logoid='" + data + "' class='btn btn-outline-info  ozet' >Özet</a>"
-                                + "<a  data-status='3' data-id='" + data + "' class='btn btn-outline-danger  ret'>Red Et</a>"
-                                + "<a data-status='1' data-id='" + data + "' class='btn btn-outline-success  onayla'>Onayla</a>"
-                                + "<a data-id='" + data + "' class='btn btn-outline-danger  delete'>Sil</a>";
+                                + "<a data-id='" + data + "' class='btn btn-secondary  detail' href='/Order/UpdateOrder/" + data + "'>Güncelle</a>"
+                                + "<a data-logoid='" + data + "' class='btn btn-info  ozet' >Özet</a>"
+                                + "<a  data-status='3' data-id='" + data + "' class='btn btn-danger  ret'>Red Et</a>"
+                                + "<a data-status='1' data-id='" + data + "' class='btn btn-success  onayla'>Onayla</a>"
+                                + "<a data-id='" + data + "' class='btn btn-danger  delete'>Sil</a>";
 
 
                             return html;
@@ -407,7 +407,7 @@
                 $.confirm({
                     title: "Risk Raporu",
                     content: $("#formrisk").html(),
-                    columnClass: 'col-md-8',
+                    columnClass: 'col-md-12',
                     containerFluid: true,
                     buttons: {
                         formSubmit: {
@@ -423,6 +423,9 @@
                             "serverSide": true,
                             "paging": false,
                             "searching": false,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                            },
                             "lengthChange": false,
                             //"jQueryUI": true,
                             "stateSave": false,
@@ -450,7 +453,22 @@
 
                                         return data;
 
-                                    }                                },
+                                    }
+                                },
+                                {
+                                    "data": "islem", className: "text-center", "render": function (data, type, row) {
+
+                                        return data;
+
+                                    }
+                                },
+                                {
+                                    "data": "vade", className: "text-center", "render": function (data, type, row) {
+
+                                        return data;
+
+                                    }
+                                },
                                 {
                                     "data": "unvan", className: "text-center", "render": function (data, type, row) {
 
@@ -475,7 +493,17 @@
                                 {
                                     "data": "MODÜL", className: "text-center", "render": function (data, type, row) {
 
-                                        return data;
+                                        var html = ``;
+
+                                        if (data == "VADE GEÇMİŞ!") {
+                                            html = `<span style="color:#e11d48;">Vade Geçmiş</span>`;
+                                        }
+                                        if (data == "Vade Geçmemiş") {
+                                            html = `<span style="color:#10b981;">Vade Geçmemiş</span>`;
+                                        }
+                                        
+
+                                        return html;
 
                                     }                                },
                                 
@@ -518,6 +546,9 @@
                             "serverSide": true,
                             "paging": false,
                             "searching": false,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                            },
                             "lengthChange": false,
                             //"jQueryUI": true,
                             "stateSave": false,
@@ -628,12 +659,14 @@
     <script type="text/template" id="formrisk">
 
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 table-responsive">
                 <table id="recordtable2" class="table table-sm table-striped table-bordered dataTable">
                     <thead class="thead-light ">
                         <tr>
                             <th class="pt-1 pb-1">Temsilci</th>
                             <th class="pt-1 pb-1">Kod</th>
+                            <th class="pt-1 pb-1">İşlem Tarihi</th>
+                            <th class="pt-1 pb-1">Vade Tarihi</th>
                             <th class="pt-1 pb-1">Firma</th>
                             <th class="pt-1 pb-1">Geçen Gün</th>
                             <th class="pt-1 pb-1">Tutar</th>
@@ -647,11 +680,7 @@
 
 
             </div>
-            <div class="col-md-9">
-
-
-
-            </div>
+            
             
         </div>
     </script>

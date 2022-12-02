@@ -1,4 +1,8 @@
-﻿@{ ViewData["Title"] = "Index"; }
+﻿
+@model dynamic
+
+
+@{ ViewData["Title"] = "Index"; }
 
 
 <div class="">
@@ -10,7 +14,7 @@
 
                     <li class="breadcrumb-item active" aria-current="page ">
                         <h3>
-                            Sipariş Listesi
+                            Ideasoft
                         </h3>
                     </li>
                 </ol>
@@ -18,7 +22,7 @@
 
         </div>
 
-        
+
         <div class="bg-white  mt-4">
             <div class="row bg-white rounded">
 
@@ -34,13 +38,54 @@
                                 <tr style="color:#F1F1F1; ">
                                     <th class="pt-1 pb-1">Sipariş No</th>
                                     <th class="pt-1 pb-1">Müşteri</th>
-                                    <th class="pt-1 pb-1">Not</th>
-                                    <th class="pt-1 pb-1">Temsilci</th>
-                                    <th class="pt-1 pb-1">Sipariş Tutarı</th>
+                                    <th class="pt-1 pb-1">Telefon</th>
+                                    <th class="pt-1 pb-1">Tutar</th>
+                                    <th class="pt-1 pb-1">Sipariş Tarihi</th>
                                 </tr>
                             </thead>
                             <tbody>
+
+                                @foreach (var item in Model)
+                                {
+
+                        <tr>
+
+                            <td>
+
+                                @item.id
+                            </td>
+                            <td>
+                                @if (@item.memberFirstname == @item.memberSurname)
+                                {
+                            @item.memberFirstname }
+                        else
+                        {
+                            @string.Format("{0} {1}",item.memberFirstname,item.memberSurname)
+                                }
+                            </td>
+                            <td>
+                                @item.memberPhone
+                            </td>
+
+                            <td>
+                                @string.Format("{0:0,0.00} ₺", item.finalAmount)
+                            </td>
+                            <td>
+                                @item.createdAt
+
+                            </td>
+                            
+
+
+
+
+
+
+                        </tr>
+}
+
                             </tbody>
+
                         </table>
                     </div>
 
@@ -55,112 +100,46 @@
 
 
 
+
+
 @section Scripts{
-
-    <script type="text/javascript">
-        var token = 'MmNhNWRmNjYzMTY1ZDJkNTkzMWEwMmUxMDMwMzBjZGVkNzhmMDM4MWU5ZWJhZjFmOTllMjgzN2YzN2NjMDNiMQ';
-
-
-
-
-        
+    <script>
         $(function () {
-            console.log("zort")
-            $.ajax({
-                url: "https://gencpatek.myideasoft.com/api/payments?sort=-id&limit=100",
-                type: "GET",
-                contentType: 'application/json; charset=utf-8',
-                headers: {
-                    'Host': 'gencpatek.myideasoft.com',
-                    'Authorization' : `Bearer MmNhNWRmNjYzMTY1ZDJkNTkzMWEwMmUxMDMwMzBjZGVkNzhmMDM4MWU5ZWJhZjFmOTllMjgzN2YzN2NjMDNiMQ`,
-                },
-                dataType: 'jsonp',
-                success: function (result, status, xhr) {
-                    alert("success")
-                    ShowData(result);
-                },
-                error: function (xhr, status, error) {
-                    alert(error);
-                }
-            });
-            
-
-            recordtable = $('#recordtable').DataTable({
+            $('#recordtable').DataTable({
+                order: [[0, 'desc']],
+                dom: 'Bfrtip',
+                pageLength: 25,
+                paging: true,
+                searching: true,
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
                 },
-                "responsive": false,
-                "serverSide": true,
-                "searching": true,
-                "lengthChange": false,
-                //"jQueryUI": true,
-                "stateSave": false,
-                "pagingType": "full_numbers",
-                "ajax": {
-                    "url": "https://gencpatek.myideasoft.com/api/payments?sort=-id&limit=100",
-                    "method": "GET",
-                    "type": "GET",
-                    headers: {
-                        Authorization: 'Bearer MmNhNWRmNjYzMTY1ZDJkNTkzMWEwMmUxMDMwMzBjZGVkNzhmMDM4MWU5ZWJhZjFmOTllMjgzN2YzN2NjMDNiMQ',
-                    },
-                    "data": function (d) {
-                        console.log(d);
-                        alert(d);
-                        return JSON.stringify(d);
-                        return d;
-                        console.log(d);
-                        alert(d);
-                    },
-                    "success": function (result) {
-                        alert(result);
-                        console.log(result);
-                    },
-                    "error" : function (xhr, status, error) {
-                        alert("Hata : " + error);
-                    }
-                },
-                "columns": [
-                    {
-                        "data": "OrderNo"
-                    },
-                    {
-                        "data": "Name"
-                    },
-                    {
-                        "data": "Notlar"
-                    },
-                    {
-                        "data": "Slsman"
-                    },
-                    {
-                        "data": "TotalPrice", className: "text-center", "render": function (data, type, row) {
-                            return numeral(data).format('0,0.00');
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
                         }
                     },
-                    {
-                        "data": "OrderDate", className: "text-center", "render": function (data, type, row) {
-                        }
-                    },
-                    {
-                        "data": "Status", className: "text-center", "render": function (data, type, row) {
-                            
-                        }
-
-                    },
-                    {
-                        "data": "Id", className: "text-center", "render": function (data, type, row) {
-                            
-                        }
-                    }
-                ]
-                ,
-                
+                    //the remaining buttons here
+                }],
 
             });
 
 
+            $(".dataTable tbody").on("click", "a.btnsearch", function () {
+                var text = $(this).attr("data-text");
+                $('input[type=search]').val(text);
+                $('input[type=search]').keyup();
+                if (marka == '' || marka == null) {
+                    $('.filtre_silici').addClass('hidden');
+                }
+            });
+
 
         });
-
     </script>
+    
+        
 }

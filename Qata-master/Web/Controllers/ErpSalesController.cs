@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Web.Models;
+using Newtonsoft.Json;
 
 namespace Web.Controllers
 {
@@ -24,7 +27,7 @@ namespace Web.Controllers
         {
             _erpSalesManagement = erpSalesManagement;
         }
-        
+
 
         public IActionResult Sale()
         {
@@ -253,14 +256,14 @@ namespace Web.Controllers
             accountcodelistModel accountcodelist = new accountcodelistModel();
 
             accountcodelist.accountcodelist = string.Format(@"SELECT * FROM accountcodemapping").GetQuery<Accountcodemapping>("SCSlogo");
-            
+
 
             return View(accountcodelist);
         }
 
         public IActionResult imei(string imei)
         {
-            string tempsorgu = string.Format(" IMEI ='{0}' ", imei); 
+            string tempsorgu = string.Format(" IMEI ='{0}' ", imei);
 
 
 
@@ -350,7 +353,7 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
             return View(model);
         }
 
-        public IActionResult cariekstresi(string bastarih,string bistarih,string satistemsilcisi)
+        public IActionResult cariekstresi(string bastarih, string bistarih, string satistemsilcisi)
         {
             if (CurrentSession.Roles.Contains("Yonetim"))
             {
@@ -360,7 +363,7 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
             {
                 satistemsilcisi = string.Format(" and TEMSİLCİ = '{0}' ", CurrentSession.Username);
             }
-            
+
             string tarih1 = string.Format(" ' {0} ' ", bastarih);
             string tarih2 = string.Format(" ' {0} ' ", bistarih);
 
@@ -375,7 +378,7 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
       ,[BAKIYE]
       ,[TEMSİLCİ]
       
-  FROM [tiger].[dbo].[ARY_XXX_CARI_EKSTRE] where (TARIH between {0} and {1}) {2}", tarih1,tarih2,satistemsilcisi).GetDynamicQuery("SCSlogo");
+  FROM [tiger].[dbo].[ARY_XXX_CARI_EKSTRE] where (TARIH between {0} and {1}) {2}", tarih1, tarih2, satistemsilcisi).GetDynamicQuery("SCSlogo");
 
             return View(model);
 
@@ -398,10 +401,40 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
 
             return View(model);
         }
-        [HttpGet]
         public IActionResult ideasoft()
         {
-            return View();
+            var url = "https://www.gencpaonline.com/oauth/v2/token?grant_type=refresh_token&client_id=21_7if4seneda4gocs0g8wgsgws8w44kowscs00k008cwks0sggs&client_secret=3bb8xfzzrtq8w0ks0o0g0scgs04wsosokcccwkws8gcsc80o8w&refresh_token=YjQ0YmU3NjkyZjg0MDQ4NjZjMWE2NTZlNWRhY2ZkM2ViZWM3MjRmYjAxNjU0OTEyYjIxNjJmNWRiYzkxMGRiYQ";
+
+            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+
+
+
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            var streamReader = new StreamReader(httpResponse.GetResponseStream());
+            
+                var result = streamReader.ReadToEnd();
+                var myUser = JsonConvert.DeserializeObject<dynamic>(result);
+
+            var accesstoken = myUser.access_token;
+               
+            var url2 = "https://www.gencpaonline.com/api/payments?sort=-id&limit=100";
+
+            var httpRequest2 = (HttpWebRequest)WebRequest.Create(url2);
+            var authorize = string.Format("Bearer {0}", accesstoken);
+            httpRequest2.Headers["Authorization"] = authorize;
+
+
+            var httpResponse2 = (HttpWebResponse)httpRequest2.GetResponse();
+            using (var streamReader2 = new StreamReader(httpResponse2.GetResponseStream()))
+            {
+                dynamic result2 = streamReader2.ReadToEnd();
+                dynamic myUser2 = JsonConvert.DeserializeObject(result2);
+
+                return View(myUser2);
+            }
+            
+
+            
         }
 
     }

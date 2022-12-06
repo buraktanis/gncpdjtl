@@ -398,12 +398,20 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
 
 
             dynamic model = string.Format(@"SELECT  [MLZ_KODU] ,[MLZ_ADI],[MIKTAR],[MIKTAR_STOK],[GIRIS_TARIHI],[STOK_GUN],[CH_UNVANI] FROM [tiger].[dbo].[ARY_STOK_YASLANDIRMA] where MIKTAR_STOK > 0 ").GetDynamicQuery("SCSlogo");
-
             return View(model);
         }
         public IActionResult ideasoft()
         {
-            var url = "https://www.gencpaonline.com/oauth/v2/token?grant_type=refresh_token&client_id=21_7if4seneda4gocs0g8wgsgws8w44kowscs00k008cwks0sggs&client_secret=3bb8xfzzrtq8w0ks0o0g0scgs04wsosokcccwkws8gcsc80o8w&refresh_token=YjQ0YmU3NjkyZjg0MDQ4NjZjMWE2NTZlNWRhY2ZkM2ViZWM3MjRmYjAxNjU0OTEyYjIxNjJmNWRiYzkxMGRiYQ";
+            //Getting refresh token from database
+            var model = string.Format("Select * from refreshtokenview").GetDynamicQuery("SCSlogo");
+            var resultrefresh = "";
+            foreach ( var item in model)
+            {
+                resultrefresh = item.refreshtoken;
+            }
+
+            //Request for new refresh token and access token
+            var url =string.Format("https://www.gencpaonline.com/oauth/v2/token?grant_type=refresh_token&client_id=21_7if4seneda4gocs0g8wgsgws8w44kowscs00k008cwks0sggs&client_secret=3bb8xfzzrtq8w0ks0o0g0scgs04wsosokcccwkws8gcsc80o8w&refresh_token={0}",resultrefresh);
 
             var httpRequest = (HttpWebRequest)WebRequest.Create(url);
 
@@ -414,9 +422,13 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
             
                 var result = streamReader.ReadToEnd();
                 var myUser = JsonConvert.DeserializeObject<dynamic>(result);
+            var accesstoken = string.Format("{0}", myUser.access_token);
+            string refreshtoken = myUser.refresh_token;
+            
 
-            var accesstoken = myUser.access_token;
-               
+            //Updating refresh token with new refresh token
+            var model2 = string.Format("Update refreshtokenview SET refreshtoken='{0}'",refreshtoken).GetDynamicQuery("SCSlogo");
+            //Request for data 
             var url2 = "https://www.gencpaonline.com/api/payments?sort=-id&limit=100";
 
             var httpRequest2 = (HttpWebRequest)WebRequest.Create(url2);

@@ -14,6 +14,8 @@ namespace Business.LogoManagement
         public DataResult<List<Customer>> TaxTcControl(string no);
         public DataTablesObjectResult GetStokDatatables(DatatablesObject requestobj);
         public DataResult<List<STOK_DURUM>> GetLogoStok();
+        public DataResult<List<STOK_DURUM>> GetLogoStokTemsilci();
+
         public DataResult<List<STOK_DURUM>> GetLogoStok2();
         IResult bayiPerformans(string bastarih, string bistarih, string temsilci = "Tüm Kişiler", string tips = "");
         public DataResult<List<Customer>> Carilist();

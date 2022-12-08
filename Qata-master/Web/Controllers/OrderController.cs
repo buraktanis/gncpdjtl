@@ -362,7 +362,12 @@ namespace Web.Controllers
                 return new JsonResult(new { error = "Internal Server Error" });
             }
         }
-        public IActionResult StockControl()
+        public IActionResult StockControlTemsilci()
+        {
+            var model = _logoManagement.GetLogoStokTemsilci();
+            return View(model.Data);
+        }
+        public IActionResult StockControlAdmin()
         {
             var model = _logoManagement.GetLogoStok2();
             return View(model.Data);

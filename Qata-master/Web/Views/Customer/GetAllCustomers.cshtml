@@ -173,6 +173,8 @@
                                     <th class="pt-1 pb-1">İl</th>
                                     <th class="pt-1 pb-1">CariKodu</th>
                                     <th class="pt-1 pb-1">Telefon Numarası</th>
+                                    <th>Sözleşme</th>
+
                                     <th class="pt-1 pb-1">
 
                                         Müşteri Notu
@@ -275,22 +277,22 @@
                             var day = dateObj.getUTCDate();
                             var year = dateObj.getUTCFullYear();
 
-                            
+
                             aramatarihi = data;
 
                             const date1 = new Date(month + "/" + day + "/" + year);
                             const date2 = new Date(data);
                             const diffTime = Math.abs(date1 - date2);
                             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                            
+
 
                             var html = "<p style='animation:blinker 1s linear infinite;'> &#128222; Aranmalı </p>"
-                            
 
-                            
+
+
                             if (data != null && data != "")
                                 if (diffDays > 30)
-                                    return moment(data).format("DD.MM.YYYY") + html ;
+                                    return moment(data).format("DD.MM.YYYY") + html;
                                 else
                                     return moment(data).format("DD.MM.YYYY");
                             else
@@ -302,16 +304,16 @@
                     },
                     {
                         "data": "Name"
-                        
-                    }, 
+
+                    },
                     {
                         "data": "Slsman"
-                    }, 
+                    },
                     {
                         "data": "City"
                     },
-                    
-                    
+
+
                     {
                         "data": "CariKodu", "visible": false
                     },
@@ -324,6 +326,17 @@
                         }
 
                     },
+                    {
+                        "data": "Expr1", className: "text-center", "render": function (data, type, row) {
+                            if (data == "X") {
+                                return "&#10060";
+                            }
+                            else {
+                                return "&#x2705";
+                            }
+                        }
+                    }
+                    ,
                     {
                         "data": "LogoId", className: "text-center", "render": function (data, type, row) {
                             var html = ""

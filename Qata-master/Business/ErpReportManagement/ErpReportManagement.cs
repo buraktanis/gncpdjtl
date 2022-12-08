@@ -72,6 +72,7 @@ namespace Business.ErpReportManagement
         {
 
             var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var firstdayofweek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
             if (!tempsorgu.isNull())
             {
                 tempsorgu = string.Format("  AND fat.[Satış Temsilcisi] ='{0}' ", tempsorgu);
@@ -89,7 +90,7 @@ namespace Business.ErpReportManagement
 
             var haftaliklist = string.Format(@"SELECT SUM([Satır Miktarı])*(1) AS adet, ROUND(SUM([Satır Net Tutarı KDV Dahil]), 0)*(1) AS ciro, COUNT(DISTINCT fat.[Cari Kodu]) AS firma, COUNT(DISTINCT [Model]) AS cesit, ISNULL(fat.[Satış Temsilcisi],'?') AS kullanici
             FROM ARY_XXX_AYRINTILI_SATIS_RAPORU fat WHERE  fat.[Fatura Türü]='Perakende Satış Faturası' AND fat.[Satır Türü]='Malzeme' 
-            AND fat.[Fatura Tarihi] BETWEEN '{0}' AND '{1}'  {2}  GROUP BY fat.[Satış Temsilcisi] ORDER BY ROUND(SUM([Satır Net Tutarı KDV Dahil]), 0)*(1) DESC  ", DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), tempsorgu).GetQuery<Personelperformas>("SCSlogo");
+            AND fat.[Fatura Tarihi] BETWEEN '{0}' AND '{1}'  {2}  GROUP BY fat.[Satış Temsilcisi] ORDER BY ROUND(SUM([Satır Net Tutarı KDV Dahil]), 0)*(1) DESC  ", firstdayofweek.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), tempsorgu).GetQuery<Personelperformas>("SCSlogo");
             var model = new CiroGunHaftaAyModel();
             model.gunlukciro = gunluklist.Sum(x => x.ciro);
             model.gunlukadet = gunluklist.Sum(x => x.adet);

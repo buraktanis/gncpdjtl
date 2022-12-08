@@ -234,6 +234,37 @@ namespace Business.LogoManagement
             return new SuccessDataResult<List<STOK_DURUM>>(STOK_DURUMs);
         }
 
+        public DataResult<List<STOK_DURUM>> GetLogoStokTemsilci()
+        {
+            List<STOK_DURUM> STOK_DURUMs = string.Format(@"  SELECT  KOD as Kod ,AD
+                              ,[Marka Kodu] as MarkaKodu
+                               ,[Malzeme Grup Kodu] MalzemeGrupKodu
+                               ,Model
+                               ,AltGrup
+                               ,STOK
+                               ,ONERI_SIP
+                               ,ONAYLI_SIP
+                               ,KLN_STOK ,
+                               GUNCEL_TARIH
+                               
+                           FROM [tiger].[dbo].[ARY_XXX_STOK_DURUM_2] where KLN_STOK > 0").GetQuery<STOK_DURUM>("SCSlogo");
+
+            List<OrderItemBekleyenDto> bekliyenler = string.Format(@" SELECT i.LogoKod ,SUM(i.UnitsInStock) Stock  FROM OrderItems i JOIN Orders o ON i.OrderId=o.Id WHERE o.Status=0 GROUP BY i.LogoKod   ").GetQuery<OrderItemBekleyenDto>();
+
+
+            foreach (var item in STOK_DURUMs)
+            {
+                var bekliyen = bekliyenler.FirstOrDefault(x => x.LogoKod == item.Kod);
+                if (bekliyen != null)
+                {
+                    item.Bekleyen_STOK = bekliyen.Stock;
+                }
+
+            }
+
+            return new SuccessDataResult<List<STOK_DURUM>>(STOK_DURUMs);
+        }
+
         public DataTablesObjectResult GetStokDatatables(DatatablesObject requestobj)
         {
             string query = string.Format(@" SELECT  KOD

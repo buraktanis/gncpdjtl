@@ -168,23 +168,41 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>}
-                    <div style="margin-left:29px;" class="multi-level collapse "
-                         role="list" id="submenu-order" aria-expanded="false">
-                        <ul class="flex-column nav">
-                            <li class="nav-item">
-                                <a href="/Order/StockControl">
-                                    <span>
+                        </div>
+                        <div style="margin-left:29px;" class="multi-level collapse "
+                             role="list" id="submenu-order" aria-expanded="false">
+                            <ul class="flex-column nav">
+                                <li class="nav-item">
+                                    <a href="/Order/StockControlAdmin">
+                                        <span>
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
-                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
-                                        </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Stok Durumu</span>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                            </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Stok Maliyet</span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    @if (CurrentSession.Roles.Contains("Satis"))
+                    {
+                        <div style="margin-left:29px;" class="multi-level collapse "
+                             role="list" id="submenu-order" aria-expanded="false">
+                            <ul class="flex-column nav">
+                                <li class="nav-item">
+                                    <a href="/Order/StockControlTemsilci">
+                                        <span>
 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                            </svg>                                     <span class="d-inline-block" style="margin-left:5px;">Stok Kontrol</span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
                 </li>
 
 

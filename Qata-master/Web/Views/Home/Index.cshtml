@@ -163,7 +163,7 @@
 
                 <div class="table-responsive">
 
-                    <table id="recordtable" class="table table-sm table-striped table-bordered dataTable" style="width:100%; font-size:14px;">
+                    <table id="recordtable" class="table table-sm table-striped table-bordered dataTable home" style="width:100%; font-size:14px;">
                         <thead style="background-color:#1f2937; height:42px;">
 
                             <tr style="color:#F1F1F1; ">
@@ -387,7 +387,7 @@
                             firmatoplam = firmatoplam + msg[i].firma;
                         }
                         tableadd("Toplam", adettoplam, firmatoplam, "", numeral(cirotoplam).format('0,0'));
-                        $('#recordtable').DataTable({
+                        $('.home').DataTable({
                             dom: 'Bfrtip',
                             buttons: [{
                                 extend: 'excel',

@@ -418,6 +418,9 @@
 
                     },
                     onOpen: function () {
+                        var toplamtutar = 0;
+                        var toplamtutarDizi = [];
+
                         var self = this;
                         recordtable2 = $('#recordtable2').DataTable({
                             "serverSide": true,
@@ -485,7 +488,7 @@
                                 {
                                     "data": "TUTAR", className: "text-center", "render": function (data, type, row) {
 
-                                        return data;
+                                        return numeral(data).format('0,0') + ' ₺';
 
                                     }
                                 }
@@ -509,6 +512,22 @@
                                 
 
                             ],
+                            
+                            "rowCallback": function (row, data) {
+
+                                toplamtutarDizi.push(data.TUTAR);
+                            }, "drawCallback": function (settings) {
+
+
+                                toplamtutarDizi.forEach((element) => {
+                                    toplamtutar = toplamtutar + element;
+                                })
+                                
+
+                                $('#toplamtutarrisk').html(numeral(toplamtutar).format('0,0') + ' ₺')
+
+                                
+                            }
                             
                             
 
@@ -676,8 +695,30 @@
                     <tbody>
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col-md-9">
+
+                    </div>
+                    <div class="col-md-3">
+                        <table class="table table-sm table-striped table-bordered dataTable float-right">
+                            @*<tr>
+                    <th></th>
+                    <th></th>
+
+                </tr>*@
 
 
+                            <tr>
+                                <td class="text-center"><h4>Toplam</h4></td>
+                                <td><h4 class="float-right " id="toplamtutarrisk"></h4> </td>
+                            </tr>
+                        </table>
+
+
+
+                    </div>
+                </div>
+                
 
             </div>
             

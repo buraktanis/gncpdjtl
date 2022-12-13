@@ -157,7 +157,7 @@
     </div>
     
 
-    <div class="col-md-12">
+    <div id="index" class="col-md-12" >
         <div class="card mb-3">
             <div class="card-body">
 
@@ -178,7 +178,24 @@
                         </thead>
                         <tbody>
                         </tbody>
+                        <tfoot>
+                            <tr>
+
+                                <th rowspan="1" colspan="1"><h5> Toplam: </h5> </th>
+                                <th id="toplamtutaradet" style="text-align:left" rowspan="1" colspan="1"> </th>
+                                <th id="toplamtutarcesit" style="text-align:left" rowspan="1" colspan="1"> </th>
+                                <th rowspan="1" colspan="1"> </th>
+
+                                <th id="toplamtutarciro" style="text-align:left" rowspan="1" colspan="1"> </th>
+                            </tr>
+
+
+                        </tfoot>
                     </table>
+                    
+                        
+                    
+                    
                 </div>
             </div>
         </div>
@@ -236,7 +253,6 @@
 
             function chart() {
                 var chart = AmCharts.makeChart("chartdiv", {
-                    "language": "en",
                     "type": "serial",
                     "dataLoader": {
                         "url": "/Home/getdashboardrapor?bastarih=" + bastarih + "&bistarih=" + bistarih + "&markaselect=" + markaselect + "&turselect=" + turselect + "",
@@ -386,7 +402,12 @@
                             adettoplam = adettoplam + msg[i].adet;
                             firmatoplam = firmatoplam + msg[i].firma;
                         }
-                        tableadd("Toplam", adettoplam, firmatoplam, "", numeral(cirotoplam).format('0,0'));
+                        $('#toplamtutaradet').html(adettoplam);
+                        
+                        $('#toplamtutarcesit').html(firmatoplam);
+                        $('#toplamtutarciro').html(numeral(cirotoplam).format('0,0') + ' ₺');
+
+
                         $('.home').DataTable({
                             dom: 'Bfrtip',
                             buttons: [{
@@ -403,10 +424,12 @@
                                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
                             },
                             pageLength: 50,
-                            paging: true,
-                            searching: true
-
+                            paging: false,
+                            searching: false,
+                            info: false,
+                            retrieve: true,
                         });
+                        
 
 
                     }
@@ -430,6 +453,9 @@
 
             }
 
+
+            
+            
 
         })
     </script>

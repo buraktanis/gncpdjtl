@@ -78,7 +78,7 @@ namespace Business.OrderManagement
                     privadewhere = privadewhere + " AND ";
                 }
 
-                privadewhere = privadewhere + string.Format(" OrderDate BETWEEN '{0}' AND '{1}' ", requestobj.additionalvalues.ElementAt(1), requestobj.additionalvalues.ElementAt(2));
+                privadewhere = privadewhere + string.Format(" OrderDate >='{0}' and OrderDate <= '{1} 23:59:59'  ", requestobj.additionalvalues.ElementAt(1), requestobj.additionalvalues.ElementAt(2));
             }
             return new DataTablesObjectResult().getresults(requestobj, query, privadewhere);
         }   

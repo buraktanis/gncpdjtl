@@ -95,6 +95,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                         @Html.DropDownListFor(m => m.Customer.KindOf, (List<SelectListItem>)Model.KindOfCustomers, new { @class = "form-control" })
+
                                         <span asp-validation-for="Customer.KindOf" class="text-danger"></span>
                                     </div>
 

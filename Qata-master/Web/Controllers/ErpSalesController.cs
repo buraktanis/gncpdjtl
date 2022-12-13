@@ -14,6 +14,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Web.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Web.Controllers
 {
@@ -442,6 +443,7 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
                 dynamic result2 = streamReader2.ReadToEnd();
                 dynamic myUser2 = JsonConvert.DeserializeObject(result2);
 
+                
                 return View(myUser2);
             }
             

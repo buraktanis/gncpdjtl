@@ -11,6 +11,7 @@ namespace Business.OrderItemManagement
     {
         DataTablesObjectResult GetOrderItemByOrderIdDatatables(DatatablesObject requestobj);
         DataTablesObjectResult riskkontrol(DatatablesObject requestobj);
+        DataTablesObjectResult riskkontrolozet(DatatablesObject requestobj);
         IResult Add(OrderItem orderItem);
         IResult Update(OrderItem orderItem);
         IResult Delete(OrderItem orderItem);

@@ -39,7 +39,7 @@ namespace Business.OrderItemManagement
         public DataTablesObjectResult riskkontrol(DatatablesObject requestobj)
         {
             string query = @"SELECT *
-  FROM [TahsilatRisk]  ";
+  FROM [TahsilatRisk] where MODÜL = 'VADE GEÇMİŞ!'  ";
             requestobj.dbtype = "SCSlogo";
             string privadewhere = "";
             var tip = requestobj.additionalvalues.ElementAt(0);
@@ -51,6 +51,24 @@ namespace Business.OrderItemManagement
             
 
             
+
+            return new DataTablesObjectResult().getresults(requestobj, query, privadewhere);
+        }
+        public DataTablesObjectResult riskkontrolozet(DatatablesObject requestobj)
+        {
+            string query = @"SELECT *
+  FROM [tiger].[dbo].[ERP_AYRINTILI_FATURA]  ";
+            requestobj.dbtype = "SCSlogo";
+            string privadewhere = "";
+            var tip = requestobj.additionalvalues.ElementAt(0);
+
+            if (!tip.isNull())
+            {
+                privadewhere = string.Format(" faturano='{0}' ", tip);
+            }
+
+
+
 
             return new DataTablesObjectResult().getresults(requestobj, query, privadewhere);
         }

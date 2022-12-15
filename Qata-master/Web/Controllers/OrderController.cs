@@ -362,6 +362,21 @@ namespace Web.Controllers
                 return new JsonResult(new { error = "Internal Server Error" });
             }
         }
+        [HttpPost]
+        public IActionResult RiskKontrolDetay([FromBody] DatatablesJS.DatatablesObject requestobj)
+        {
+            try
+            {
+                var result = _orderItemService.riskkontrolozet(requestobj);
+                return new JsonResult(_orderItemService.riskkontrolozet(requestobj));
+
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+                return new JsonResult(new { error = "Internal Server Error" });
+            }
+        }
         public IActionResult StockControlTemsilci()
         {
             var model = _logoManagement.GetLogoStokTemsilci();

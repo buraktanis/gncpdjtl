@@ -85,18 +85,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group row p-2 ">
-                                <label class="font-weight-light">Sipariş Durumu</label>
-                                <select class="form-control" id="orderDurumu">
-                                    <option value="0">Onaya Gönderildi</option>
-                                    <option value="1">Logoya Gönderildi</option>
-                                    <option value="-1">Taslak</option>
-                                    <option value="2">Faturalandı</option>
-                                    <option value="3">Red Edildi</option>
-                                </select>
-                            </div>
-                        </div>
+                       
                         <div class="col-lg-1">
                             <div class="form-group row p-2 ">
                                 <button class="btn btn-secondary mr-1 btn-raised   "><i class="fa fa-times"></i> Temizle</button>
@@ -130,7 +119,7 @@
                                 <th class="pt-1 pb-1">Temsilci</th>
                                 <th class="pt-1 pb-1">Sipariş Tutarı</th>
 
-                                <th class="pt-1 pb-1">Sipariş Durumu</th>
+                         
                                 <th class="pt-1 pb-1"></th>
                             </tr>
                         </thead>
@@ -219,33 +208,12 @@
                         }
                     },
 
-                    {
-                        "data": "Status", className: "text-center", "render": function (data, type, row) {
-
-                            var html = ``;
-
-                            if (data == -1) {
-                                html = `<span>Taslak</span>`;
-                            }
-                            if (data == 0) {
-                                html = `<span class="postik">Onaya Gönderildi </span>`;
-                            }
-                            if (data == 1) {
-                                html = `<span class="post">Logoya Gönderildi &#9989;</span>`;
-                            }
-                            if (data == 2) {
-                                html = `<span style="">Faturalandı &#128221;</span>`;
-                            }
-
-                            return html;
-                        }
-
-                    },
+                  
                     {
                         "data": "Id", className: "text-center", "render": function (data, type, row) {
                             var html = ""
 
-                                + "<a data-id='" + data + "' class='btn btn-secondary  detail' href='/Order/UpdateOrder/" + data + "'>Güncelle</a>"
+                               
                                 + "<a data-logoid='" + data + "' class='btn btn-info  ozet' >Özet</a>"
                                 + "<a  data-status='3' data-id='" + data + "' class='btn btn-danger  ret'>Red Et</a>"
                                 + "<a data-status='1' data-id='" + data + "' class='btn btn-success  onayla'>Onayla</a>"
@@ -407,7 +375,7 @@
                 $.confirm({
                     title: "Risk Raporu",
                     content: $("#formrisk").html(),
-                    columnClass: 'col-md-12',
+                    columnClass: 'col-md-10',
                     containerFluid: true,
                     buttons: {
                         formSubmit: {
@@ -445,16 +413,16 @@
                                 
                             },
                             "columns": [
+                                
                                 {
-                                    "data": "temsilci", className: "text-center", "render": function (data, type, row) {
+                                    "data": "FİŞNO", className: "text-center", "render": function (data, type, row) {
 
-                                        return data;
+                                        var html = ""
 
-                                    }                                },
-                                {
-                                    "data": "kod", className: "text-center", "render": function (data, type, row) {
+                                            + "<a data-logoid='" + data + "'style='text-decoration: underline;' class='text-info me-3 riskControldetay' >"+data+"</a>"
 
-                                        return data;
+
+                                        return html
 
                                     }
                                 },
@@ -472,12 +440,7 @@
 
                                     }
                                 },
-                                {
-                                    "data": "unvan", className: "text-center", "render": function (data, type, row) {
-
-                                        return data;
-
-                                    }                                },
+                                
                                 {
                                     "data": "GECEN_GUN", className: "text-center", "render": function (data, type, row) {
 
@@ -534,9 +497,105 @@
 
 
                         });
+                    },
+                    onContentReady: function () {
+                        this.$content.find(".dataTable tbody").on("click", "a.riskControldetay", function () {
+                            var logoid = $(this).attr("data-logoid");
+
+                            $.confirm({
+                                title: "Sipariş Detay",
+                                content: $("#formriskdetay").html(),
+                                columnClass: 'col-md-8',
+                                containerFluid: true,
+                                buttons: {
+                                    formSubmit: {
+                                        text: 'Kapat',
+                                        btnClass: 'btn-blue'
+
+                                    }
+
+                                },
+                                onOpen: function () {
+                                    var toplamtutar = 0;
+                                    var toplamtutarDizi = [];
+
+                                    var self = this;
+                                    recordtable3 = $('#recordtable3').DataTable({
+                                        "serverSide": true,
+                                        "paging": false,
+                                        "searching": false,
+                                        "language": {
+                                            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                                        },
+                                        "lengthChange": false,
+                                        //"jQueryUI": true,
+                                        "stateSave": false,
+                                        "pagingType": "full_numbers",
+                                        "ajax": {
+                                            "url": "/Order/RiskKontrolDetay",
+                                            "type": "POST",
+                                            "contentType": "application/json; charset=utf-8",
+                                            data: function (d) {
+                                                d.additionalvalues = [logoid];
+                                                return JSON.stringify(d);
+                                                return d;
+                                            },
+
+                                        },
+                                        "columns": [
+
+                                            {
+                                                "data": "cariunvan", className: "text-center", "render": function (data, type, row) {
+
+                                                    return data;
+
+                                                }
+                                            },
+                                            {
+                                                "data": "tarih", className: "text-center", "render": function (data, type, row) {
+
+                                                    return data;
+
+                                                }
+                                            },
+                                            {
+                                                "data": "malzemeadi", className: "text-center", "render": function (data, type, row) {
+
+                                                    return data;
+
+                                                }
+                                            },
+                                            {
+                                                "data": "satirtutari", className: "text-center", "render": function (data, type, row) {
+
+                                                    return numeral(data).format('0,0')
+
+                                                }
+                                            },
+                                            
+
+
+                                        ],
+
+                                        
+
+
+
+
+
+                                    });
+                                }
+                            });
+                        });
                     }
+
+
+                    
                 });
             });
+            
+
+            
 
 
             $(".dataTable tbody").on("click", "a.ozet", function () {
@@ -679,14 +738,12 @@
 
         <div class="row">
             <div class="col-sm-12 table-responsive">
-                <table id="recordtable2" class="table table-sm table-striped table-bordered dataTable">
+                <table id="recordtable2" class="table table-sm table-striped table-bordered dataTable riskkontrol">
                     <thead class="thead-light ">
                         <tr>
-                            <th class="pt-1 pb-1">Temsilci</th>
-                            <th class="pt-1 pb-1">Kod</th>
+                            <th class="pt-1 pb-1">Fatura No</th>
                             <th class="pt-1 pb-1">İşlem Tarihi</th>
                             <th class="pt-1 pb-1">Vade Tarihi</th>
-                            <th class="pt-1 pb-1">Firma</th>
                             <th class="pt-1 pb-1">Geçen Gün</th>
                             <th class="pt-1 pb-1">Tutar</th>
                             <th class="pt-1 pb-1">Modül</th>
@@ -723,6 +780,30 @@
             </div>
             
             
+        </div>
+    </script>
+    <script type="text/template" id="formriskdetay">
+
+        <div class="row">
+            <div class="col-sm-12 table-responsive">
+                <table id="recordtable3" class="table table-sm table-striped table-bordered dataTable">
+                    <thead class="thead-light ">
+                        <tr>
+                            <th class="pt-1 pb-1">Firma</th>
+                            <th class="pt-1 pb-1">İşlem Tarihi</th>
+                            <th class="pt-1 pb-1">Malzeme Adı</th>
+                            <th class="pt-1 pb-1">Sipariş Fiyatı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                
+
+
+            </div>
+
+
         </div>
     </script>
 

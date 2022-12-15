@@ -85,7 +85,18 @@
                                 </select>
                             </div>
                         </div>
-                       
+                        <div class="col-lg-3">
+                            <div class="form-group row p-2 ">
+                                <label class="font-weight-light">Sipariş Durumu</label>
+                                <select class="form-control" id="orderDurumu">
+                                    <option value="0">Onaya Gönderildi</option>
+                                    <option value="1">Logoya Gönderildi</option>
+                                    <option value="-1">Taslak</option>
+                                    <option value="2">Faturalandı</option>
+                                    <option value="3">Red Edildi</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-lg-1">
                             <div class="form-group row p-2 ">
                                 <button class="btn btn-secondary mr-1 btn-raised   "><i class="fa fa-times"></i> Temizle</button>
@@ -119,7 +130,7 @@
                                 <th class="pt-1 pb-1">Temsilci</th>
                                 <th class="pt-1 pb-1">Sipariş Tutarı</th>
 
-                         
+                                <th class="pt-1 pb-1">Sipariş Durumu</th>
                                 <th class="pt-1 pb-1"></th>
                             </tr>
                         </thead>
@@ -208,12 +219,11 @@
                         }
                     },
 
-                  
+                    
                     {
                         "data": "Id", className: "text-center", "render": function (data, type, row) {
                             var html = ""
 
-                               
                                 + "<a data-logoid='" + data + "' class='btn btn-info  ozet' >Özet</a>"
                                 + "<a  data-status='3' data-id='" + data + "' class='btn btn-danger  ret'>Red Et</a>"
                                 + "<a data-status='1' data-id='" + data + "' class='btn btn-success  onayla'>Onayla</a>"

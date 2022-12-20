@@ -335,19 +335,19 @@ namespace Web.Controllers
             }
 
 
-            model.top5ciro = string.Format(@"SELECT    Top (5) ROW_NUMBER() OVER(ORDER BY SUM([Satır Tutarı]) ) AS sira, SUM(- [Satır Tutarı]) AS Ciro, Yıl, AY, Slsman
+            model.top5ciro = string.Format(@"SELECT    Top (5) ROW_NUMBER() OVER(ORDER BY SUM([satirtutari]) desc ) AS sira, SUM( [satirtutari]) AS Ciro, Yıl, AY, Slsman
 FROM            dbo.ERP_AYRINTILI_FATURA where  Slsman!='SAVAŞ KAYACAN' and Slsman!='FIRAT KAYACAN' and Slsman!='BARIŞ ÖZCAN' and  {0} and {1}
 GROUP BY  Yıl, AY, Slsman order by Ciro desc ", yıl, ay).GetDynamicQuery("SCSlogo");
 
-            model.top5yenilenmis = string.Format(@"SELECT       TOP(5) ROW_NUMBER() OVER(ORDER BY SUM([Satır Tutarı]) ) AS sira,  [Malzeme Grup Kodu] AS malzeme_grup_kodu, SUM(- [Satır Tutarı]) AS Ciro, Yıl, AY, Slsman
+            model.top5yenilenmis = string.Format(@"SELECT       TOP(5) ROW_NUMBER() OVER(ORDER BY SUM([satirtutari]) desc ) AS sira,  [Malzeme Grup Kodu] AS malzeme_grup_kodu, SUM([satirtutari]) AS Ciro, Yıl, AY, Slsman
 FROM            dbo.ERP_AYRINTILI_FATURA where  Slsman!='SAVAŞ KAYACAN' and Slsman!='FIRAT KAYACAN' and Slsman!='BARIŞ ÖZCAN' and [Malzeme Grup Kodu]='YENİLENMİŞ CİHAZ' AND {0} and {1}
 GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSlogo");
 
-            model.top5ceptelefonu = string.Format(@"SELECT       TOP(5) ROW_NUMBER() OVER(ORDER BY SUM([Satır Tutarı]) ) AS sira,  [Malzeme Grup Kodu] AS malzeme_grup_kodu, SUM(- [Satır Tutarı]) AS Ciro, Yıl, AY, Slsman
+            model.top5ceptelefonu = string.Format(@"SELECT       TOP(5) ROW_NUMBER() OVER(ORDER BY SUM([satirtutari]) desc ) AS sira,  [Malzeme Grup Kodu] AS malzeme_grup_kodu, SUM([satirtutari]) AS Ciro, Yıl, AY, Slsman
 FROM            dbo.ERP_AYRINTILI_FATURA where  Slsman!='SAVAŞ KAYACAN' and Slsman!='FIRAT KAYACAN' and Slsman!='BARIŞ ÖZCAN' and [Malzeme Grup Kodu]='CEP TELEFONU' AND {0} and {1}
 GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSlogo");
 
-            model.top5aksesuar = string.Format(@"SELECT       TOP(5) ROW_NUMBER() OVER(ORDER BY SUM([Satır Tutarı]) ) AS sira,  [Malzeme Grup Kodu] AS malzeme_grup_kodu, SUM(- [Satır Tutarı]) AS Ciro, Yıl, AY, Slsman
+            model.top5aksesuar = string.Format(@"SELECT       TOP(5) ROW_NUMBER() OVER(ORDER BY SUM([satirtutari]) desc ) AS sira,  [Malzeme Grup Kodu] AS malzeme_grup_kodu, SUM( [satirtutari]) AS Ciro, Yıl, AY, Slsman
 FROM            dbo.ERP_AYRINTILI_FATURA where  Slsman!='SAVAŞ KAYACAN' and Slsman!='FIRAT KAYACAN' and Slsman!='BARIŞ ÖZCAN' and [Malzeme Grup Kodu]='AKSESUAR' AND {0} and {1}
 GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSlogo");
 

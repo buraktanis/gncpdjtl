@@ -39,7 +39,7 @@ namespace Business.OrderItemManagement
         public DataTablesObjectResult riskkontrol(DatatablesObject requestobj)
         {
             string query = @"SELECT *
-  FROM [TahsilatRisk] where MODÜL = 'VADE GEÇMİŞ!'  ";
+  FROM [BorcYaslandirmaRisk]  ";
             requestobj.dbtype = "SCSlogo";
             string privadewhere = "";
             var tip = requestobj.additionalvalues.ElementAt(0);

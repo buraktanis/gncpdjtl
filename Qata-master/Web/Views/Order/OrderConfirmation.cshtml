@@ -128,6 +128,8 @@
                                 <th class="pt-1 pb-1">Tarih</th>
                                 <th class="pt-1 pb-1">Müşteri</th>
                                 <th class="pt-1 pb-1">Temsilci</th>
+                                <th class="pt-1 pb-1">Teslimat Tipi</th>
+
                                 <th class="pt-1 pb-1">Sipariş Tutarı</th>
 
                                 <th class="pt-1 pb-1"></th>
@@ -210,6 +212,10 @@
                     },
                     {
                         "data": "Slsman"
+
+                    },
+                    {
+                        "data": "deliverytype"
 
                     },
                     {
@@ -399,6 +405,7 @@
                         var toplamtutarDizi = [];
 
                         var self = this;
+
                         recordtable2 = $('#recordtable2').DataTable({
                             "serverSide": true,
                             "paging": false,
@@ -419,12 +426,12 @@
                                     return JSON.stringify(d);
                                     return d;
                                 },
-                                
+
                             },
                             "columns": [
                                 
                                 {
-                                    "data": "FİŞNO", className: "text-center", "render": function (data, type, row) {
+                                    "data": "ISLEM_NO", className: "text-center", "render": function (data, type, row) {
 
                                         var html = ""
 
@@ -451,14 +458,14 @@
                                 },
                                 
                                 {
-                                    "data": "GECEN_GUN", className: "text-center", "render": function (data, type, row) {
+                                    "data": "GECIKME", className: "text-center", "render": function (data, type, row) {
 
                                         return data;
 
                                     }                                }
                                 ,
                                 {
-                                    "data": "TUTAR", className: "text-center", "render": function (data, type, row) {
+                                    "data": "TOTAL", className: "text-center", "render": function (data, type, row) {
 
                                         return numeral(data).format('0,0') + ' ₺';
 
@@ -466,7 +473,7 @@
                                 }
                                 ,
                                 {
-                                    "data": "MODÜL", className: "text-center", "render": function (data, type, row) {
+                                    "data": "Expr1", className: "text-center", "render": function (data, type, row) {
 
                                         var html = ``;
 
@@ -487,7 +494,7 @@
                             
                             "rowCallback": function (row, data) {
 
-                                toplamtutarDizi.push(data.TUTAR);
+                                toplamtutarDizi.push(data.TOTAL);
                             }, "drawCallback": function (settings) {
 
 

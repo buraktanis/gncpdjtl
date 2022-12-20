@@ -319,8 +319,19 @@
                     {
                         "data": "kar", "visible": isadmin, className: "text-center", "render": function (data, type, row) {
 
-                            if (data != null && data != "")
-                                return numeral(data).format('0,0');
+                            var html = ``
+
+                            if (data != null && data != "") {
+                                if (data < 0) {
+                                    html = `<span style="color:#e11d48;font-weight:bold">` + data + `</span>`;
+
+                                }
+                                else {
+                                    html = `<span style="color:#10b981;font-weight:bold">` + data + `</span>`;
+
+                                }
+                                return html;
+                            }
                             else
                                 return "";
                         }

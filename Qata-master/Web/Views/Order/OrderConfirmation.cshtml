@@ -224,7 +224,7 @@
                         }
                     },
 
-                    
+
                     {
                         "data": "Id", className: "text-center", "render": function (data, type, row) {
                             var html = ""
@@ -403,8 +403,15 @@
                     onOpen: function () {
                         var toplamtutar = 0;
                         var toplamtutarDizi = [];
-
+                        var kalanborc = 0;
+                        var kalanborcDizi = [];
+                        var caribakiye = 0;
+                        var caribakiyeDizi = [];
                         var self = this;
+                        $("#risk").LoadingOverlay("show", {
+                            text: "Lütfen bekleyiniz,bakiyeler hesaplanıyor.",
+                            textResizeFactor: 0.2
+                        });
 
                         recordtable2 = $('#recordtable2').DataTable({
                             "serverSide": true,
@@ -417,6 +424,8 @@
                             //"jQueryUI": true,
                             "stateSave": false,
                             "pagingType": "full_numbers",
+                            "info": false,
+                            
                             "ajax": {
                                 "url": "/Order/RiskKontrol",
                                 "type": "POST",
@@ -428,8 +437,12 @@
                                 },
 
                             },
+                            initComplete: function () {
+                                $("#risk").LoadingOverlay("hide");
+
+                            },
                             "columns": [
-                                
+
                                 {
                                     "data": "ISLEM_NO", className: "text-center", "render": function (data, type, row) {
 
@@ -456,7 +469,7 @@
 
                                     }
                                 },
-                                
+
                                 {
                                     "data": "GECIKME", className: "text-center", "render": function (data, type, row) {
 
@@ -483,38 +496,57 @@
                                         if (data == "Vade Geçmemiş") {
                                             html = `<span style="color:#10b981;">Vade Geçmemiş</span>`;
                                         }
-                                        
+
 
                                         return html;
 
-                                    }                                },
-                                
+                                    }
+                                },
+                                {
+                                    "data": "CARI_BAKIYE", className: "text-center", "render": function (data, type, row) {
+
+                                        return "";
+
+                                    }
+                                }
+                                ,
+
 
                             ],
-                            
+
                             "rowCallback": function (row, data) {
 
                                 toplamtutarDizi.push(data.TOTAL);
+                                caribakiyeDizi.push(data.CARI_BAKIYE);
                             }, "drawCallback": function (settings) {
 
 
                                 toplamtutarDizi.forEach((element) => {
                                     toplamtutar = toplamtutar + element;
                                 })
-                                
+                                caribakiyeDizi.forEach((element) => {
+                                    caribakiye = caribakiye + element;
+                                })
+
 
                                 $('#toplamtutarrisk').html(numeral(toplamtutar).format('0,0') + ' ₺')
+                                $('#caribakiye').html(numeral(caribakiye / (caribakiyeDizi.length)).format('0,0') + ' ₺')
+                                $('#kalanborc').html(numeral(toplamtutar).format('0,0') + ' ₺')
 
-                                
+
+
                             }
-                            
-                            
+
+
 
 
 
                         });
+
                     },
+                    
                     onContentReady: function () {
+
                         this.$content.find(".dataTable tbody").on("click", "a.riskControldetay", function () {
                             var logoid = $(this).attr("data-logoid");
 
@@ -588,12 +620,12 @@
 
                                                 }
                                             },
-                                            
+
 
 
                                         ],
 
-                                        
+
 
 
 
@@ -601,17 +633,18 @@
 
                                     });
                                 }
+
                             });
                         });
                     }
 
 
-                    
+
                 });
             });
-            
 
-            
+
+
 
 
             $(".dataTable tbody").on("click", "a.ozet", function () {
@@ -752,7 +785,31 @@
     </script>
     <script type="text/template" id="formrisk">
 
-        <div class="row">
+        <div id="risk" class="row">
+            <div class="row">
+                <div class="col-sm-6">
+                    <table class="table table-sm table-striped table-bordered dataTable float-right">
+                        @*<tr>
+            <th></th>
+            <th></th>
+
+        </tr>*@
+
+
+                        <tr>
+                            <td class="text-center"><h6>Müşteri Bakiyesi</h6></td>
+                            <td><h6 class="float-right " id="caribakiye"></h6> </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><h6>Kalan Borç</h6></td>
+                            <td><h6 class="float-right " id="kalanborc"></h6> </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+            </div>
             <div class="col-sm-12 table-responsive">
                 <table id="recordtable2" class="table table-sm table-striped table-bordered dataTable riskkontrol">
                     <thead class="thead-light ">
@@ -763,6 +820,8 @@
                             <th class="pt-1 pb-1">Geçen Gün</th>
                             <th class="pt-1 pb-1">Tutar</th>
                             <th class="pt-1 pb-1">Modül</th>
+                            <th style="display:none" class="pt-1 pb-1"></th>
+
                         </tr>
                     </thead>
                     <tbody>

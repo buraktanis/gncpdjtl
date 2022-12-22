@@ -45,29 +45,10 @@
                             </thead>
                             <tbody>
 
-                                @foreach (var item in Model)
-                                {
-
-                                <tr>
-
-                                    
-                                    <td>
-
-                                        @item.code
-                                    </td>
-
-                                    
-
-
-
-
-
-
-
-
-
-                                </tr>
+                                @{ 
+                                    var status = Model.query.status;
                                 }
+                                @status
 
                             </tbody>
 

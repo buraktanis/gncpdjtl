@@ -485,11 +485,12 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                dynamic result = streamReader.ReadToEnd();
-                dynamic iys = JsonConvert.DeserializeObject(result);
+                var result = streamReader.ReadToEnd();
+                var iys = JsonConvert.DeserializeObject(result);
 
                 return View(iys);
             }
+
 
 
         }

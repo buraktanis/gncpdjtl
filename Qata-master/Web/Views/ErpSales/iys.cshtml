@@ -1,0 +1,130 @@
+﻿
+@model dynamic
+
+
+@{ ViewData["Title"] = "Index"; }
+
+
+<div class="">
+    <div class="">
+        <div class="col-md-12">
+
+            <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb" style="padding-top:30px;">
+                <ol class="breadcrumb ">
+
+                    <li class="breadcrumb-item active" aria-current="page ">
+                        <h3>
+                            Ideasoft
+                        </h3>
+                    </li>
+                </ol>
+            </nav>
+
+        </div>
+
+
+        <div class="bg-white  mt-4">
+            <div class="row bg-white rounded">
+
+
+
+                <hr class="container-fluid bg-light pl-5" />
+
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
+
+                                <tr style="color:#F1F1F1; ">
+                                    <th class="pt-1 pb-1">Sipariş No</th>
+                                    <th class="pt-1 pb-1">Müşteri</th>
+                                    <th class="pt-1 pb-1">Telefon</th>
+                                    <th class="pt-1 pb-1">Tutar</th>
+                                    <th class="pt-1 pb-1">Sipariş Tarihi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+
+                                <tr>
+
+                                    
+                                    <td>
+
+                                        @item.code
+                                    </td>
+
+                                    
+
+
+
+
+
+
+
+
+
+                                </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts{
+    <script>
+        $(function () {
+            $('#recordtable').DataTable({
+                order: [[0, 'desc']],
+                dom: 'Bfrtip',
+                pageLength: 25,
+                paging: true,
+                searching: true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                },
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    },
+                    //the remaining buttons here
+                }],
+
+            });
+
+
+            $(".dataTable tbody").on("click", "a.btnsearch", function () {
+                var text = $(this).attr("data-text");
+                $('input[type=search]').val(text);
+                $('input[type=search]').keyup();
+                if (marka == '' || marka == null) {
+                    $('.filtre_silici').addClass('hidden');
+                }
+            });
+
+
+        });
+    </script>
+
+
+}

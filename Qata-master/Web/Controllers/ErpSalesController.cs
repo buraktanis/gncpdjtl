@@ -450,6 +450,49 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
 
             
         }
+        public IActionResult iys()
+        {
+            var url = "https://api.netgsm.com.tr/iys/search";
+
+            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpRequest.Method = "POST";
+
+            httpRequest.ContentType = "application/json";
+            httpRequest.Headers["Cookie"] = "PHPSESSID=34608afd361f00c3cb9fc5913318da9f";
+
+            var data = @"{
+    ""header"": {
+        ""username"": 8503050900,
+        ""password"": ""y6-v3k4K"",
+        ""brandCode"": ""610639""
+    },
+    ""body"": {
+        ""data"": [
+            {
+                ""type"": ""ARAMA"",
+                ""recipient"": ""+905353042727"",
+                ""recipientType"": ""TACIR""          
+            }
+        ]
+    }
+}";
+
+            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            {
+                streamWriter.Write(data);
+            }
+
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                dynamic result = streamReader.ReadToEnd();
+                dynamic iys = JsonConvert.DeserializeObject(result);
+
+                return View(iys);
+            }
+
+
+        }
 
     }
 }

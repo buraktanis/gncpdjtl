@@ -488,7 +488,7 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
             {
                 var result = streamReader.ReadToEnd();
                 var iys = JsonConvert.DeserializeObject(result);
-
+                
                 return View(iys);
             }
 

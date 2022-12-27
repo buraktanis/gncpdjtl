@@ -13,20 +13,20 @@
     httpRequestarama.Headers["Cookie"] = "PHPSESSID=34608afd361f00c3cb9fc5913318da9f";
 
     var dataarama = @"{
-        ""header"": {
-            ""username"": 8503050900,
-            ""password"": ""y6-v3k4K"",
-            ""brandCode"": ""610639""
-        },
-        ""body"": {
-            ""data"": [
-                {
-                    ""type"": ""ARAMA"",
-                    ""recipient"": ""+90" + Model.Customer.Phone + @""",
-                    ""recipientType"": ""TACIR""
-                }
-            ]
-        }
+            ""header"": {
+                ""username"": 8503050900,
+                ""password"": ""y6-v3k4K"",
+                ""brandCode"": ""610639""
+            },
+            ""body"": {
+                ""data"": [
+                    {
+                        ""type"": ""ARAMA"",
+                        ""recipient"": ""+90" + Model.Customer.Phone + @""",
+                        ""recipientType"": ""TACIR""
+                    }
+                ]
+            }
 }";
 
     using (var streamWriter = new StreamWriter(httpRequestarama.GetRequestStream()))
@@ -39,7 +39,17 @@
 
     var resultarama = streamReaderarama.ReadToEnd();
     dynamic iysarama = JsonConvert.DeserializeObject(resultarama);
-    var status = iysarama.query.status; }
+    var status = "";
+    if(iysarama.code=="0")
+    {
+        status = iysarama.query.status;
+    }
+    else
+    {
+        status = "Kayıt Yok";
+    }
+
+    }
 @{ var urlmesaj = "https://api.netgsm.com.tr/iys/search";
 
     var httpRequestmesaj = (HttpWebRequest)WebRequest.Create(urlmesaj);
@@ -49,20 +59,20 @@
     httpRequestmesaj.Headers["Cookie"] = "PHPSESSID=34608afd361f00c3cb9fc5913318da9f";
 
     var datamesaj = @"{
-        ""header"": {
-            ""username"": 8503050900,
-            ""password"": ""y6-v3k4K"",
-            ""brandCode"": ""610639""
-        },
-        ""body"": {
-            ""data"": [
-                {
-                    ""type"": ""MESAJ"",
-                    ""recipient"": ""+90" + Model.Customer.Phone + @""",
-                    ""recipientType"": ""TACIR""
-                }
-            ]
-        }
+            ""header"": {
+                ""username"": 8503050900,
+                ""password"": ""y6-v3k4K"",
+                ""brandCode"": ""610639""
+            },
+            ""body"": {
+                ""data"": [
+                    {
+                        ""type"": ""MESAJ"",
+                        ""recipient"": ""+90" + Model.Customer.Phone + @""",
+                        ""recipientType"": ""TACIR""
+                    }
+                ]
+            }
 }";
 
     using (var streamWritermesaj = new StreamWriter(httpRequestmesaj.GetRequestStream()))
@@ -75,7 +85,16 @@
 
     var resultmesaj = streamReadermesaj.ReadToEnd();
     dynamic iysmesaj = JsonConvert.DeserializeObject(resultmesaj);
-    var statusmesaj = iysmesaj.query.status; }
+    var statusmesaj = "";
+    if (iysmesaj.code == "0")
+    {
+        statusmesaj = iysmesaj.query.status;
+    }
+    else
+    {
+        statusmesaj = "Kayıt Yok";
+    }
+    }
 
 @{ var urleposta = "https://api.netgsm.com.tr/iys/search";
 
@@ -86,20 +105,20 @@
     httpRequesteposta.Headers["Cookie"] = "PHPSESSID=34608afd361f00c3cb9fc5913318da9f";
 
     var dataeposta = @"{
-        ""header"": {
-            ""username"": 8503050900,
-            ""password"": ""y6-v3k4K"",
-            ""brandCode"": ""610639""
-        },
-        ""body"": {
-            ""data"": [
-                {
-                    ""type"": ""EPOSTA"",
-                    ""recipient"": """ + Model.Customer.Email + @""",
-                    ""recipientType"": ""TACIR""
-                }
-            ]
-        }
+            ""header"": {
+                ""username"": 8503050900,
+                ""password"": ""y6-v3k4K"",
+                ""brandCode"": ""610639""
+            },
+            ""body"": {
+                ""data"": [
+                    {
+                        ""type"": ""EPOSTA"",
+                        ""recipient"": """ + Model.Customer.Email + @""",
+                        ""recipientType"": ""TACIR""
+                    }
+                ]
+            }
 }";
 
     using (var streamWritereposta = new StreamWriter(httpRequesteposta.GetRequestStream()))
@@ -112,7 +131,16 @@
 
     var resulteposta = streamReadereposta.ReadToEnd();
     dynamic iyseposta = JsonConvert.DeserializeObject(resulteposta);
-    var statuseposta = iyseposta.query.status; }
+
+    var statuseposta = "";
+    if (iyseposta.code == "0")
+    {
+        statuseposta = iyseposta.query.status;
+    }
+    else
+    {
+        statuseposta = "Kayıt Yok";
+    }}
 <style>
     .post {
         border: 1px solid;
@@ -199,16 +227,14 @@
             <a href="/Customer/CustomerConsignmentAdd/@Model.Customer.Id" class="nav-content-bttn open-font text-white">
                 Sevk Adresi   <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
             </a>
-        </li>
- }
-    else
-    {
-<li class="list-group-item categoryitem post" data-name="Borsa">
-    <a href="#" class="nav-content-bttn open-font text-white" id="sevkAdresi">
-        Sevk Adresi  <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3 "></i>
-    </a>
-</li>
-}
+        </li> }
+                    else
+                    {
+        <li class="list-group-item categoryitem post" data-name="Borsa">
+            <a href="#" class="nav-content-bttn open-font text-white" id="sevkAdresi">
+                Sevk Adresi  <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3 "></i>
+            </a>
+        </li>}
 
 
                 </ul>
@@ -263,8 +289,7 @@
             <a id="cariekstresi" href="#" class="nav-content-bttn open-font text-white">
                 Cari Ekstresi     <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
             </a>
-        </li>
-}
+        </li>}
 
                 </ul>
             </div>
@@ -282,7 +307,7 @@
                 <!--Müşteri Bilgileri-->
                 <div class="row   ">
 
-                    <h4 class="card-title pl-3 pt-3 col-sm-12 acco"><strong>Müşteri Bilgileri</strong> <a href="#" class="btn btn-info2 float-right" id="logoUpdate" style="margin-right:5%; ">Cari Codu getir </a></h4>
+                    <h4 class="card-title pl-3 pt-3 col-sm-12 acco"><strong>Müşteri Bilgileri</strong> <a href="#" class="btn btn-info2 float-right" id="logoUpdate" style="margin-right:5%; ">Cari Kodu Getir </a></h4>
 
                     <hr class="container-fluid bg-light" />
 
@@ -364,10 +389,46 @@
 
                             </div>
                         </div>
-                        ARAMA : @status <br />
-                        MESAJ : @statusmesaj <br />
-                        EPOSTA : @statuseposta
+
+                        <style>
+                            td {
+                                text-align: center;
+                            }
+
+                            th {
+                                text-align: center;
+                            }
+                        </style>
+
+
+                        <div class="col-sm-12 mt-3 card">
+                            <table id="recordtable1" class="table">
+                                <thead class=" ">
+                                    <tr>
+                                        <th class="pt-1 pb-1">Arama</th>
+                                        <th class="pt-1 pb-1">Mesaj</th>
+                                        <th class="pt-1 pb-1">E Posta</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <td>
+                                    <span style="color: @(status == "ONAY" ? "#10b981" : "#e11d48"); font-weight:bolder">@status</span>
+                                </td>
+
+                                <td> <span style="color: @(statusmesaj == "ONAY" ? "#10b981" : "#e11d48"); font-weight:bolder">@statusmesaj</span></td>
+
+                                <td> <span style="color: @(statuseposta == "ONAY" ? "#10b981" : "#e11d48"); font-weight:bolder">@statuseposta</span></td>
+                                </tbody>
+
+                            </table>
+
+
+
+                        </div>
+
                     </div>
+
 
                     <div class="col-md-6 ">
                         <!---->
@@ -470,7 +531,6 @@
                         <div class=" pl-3 pr-3 ">
                             <div class="form-horizontal">
                                 <div class="card-body row ">
-                                    
                                 </div>
 
                             </div>
@@ -561,8 +621,7 @@
                                             <select asp-for="Customer.City" class="form-control citySelection1">
                                                 @foreach (var item in Model.Cities)
                                                 {
-                                    <option value="@item.Value">@item.Text</option>
-}
+                                    <option value="@item.Value">@item.Text</option>}
                                             </select>
 
                                             @* @Html.DropDownListFor(m => m.Customer.City, (List<SelectListItem>)Model.Cities, new { @class = "form-control" })*@
@@ -654,7 +713,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
     <script type="text/javascript">
         var id = "@Model.Customer.Id";
@@ -669,25 +728,19 @@
                     $.LoadingOverlay("hide");
                     if (msg.success) {
                         window.location.href = '/Customer/UpdateCustomer/' + id;
-
                     } else {
                         $.alert(msg.message);
                     }
                 }
-
-
             });
         });
         $("#sevkAdresi").click(function () {
             $.alert("Bayi Onay Bekleniyor");
         });
-
-
         if (customerType == "0") {
             $("#taxAdministration").show()
             $("#tcIdentityNumber").hide();
         }
-
         if (customerType == "1") {
             $("#taxAdministration").hide()
             $("#tcIdentityNumber").show();
@@ -697,13 +750,10 @@
             $("#tcIdentityNumber").hide();
         }
         $('#Customer_Type').on('change', function () {
-
-
             if ($("#Customer_Type option:selected").val() == "0") {
                 $("#taxAdministration").show()
                 $("#tcIdentityNumber").hide();
             }
-
             if ($("#Customer_Type option:selected").val() == "1") {
                 $("#taxAdministration").hide()
                 $("#tcIdentityNumber").show();
@@ -712,10 +762,7 @@
                 $("#taxAdministration").hide()
                 $("#tcIdentityNumber").hide();
             }
-
-
         });
-
         $('.citySelection1').change(function () {
             var id = $(this).val();
             $('#Customer_Town').empty();
@@ -724,22 +771,17 @@
             GetTowns(id);
             GetArea(id);
         });
-
         function GetTowns(cityId) {
             var id = cityId;
             $.ajax({
                 type: 'GET',
                 url: '/Customer/GetTowns/' + id,
                 success: function (msg) {
-
                     msg.data.forEach(function (item) {
                         $('#Customer_Town').append('');
                         $('#Customer_Town').append('<option value=' + item.name + '>' + item.name + '</option>');
                     });
-
                 }
-
-
             });
         }
         function GetArea(cityId) {
@@ -752,15 +794,10 @@
                         $('#Customer_Region').append('');
                         $('#Customer_Region').append('<option value=' + item.areaCode + '>' + item.area + '</option>');
                     });
-
                 }
-
             });
         }
-
         $("#callReport").click(function () {
-
-
             $.confirm({
                 title: 'Bayi Arama Analizi',
                 content: $("#formCallReport").html(),
@@ -770,9 +807,7 @@
                     formSubmit: {
                         text: 'Kapat',
                         btnClass: 'btn-blue'
-
                     }
-
                 },
                 onOpen: function () {
                     var self = this;
@@ -797,48 +832,34 @@
                         "columns": [
                             {
                                 "data": "phone", className: "text-center", "render": function (data, type, row) {
-
                                     return data
-
                                 }
                             },
                             {
                                 "data": "date", className: "text-center", "render": function (data, type, row) {
-
                                     if (data != null && data != "")
                                         return moment(data).format("DD.MM.YYYY");
                                     else
                                         return "";
-
                                 }
                             }
                             ,
                             {
                                 "data": "time", className: "text-center", "render": function (data, type, row) {
-
-
                                     return data
                                 }
                             }
                             ,
                             {
                                 "data": "second", className: "text-center", "render": function (data, type, row) {
-
                                     return data
-
                                 }
                             }
-
-
                         ]
-
-
                     });
                 },
                 onContentReady: function () {
                     var jc = this;
-
-
                     this.$content.find('form').on('submit', function (e) {
                         // if the user submits the form by pressing enter in the field.
                         e.preventDefault();
@@ -846,13 +867,8 @@
                     });
                 }
             });
-
         });
-
-
         $("#myorders").click(function () {
-
-
             $.confirm({
                 title: 'Siparişler',
                 content: $("#formorders").html(),
@@ -863,7 +879,6 @@
                         text: 'Kapat',
                         btnClass: 'btn-blue'
                     }
-
                 },
                 onOpen: function () {
                     var self = this;
@@ -908,23 +923,15 @@
                             {
                                 "data": "Id", className: "text-center", "render": function (data, type, row) {
                                     var html = ""
-
                                         + "<a data-id='" + data + "' class='btn btn-warning   btn-sm text-white  detail' href='/Order/UpdateOrder/" + data + "'>Detay</a>"
-
-
-
                                     return html;
                                 }
                             }
                         ]
-
-
                     });
                 },
                 onContentReady: function () {
                     var jc = this;
-
-
                     this.$content.find('form').on('submit', function (e) {
                         // if the user submits the form by pressing enter in the field.
                         e.preventDefault();
@@ -932,13 +939,8 @@
                     });
                 }
             });
-
         });
-
-
         $("#cariekstresi").click(function () {
-
-
             $.confirm({
                 title: 'Cari Ekstresi',
                 content: $("#formcariekstresi").html(),
@@ -948,9 +950,7 @@
                     formSubmit: {
                         text: 'Kapat',
                         btnClass: 'btn-blue'
-
                     }
-
                 },
                 onOpen: function () {
                     this.$content.find(".input-daterange").datepicker({
@@ -968,7 +968,6 @@
                         //"jQueryUI": true,
                         "stateSave": false,
                         buttons: [
-
                             {
                                 titleAttr: "Excel'e Aktar",
                                 extend: 'excelHtml5',
@@ -1003,10 +1002,8 @@
                             { "data": "islemno" },
                             { "data": "borc" },
                             { "data": "alacak" },
-
                             {
                                 "data": "bakiye", className: "text-center", "render": function (data, type, row) {
-
                                     if (data != null && data != "")
                                         return numeral(data).format('0,0');
                                     else
@@ -1014,23 +1011,14 @@
                                 }
                             },
                             { "data": "hareketturu" }
-
                         ]
-
-
                     });
                 },
                 onContentReady: function () {
                     var jc = this;
-
                     this.$content.find("#searchcariekstresiDiv").click(function () {
                         recordtable3.draw();
-
                     });
-
-
-
-
                     this.$content.find('form').on('submit', function (e) {
                         // if the user submits the form by pressing enter in the field.
                         e.preventDefault();
@@ -1038,21 +1026,17 @@
                     });
                 }
             });
-
         });
-
-
-document.getElementById('buton').addEventListener('submit', function () {
-   Swal.fire(
-  'Kaydedildi!',
-  '',
-  'success'
-
-)
-});
- Swal.fire.onshow = function () {
-        setTimeout(Swal.fire.close, 600000);
-    }
+        document.getElementById('buton').addEventListener('submit', function () {
+            Swal.fire(
+                'Kaydedildi!',
+                '',
+                'success'
+            )
+        });
+        Swal.fire.onshow = function () {
+            setTimeout(Swal.fire.close, 600000);
+        }
     </script>
 
     <script type="text/template" id="formCallReport">

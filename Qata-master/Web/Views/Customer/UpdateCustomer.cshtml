@@ -1,44 +1,158 @@
 ﻿@model Web.Models.CustomerViewModel
+@using System.IO;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
 
+@{ var urlarama = "https://api.netgsm.com.tr/iys/search";
 
+    var httpRequestarama = (HttpWebRequest)WebRequest.Create(urlarama);
+    httpRequestarama.Method = "POST";
+
+    httpRequestarama.ContentType = "application/json";
+    httpRequestarama.Headers["Cookie"] = "PHPSESSID=34608afd361f00c3cb9fc5913318da9f";
+
+    var dataarama = @"{
+        ""header"": {
+            ""username"": 8503050900,
+            ""password"": ""y6-v3k4K"",
+            ""brandCode"": ""610639""
+        },
+        ""body"": {
+            ""data"": [
+                {
+                    ""type"": ""ARAMA"",
+                    ""recipient"": ""+90" + Model.Customer.Phone + @""",
+                    ""recipientType"": ""TACIR""
+                }
+            ]
+        }
+}";
+
+    using (var streamWriter = new StreamWriter(httpRequestarama.GetRequestStream()))
+    {
+        streamWriter.Write(dataarama);
+    }
+
+    var httpResponsearama = (HttpWebResponse)httpRequestarama.GetResponse();
+    var streamReaderarama = new StreamReader(httpResponsearama.GetResponseStream());
+
+    var resultarama = streamReaderarama.ReadToEnd();
+    dynamic iysarama = JsonConvert.DeserializeObject(resultarama);
+    var status = iysarama.query.status; }
+@{ var urlmesaj = "https://api.netgsm.com.tr/iys/search";
+
+    var httpRequestmesaj = (HttpWebRequest)WebRequest.Create(urlmesaj);
+    httpRequestmesaj.Method = "POST";
+
+    httpRequestmesaj.ContentType = "application/json";
+    httpRequestmesaj.Headers["Cookie"] = "PHPSESSID=34608afd361f00c3cb9fc5913318da9f";
+
+    var datamesaj = @"{
+        ""header"": {
+            ""username"": 8503050900,
+            ""password"": ""y6-v3k4K"",
+            ""brandCode"": ""610639""
+        },
+        ""body"": {
+            ""data"": [
+                {
+                    ""type"": ""MESAJ"",
+                    ""recipient"": ""+90" + Model.Customer.Phone + @""",
+                    ""recipientType"": ""TACIR""
+                }
+            ]
+        }
+}";
+
+    using (var streamWritermesaj = new StreamWriter(httpRequestmesaj.GetRequestStream()))
+    {
+        streamWritermesaj.Write(datamesaj);
+    }
+
+    var httpResponsemesaj = (HttpWebResponse)httpRequestmesaj.GetResponse();
+    var streamReadermesaj = new StreamReader(httpResponsemesaj.GetResponseStream());
+
+    var resultmesaj = streamReadermesaj.ReadToEnd();
+    dynamic iysmesaj = JsonConvert.DeserializeObject(resultmesaj);
+    var statusmesaj = iysmesaj.query.status; }
+
+@{ var urleposta = "https://api.netgsm.com.tr/iys/search";
+
+    var httpRequesteposta = (HttpWebRequest)WebRequest.Create(urleposta);
+    httpRequesteposta.Method = "POST";
+
+    httpRequesteposta.ContentType = "application/json";
+    httpRequesteposta.Headers["Cookie"] = "PHPSESSID=34608afd361f00c3cb9fc5913318da9f";
+
+    var dataeposta = @"{
+        ""header"": {
+            ""username"": 8503050900,
+            ""password"": ""y6-v3k4K"",
+            ""brandCode"": ""610639""
+        },
+        ""body"": {
+            ""data"": [
+                {
+                    ""type"": ""EPOSTA"",
+                    ""recipient"": """ + Model.Customer.Email + @""",
+                    ""recipientType"": ""TACIR""
+                }
+            ]
+        }
+}";
+
+    using (var streamWritereposta = new StreamWriter(httpRequesteposta.GetRequestStream()))
+    {
+        streamWritereposta.Write(dataeposta);
+    }
+
+    var httpResponseeposta = (HttpWebResponse)httpRequesteposta.GetResponse();
+    var streamReadereposta = new StreamReader(httpResponseeposta.GetResponseStream());
+
+    var resulteposta = streamReadereposta.ReadToEnd();
+    dynamic iyseposta = JsonConvert.DeserializeObject(resulteposta);
+    var statuseposta = iyseposta.query.status; }
 <style>
-     .post {
+    .post {
         border: 1px solid;
         padding: 8px;
-        background-color:#79A8A9;
+        background-color: #79A8A9;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        color:white
+        color: white
     }
-     .posti {
+
+    .posti {
         border: 1px solid;
         padding: 8px;
-        background-color:#083358;
+        background-color: #083358;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        color:white
+        color: white
     }
-     .postik {
+
+    .postik {
         border: 1px solid;
         padding: 8px;
-        background-color:#4D727E;
+        background-color: #4D727E;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        color:white
+        color: white
     }
-     .postikl {
+
+    .postikl {
         border: 1px solid;
         padding: 8px;
         background-color: #70a6b8;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        color:white
+        color: white
     }
-
 </style>
 
 
@@ -85,19 +199,23 @@
             <a href="/Customer/CustomerConsignmentAdd/@Model.Customer.Id" class="nav-content-bttn open-font text-white">
                 Sevk Adresi   <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
             </a>
-        </li> }
-                    else
-                    {
-        <li class="list-group-item categoryitem post" data-name="Borsa">
-            <a href="#" class="nav-content-bttn open-font text-white" id="sevkAdresi">
-                Sevk Adresi  <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3 "></i>
-            </a>
-        </li>}
+        </li>
+ }
+    else
+    {
+<li class="list-group-item categoryitem post" data-name="Borsa">
+    <a href="#" class="nav-content-bttn open-font text-white" id="sevkAdresi">
+        Sevk Adresi  <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3 "></i>
+    </a>
+</li>
+}
 
 
                 </ul>
             </div>
         </div>
+
+
 
 
         <div class="card d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 col-md-2">
@@ -113,8 +231,7 @@
             <a id="callReport" href="#" class="nav-content-bttn open-font text-white">
                 Bayi Arama Analizi    <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
             </a>
-        </li>
-}
+        </li>}
                 </ul>
             </div>
         </div>
@@ -131,9 +248,7 @@
             <a id="myorders" href="#" class="nav-content-bttn open-font text-white">
                 Siparişler  <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
             </a>
-        </li>
-
-}
+        </li>}
 
                 </ul>
             </div>
@@ -148,7 +263,8 @@
             <a id="cariekstresi" href="#" class="nav-content-bttn open-font text-white">
                 Cari Ekstresi     <i class="ti-angle-right font-xsss text-grey-500 ms-auto mt-3"></i>
             </a>
-        </li>}
+        </li>
+}
 
                 </ul>
             </div>
@@ -248,7 +364,11 @@
 
                             </div>
                         </div>
+                        ARAMA : @status <br />
+                        MESAJ : @statusmesaj <br />
+                        EPOSTA : @statuseposta
                     </div>
+
                     <div class="col-md-6 ">
                         <!---->
                         <div class=" pl-3 pr-3 ">
@@ -350,10 +470,7 @@
                         <div class=" pl-3 pr-3 ">
                             <div class="form-horizontal">
                                 <div class="card-body row ">
-
-
-
-
+                                    
                                 </div>
 
                             </div>
@@ -444,7 +561,8 @@
                                             <select asp-for="Customer.City" class="form-control citySelection1">
                                                 @foreach (var item in Model.Cities)
                                                 {
-                                    <option value="@item.Value">@item.Text</option>}
+                                    <option value="@item.Value">@item.Text</option>
+}
                                             </select>
 
                                             @* @Html.DropDownListFor(m => m.Customer.City, (List<SelectListItem>)Model.Cities, new { @class = "form-control" })*@
@@ -461,7 +579,7 @@
 
                                             @*Html.DropDownListFor(m => m.Customer.Town, (List<SelectListItem>
                                                 )Model.Cities, new { class = "form-control" })*@
-                                                <span asp-validation-for="Customer.Town" class="text-danger"></span>
+                                            <span asp-validation-for="Customer.Town" class="text-danger"></span>
                                         </div>
 
                                     </div>
@@ -639,7 +757,7 @@
 
             });
         }
-        
+
         $("#callReport").click(function () {
 
 

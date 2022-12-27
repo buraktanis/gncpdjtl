@@ -452,6 +452,7 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
         }
         public IActionResult iys()
         {
+           
             var url = "https://api.netgsm.com.tr/iys/search";
 
             var httpRequest = (HttpWebRequest)WebRequest.Create(url);

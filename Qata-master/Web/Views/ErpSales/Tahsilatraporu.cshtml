@@ -96,13 +96,11 @@
                             <thead style="background-color:#1f2937; height:42px;">
 
                                 <tr style="color:#F1F1F1; ">
-                                    <th> Sorumlu </th>
-                                    <th>Kod </th>
-                                    <th> Ünvan  </th>
-                                    <th>GECEN GUN  </th>
-                                    <th>Tutar </th>
-                                    <th>Modül </th>
-
+                                    <th>Ünvan</th>
+                                    <th>Vade Tarihi</th>
+                                    <th>İşlem Tarihi </th>
+                                    <th>Kalan Borç </th>
+                                    <th>Geçen Gün</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -111,41 +109,23 @@
                                 <tr>
 
                                     <td>
-                                        <a class=" btnsearch" data-text="@item.temsilci">@item.temsilci</a>
+                                        <a class=" btnsearch" data-text="@item.unvan">@item.unvan</a>
                                     </td>
                                     <td>
-                                        <a class=" btnsearch" data-text="@item.kod">@item.kod</a>
+                                        <a class=" btnsearch" data-text="@item.vade">@item.vade</a>
 
                                     </td>
                                     <td>
-                                        <a class="btnsearch" data-text=" @item.unvan"> @item.unvan</a>
+                                        <a class="btnsearch" data-text=" @item.islem"> @item.islem</a>
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:C0}", item.KALAN_BORC)
+
                                     </td>
                                     <td>
 
-                                        @item.GECEN_GUN
+                                        @item.GECIKME
                                     </td>
-
-                                    <td>
-                                        @string.Format("{0:C0}", item.TUTAR)
-
-                                    </td>
-
-                                    @if (item.MODÜL == "VADE GEÇMİŞ!")
-                                        {
-                                    <td style="        color: #e11d48;" class="text-center">
-
-                                        @item.MODÜL
-                                    </td>
- }
-                                        else
-                                        {
-                                    <td style="        color: #10b981;" class="text-center">
-
-                                        @item.MODÜL
-                                    </td>
-}
-
-
 
 
                                 </tr>

@@ -49,10 +49,8 @@ namespace Business.ErpSalesManagement
             try
             {
 
-                var model = string.Format(@"SELECT  TEMSİLCİ temsilci, [CH KODU] kod, [CH UNVANI] unvan, GECEN_GUN, CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END [MODÜL]  
-    , SUM(TUTAR) TUTAR FROM ARY_XXX_TAHSILAT WHERE {0} [TEMSİLCİ] NOT IN ('PASİF','BOŞ','HUKUK') GROUP BY [CH KODU], [CH UNVANI],
-  TEMSİLCİ,GECEN_GUN, CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END ORDER
- BY [CH UNVANI], CASE WHEN GECEN_GUN<0 THEN 'Vade Geçmemiş' ELSE 'VADE GEÇMİŞ!' END, SUM(TUTAR) DESC", tempsorgu).GetDynamicQuery("SCSlogo");
+                var model = string.Format(@"SELECT unvan,vade,islem,KALAN_BORC,GECIKME
+  FROM [tiger].[dbo].[BorcYaslandirmaRisk] where GECIKME > 1", tempsorgu).GetDynamicQuery("SCSlogo");
                 return new SuccessDataResult<dynamic>(model);
             }
             catch (Exception ex)

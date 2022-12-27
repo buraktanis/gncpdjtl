@@ -49,7 +49,7 @@ namespace Business.ErpSalesManagement
             try
             {
 
-                var model = string.Format(@"SELECT unvan,vade,islem,KALAN_BORC,GECIKME
+                var model = string.Format(@"SELECT unvan,vade,islem,KALAN_BORC,GECIKME,[Satış Temsilcisi] as temsilci
   FROM [tiger].[dbo].[BorcYaslandirmaRisk] where GECIKME > 1", tempsorgu).GetDynamicQuery("SCSlogo");
                 return new SuccessDataResult<dynamic>(model);
             }

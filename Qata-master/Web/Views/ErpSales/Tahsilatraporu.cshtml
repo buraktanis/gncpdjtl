@@ -97,6 +97,7 @@
 
                                 <tr style="color:#F1F1F1; ">
                                     <th>Ünvan</th>
+                                    <th>Temsilci</th>
                                     <th>Vade Tarihi</th>
                                     <th>İşlem Tarihi </th>
                                     <th>Kalan Borç </th>
@@ -104,32 +105,74 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
+                                @if (CurrentSession.Roles.Contains("Yonetim"))
                                 {
-                                <tr>
+                            @foreach (var item in Model)
+                            {
+                            <tr>
 
-                                    <td>
-                                        <a class=" btnsearch" data-text="@item.unvan">@item.unvan</a>
-                                    </td>
-                                    <td>
-                                        <a class=" btnsearch" data-text="@item.vade">@item.vade</a>
+                                <td>
+                                    <a class=" btnsearch" data-text="@item.unvan">@item.unvan</a>
+                                </td>
+                                <td>
+                                    @item.temsilci
+                                </td>
+                                <td>
+                                    <a class=" btnsearch" data-text="@item.vade">@item.vade</a>
 
-                                    </td>
-                                    <td>
-                                        <a class="btnsearch" data-text=" @item.islem"> @item.islem</a>
-                                    </td>
-                                    <td>
-                                        @string.Format("{0:C0}", item.KALAN_BORC)
+                                </td>
+                                <td>
+                                    <a class="btnsearch" data-text=" @item.islem"> @item.islem</a>
+                                </td>
+                                <td>
+                                    @string.Format("{0:C0}", item.KALAN_BORC)
 
-                                    </td>
-                                    <td>
+                                </td>
+                                <td>
 
-                                        @item.GECIKME
-                                    </td>
+                                    @item.GECIKME
+                                </td>
 
 
-                                </tr>
+                            </tr>
+} }
+                                        else
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+                                                @if(CurrentSession.Username==item.temsilci)
+                                                {
+                            <tr>
+
+                                <td>
+                                    <a class=" btnsearch" data-text="@item.unvan">@item.unvan</a>
+                                </td>
+                                <td>
+                                    @item.temsilci
+                                </td>
+                                <td>
+                                    <a class=" btnsearch" data-text="@item.vade">@item.vade</a>
+
+                                </td>
+                                <td>
+                                    <a class="btnsearch" data-text=" @item.islem"> @item.islem</a>
+                                </td>
+                                <td>
+                                    @string.Format("{0:C0}", item.KALAN_BORC)
+
+                                </td>
+                                <td>
+
+                                    @item.GECIKME
+                                </td>
+
+
+                            </tr>
+                                                }
+                                            }
+
 }
+
                             </tbody>
 
                         </table>

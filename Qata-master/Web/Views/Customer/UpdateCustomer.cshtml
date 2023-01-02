@@ -40,9 +40,19 @@
     var resultarama = streamReaderarama.ReadToEnd();
     dynamic iysarama = JsonConvert.DeserializeObject(resultarama);
     var status = "";
-    if(iysarama.code=="0")
+    var statussorgu = "";
+
+    if (iysarama.code=="0")
     {
         status = iysarama.query.status;
+        if (iysarama.query.status == "ONAY")
+        {
+            statussorgu = "1";
+        }
+        else
+        {
+            statussorgu = "0";
+        }
     }
     else
     {
@@ -86,9 +96,18 @@
     var resultmesaj = streamReadermesaj.ReadToEnd();
     dynamic iysmesaj = JsonConvert.DeserializeObject(resultmesaj);
     var statusmesaj = "";
+    var statusmesajsorgu = "";
     if (iysmesaj.code == "0")
     {
         statusmesaj = iysmesaj.query.status;
+        if(iysmesaj.query.status=="ONAY")
+        {
+            statusmesajsorgu = "1";
+        }
+        else
+        {
+            statusmesajsorgu = "0";
+        }
     }
     else
     {
@@ -133,14 +152,29 @@
     dynamic iyseposta = JsonConvert.DeserializeObject(resulteposta);
 
     var statuseposta = "";
+    var statusepostasorgu = "";
     if (iyseposta.code == "0")
     {
         statuseposta = iyseposta.query.status;
+        if (iyseposta.query.status == "ONAY")
+        {
+            statusepostasorgu = "1";
+        }
+        else
+        {
+            statusepostasorgu = "0";
+        }
     }
     else
     {
         statuseposta = "Kayıt Yok";
-    }}
+    }
+
+
+    var sorgucustomers = string.Format("UPDATE Customers SET SmsPermission={0} , EmailPermission={1} , CallPermission={2} WHERE Phone='{3}'",statusmesajsorgu,statusepostasorgu,statussorgu,Model.Customer.Phone).GetDynamicQuery("SqlConnectionString");
+    var sorgubigdata = string.Format("UPDATE BigDatasAll SET SmsPermission={0} , EmailPermission={1} , CallPermission={2} WHERE Phone='{3}'", statusmesajsorgu, statusepostasorgu, statussorgu, Model.Customer.Phone).GetDynamicQuery("SqlConnectionString");
+
+}
 <style>
     .post {
         border: 1px solid;

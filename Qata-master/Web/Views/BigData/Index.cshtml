@@ -13,7 +13,6 @@
                 </li>
             </ol>
         </nav>
-
     </div>
     <div class="">
 
@@ -21,8 +20,8 @@
             <div class="row bg-white rounded">
                 <div class="row">
 
-                
-                
+
+
                     <div class="col-md-6 pt-4 p-2">
                         @if (CurrentSession.Roles.Contains("Yonetim"))
                         {
@@ -37,10 +36,10 @@
                     </div>
 
 
-               
-                    </div>
 
-                <hr class="container-fluid bg-light pl-5" @*style="width:95%;"*@ />
+                </div>
+
+                <hr class="container-fluid bg-light pl-5" style="width:95%;"  />
                 <div class="col-sm-12">
                     <div class="row" id="sonuc" style="display:none;">
 
@@ -62,7 +61,6 @@
                             <div class="form-group row p-2 ">
                                 <button class="btn btn-secondary mr-1 btn-raised   "><i class="fa fa-times"></i> Temizle</button>
                                 <button class="btn btn-warning mr-1 btn-raised mt-1" id="searchDiv"><i class="fa fa-search"></i> Uygula</button>
-                                <!--Buton Hover Effect-->
                                 <style>
                                     .btn-raised {
                                         transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), transform .4s cubic-bezier(.25, .8, .25, 1);
@@ -81,7 +79,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 mt-4 mb-5">
-                     <table id="recordtable" class="table table-sm table-striped table-bordered dataTable" style="width:100%; font-size:14px;">
+                    <table id="recordtable" class="table table-sm table-striped table-bordered dataTable" style="width:100%; font-size:14px;">
                         <thead style="background-color:#1f2937; height:42px;">
 
                             <tr style="color:#F1F1F1; ">
@@ -91,9 +89,13 @@
                                 </th>
                                 <th class="pt-1 pb-1">Temsilci</th>
                                 <th class="pt-1 pb-1">Telefon</th>
+                                <th class="pt-1 pb-1">Arama</th>
+                                <th class="pt-1 pb-1">Sms</th>
+                                <th class="pt-1 pb-1">E posta</th>
                                 <th class="pt-1 pb-1">
                                     S.Not
                                 </th>
+
                                 <th class="pt-1 pb-1"></th>
                             </tr>
                         </thead>
@@ -171,6 +173,30 @@
                                                  ${data}&nbsp;&nbsp;<i style="color: green;font-size: 16px;" class="fab fa-whatsapp"></i></a>`;
 
                             return html;
+                        }
+                    },
+                    {
+                        "data": "CallPermission", className: "text-center", "render": function (data, type, row) {
+                            if (data == false)
+                                return (" &#10060;");
+                            else
+                                return ("&#9989;")
+                        }
+                    },
+                    {
+                        "data": "SmsPermission", className: "text-center", "render": function (data, type, row) {
+                            if (data == false)
+                                return (" &#10060;");
+                            else
+                                return ("&#9989;")
+                        }
+                    },
+                    {
+                        "data": "EmailPermission", className: "text-center", "render": function (data, type, row) {
+                            if (data == false)
+                                return (" &#10060;");
+                            else
+                                return ("&#9989;")
                         }
                     },
                     {
@@ -462,9 +488,7 @@
                         <option value="">Seçiniz...</option>
                         @foreach (var item in Model)
                         {
-                            <option value="@item.Name">@item.Name</option>
-
-                        }
+        <option value="@item.Name">@item.Name</option>}
                     </select>
                 </div>
                 <div class="form-group row p-2 ">

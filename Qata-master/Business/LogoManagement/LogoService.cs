@@ -313,7 +313,7 @@ namespace Business.LogoManagement
             return (long)(dateTime - new DateTime(1970, 1, 1)).TotalMilliseconds;
         }
 
-        public static string getAccessToken(string url = "http://78.188.219.81:32001/api/v1/token", string userName = "GENCPA", string password = "Ny2erd14", string firmNr = "17")
+        public static string getAccessToken(string url = "http://78.188.219.81:32001/api/v1/token", string userName = "GENCPA", string password = "2235074", string firmNr = "17")
         {
             string accessToken = "";
             try
@@ -322,7 +322,7 @@ namespace Business.LogoManagement
                 req.Method = "POST";
                 req.ContentType = "application/json";
                 req.Accept = "application/json";
-                req.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("GUNESELEKTRONIK" + ":" + "/CLskRmWMvSUlpR8YfiGYew0W4UfBuaJ0oTev6BCvhs=")));
+                req.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("SATYA" + ":" + "7vzDYfW/S/HoV6EHoQLEq8MGNUZBhc9ELNhtA9hVt+w=")));
                 byte[] formData = UTF8Encoding.UTF8.GetBytes("grant_type=password"
                     + "&username=" + HttpUtility.UrlEncode(userName)   // bu satır 04.05.2020 tarihinde değiştirildi
                     + "&firmno=" + firmNr

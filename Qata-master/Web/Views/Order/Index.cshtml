@@ -37,10 +37,12 @@
                                 <select class="form-control" id="selecttemsici">
                                     @if (CurrentSession.Roles.Contains("Yonetim"))
                                     {
-                        <option value=" ">Temsilci Seçiniz</option> }
-                                    else
-                                    {
-                        <option value="@CurrentSession.Name">@CurrentSession.Name</option>}
+                        <option value=" ">Temsilci Seçiniz</option>
+ }
+                    else
+                    {
+        <option value="@CurrentSession.Name">@CurrentSession.Name</option>
+}
 
                                 </select>
                             </div>
@@ -88,23 +90,23 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="table-responsive">
-                    <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
-                        <thead style="background-color:#1f2937; height:42px;">
+                        <table id="recordtable" class="table-bordered display dataTable" style="width:100%; font-size:14px;">
+                            <thead style="background-color:#1f2937; height:42px;">
 
-                            <tr style="color:#F1F1F1; ">
-                                <th class="pt-1 pb-1">Sipariş No</th>
-                                <th class="pt-1 pb-1">Müşteri</th>
-                                <th class="pt-1 pb-1">Not</th>
-                                <th class="pt-1 pb-1">Temsilci</th>
-                                <th class="pt-1 pb-1">Sipariş Tutarı</th>
-                                <th class="pt-1 pb-1">Tarih</th>
-                                <th class="pt-1 pb-1">Sipariş Durumu</th>
-                                <th class="pt-1 pb-1"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                                <tr style="color:#F1F1F1; ">
+                                    <th class="pt-1 pb-1">Sipariş No</th>
+                                    <th class="pt-1 pb-1">Müşteri</th>
+                                    <th class="pt-1 pb-1">Not</th>
+                                    <th class="pt-1 pb-1">Temsilci</th>
+                                    <th class="pt-1 pb-1">Sipariş Tutarı</th>
+                                    <th class="pt-1 pb-1">Tarih</th>
+                                    <th class="pt-1 pb-1">Sipariş Durumu</th>
+                                    <th class="pt-1 pb-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
 
 
@@ -120,20 +122,52 @@
     .post {
         border: 1px solid;
         padding: 8px;
-        background-color:#7ec959;
+        background-color: #7ec959;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        color:white
+        color: white
     }
-     .posti {
+
+    .posti {
         border: 1px solid;
         padding: 8px;
-        background-color:#f22e2e;
+        background-color: #f22e2e;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        color:white
+        color: white
+    }
+
+
+    .postt {
+        border: 1px solid;
+        padding: 8px;
+        background-color: #46cae8;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        color: white
+    }
+
+    .pos {
+        border: 1px solid;
+        padding: 8px;
+        background-color: #f5dd58;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        color: white
+    }
+
+    .posttt {
+        border: 1px solid;
+        padding: 8px;
+        background-color: #9598ad;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        color: white
     }
 </style>
 
@@ -220,16 +254,16 @@
                             console.log(data)
                             var html = ``;
                             if (data == -1) {
-                                html = `<span>Taslak</span>`;
+                                html = `<span class="posttt">Taslak</span>`;
                             }
                             if (data == 0) {
-                                html = `<span>Onaya Gönderildi &#10068;</span>`;
+                                html = `<span class="postt">Onaya Gönderildi &#10068;</span>`;
                             }
                             if (data == 1) {
                                 html = `<span class="post">Logoya Gönderildi &#9989;</span>`;
                             }
                             if (data == 2) {
-                                html = `<span style="">Faturalandı &#128221;</span>`;
+                                html = `<span class="pos">Faturalandı &#128221;</span>`;
                             }
                             if (data == 3) {
                                 html = `<span class="posti">Red Edildi &#10060;</span>`;

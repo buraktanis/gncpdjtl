@@ -472,11 +472,12 @@ namespace Web.Controllers
                 return new JsonResult(new { error = "Internal Server Error" });
             }
         }  
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [HttpPost]
         public IActionResult GetCARIEKSTRE([FromBody] DatatablesJS.DatatablesObject requestobj)
         {
             try
             {
+                var result = _logoManagement.GetCARIEKSTRE(requestobj);
                 return new JsonResult(_logoManagement.GetCARIEKSTRE(requestobj));
 
             }

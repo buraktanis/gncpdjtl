@@ -98,8 +98,8 @@
                                 <tr style="color:#F1F1F1; ">
                                     <th>Ünvan</th>
                                     <th>Temsilci</th>
-                                    <th>Vade Tarihi</th>
-                                    <th>İşlem Tarihi </th>
+                                    <th>İşlem Tarihi</th>
+                                    <th>Vade Tarihi </th>
                                     <th>Kalan Borç </th>
                                     <th>Geçen Gün</th>
                                 </tr>
@@ -109,32 +109,33 @@
                                 {
                             @foreach (var item in Model)
                             {
-                            <tr>
+                                <tr>
 
-                                <td>
-                                    <a class=" btnsearch" data-text="@item.unvan">@item.unvan</a>
-                                </td>
-                                <td>
-                                    <a class=" btnsearch" data-text="@item.temsilci">@item.temsilci</a>
-                                </td>
-                                <td>
-                                    <a class=" btnsearch" data-text="@item.vade">@item.vade</a>
+                                    <td>
+                                        <a class=" btnsearch" data-text="@item.unvan">@item.unvan</a>
+                                    </td>
+                                    <td>
+                                        <a class=" btnsearch" data-text="@item.temsilci">@item.temsilci</a>
+                                    </td>
+                                    <td>
+                                        <a class="btnsearch" data-text=" @item.islem"> @item.islem</a>
+                                    </td>
+                                    <td>
+                                        <a class=" btnsearch" data-text="@item.vade">@item.vade</a>
 
-                                </td>
-                                <td>
-                                    <a class="btnsearch" data-text=" @item.islem"> @item.islem</a>
-                                </td>
-                                <td>
-                                    @string.Format("{0:C0}", item.KALAN_BORC)
+                                    </td>
 
-                                </td>
-                                <td>
+                                    <td>
+                                        @string.Format("{0:C0}", item.KALAN_BORC)
 
-                                    @item.GECIKME
-                                </td>
+                                    </td>
+                                    <td>
+
+                                        @item.GECIKME
+                                    </td>
 
 
-                            </tr>
+                                </tr>
 } }
                                         else
                                         {
@@ -151,12 +152,13 @@
                                     <a class=" btnsearch" data-text="@item.temsilci">@item.temsilci</a>
                                 </td>
                                 <td>
+                                    <a class="btnsearch" data-text=" @item.islem"> @item.islem</a>
+                                </td>
+                                <td>
                                     <a class=" btnsearch" data-text="@item.vade">@item.vade</a>
 
                                 </td>
-                                <td>
-                                    <a class="btnsearch" data-text=" @item.islem"> @item.islem</a>
-                                </td>
+
                                 <td>
                                     @string.Format("{0:C0}", item.KALAN_BORC)
 

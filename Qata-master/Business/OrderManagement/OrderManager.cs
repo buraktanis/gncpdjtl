@@ -84,7 +84,7 @@ namespace Business.OrderManagement
         }   
         public DataTablesObjectResult GetCustomerOrders(DatatablesObject requestobj)
         {
-             query = @" SELECT * FROM OrderAll ";
+            query = @" SELECT * FROM OrderAll ";
 
             string privadewhere = "";
 

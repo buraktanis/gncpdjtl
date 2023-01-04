@@ -72,6 +72,25 @@ namespace Business.OrderItemManagement
 
             return new DataTablesObjectResult().getresults(requestobj, query, privadewhere);
         }
+        public DataTablesObjectResult customercariekstre(DatatablesObject requestobj)
+        {
+            string query = @" SELECT * FROM ARY_XXX_CARI_EKSTRE  ";
+
+            requestobj.dbtype = "SCSlogo";
+
+            string privadewhere = "";
+            var codu = requestobj.additionalvalues.ElementAt(0);
+
+            if (!codu.Trim().isNull())
+            {
+                privadewhere = string.Format("chkodu='{0}' ", codu);
+            }
+
+
+
+
+            return new DataTablesObjectResult().getresults(requestobj, query, privadewhere);
+        }
 
         public IResult Add(OrderItem orderItem)
         {

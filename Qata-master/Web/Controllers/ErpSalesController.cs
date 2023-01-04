@@ -370,8 +370,8 @@ GROUP BY [Malzeme Grup Kodu], Yıl, AY, Slsman", yıl, ay).GetDynamicQuery("SCSl
 
             var model = new cariModel();
 
-            model.model1 = string.Format(@"SELECT [CH KODU]
-      ,[CH ÜNVANI] as chunvani,
+            model.model1 = string.Format(@"SELECT chkodu
+      ,unvan,
       [TARIH]
       ,[HAREKET_TURU]
       ,[BORÇ]
